@@ -59,6 +59,8 @@ app.UseCookiePolicy();
 
 app.UseRouting();
 
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
+
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
