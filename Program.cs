@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using MyShop.middleware;
+using MyShop.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-//builder.Services.AddDbContext<DbMyShopContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
+builder.Services.AddDbContext<DbMyShopContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Connection")));
 builder.Services.AddDistributedMemoryCache();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
@@ -58,7 +60,8 @@ app.UseCookiePolicy();
 //app.UseAuthentication();
 
 app.UseRouting();
-
+app.UseAuthentication();
+app.UseMiddleware<BlockAuthPagesMiddleware>();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
