@@ -1,4 +1,5 @@
-﻿@{
+﻿@model IEnumerable<MyShop.Models.Product>
+@{
 	ViewData["Title"] = "Sản phẩm";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -6,7 +7,9 @@
 	<div class="page-title-inner flex-row  medium-flex-wrap container">
 		<div class="flex-col flex-grow medium-text-center">
 			<div class="is-medium">
-				<nav class="woocommerce-breadcrumb breadcrumbs "><a href="https://inno.com.vn">Trang chủ</a> <span class="divider">&#47;</span> Sản phẩm</nav>
+				<nav class="woocommerce-breadcrumb breadcrumbs ">
+					<a href="/">Trang chủ</a> 
+					<span class="divider">&#47;</span> Sản phẩm</nav>
 			</div>
 			<div class="category-filtering category-filter-row show-for-medium">
 				<a href="#" data-open="#shop-sidebar" data-visible-after="true" data-pos="left" class="filter-button uppercase plain">
@@ -43,44 +46,130 @@
 
 				<div class="woocommerce-notices-wrapper"></div><div class="products row row-small large-columns-4 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1-hover has-equal-box-heights equalize-box">
 					@* start list product *@
-					<div class="product-small col has-hover product type-product post-17129 status-publish first instock product_cat-may-khu-trung-sach has-post-thumbnail shipping-taxable purchasable product-type-simple">
-						<div class="col-inner">
+					@foreach(var product in Model)
+					{
+						<div class="product-small col has-hover product type-product post-17129 status-publish first instock product_cat-may-khu-trung-sach has-post-thumbnail shipping-taxable purchasable product-type-simple">
+							<div class="col-inner">
 
-							<div class="badge-container absolute left top z-1">
-							</div>
-							<div class="product-small box ">
-								<div class="box-image">
-									<div class="image-zoom">
-										<a href="https://inno.com.vn/may-khu-trung-sach-innosmart-rfid-bs700st-300/" aria-label="Máy khử trùng sách INNOSMART RFID-BS700ST-300">
-											<img width="300" height="300" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Máy khử trùng sách INNOSMART RFID-BS700ST-300" decoding="async" fetchpriority="high" data-lazy-srcset="https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84.webp 1000w" data-lazy-sizes="(max-width: 300px) 100vw, 300px" data-lazy-src="https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-300x300.webp" /><noscript><img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Máy khử trùng sách INNOSMART RFID-BS700ST-300" decoding="async" fetchpriority="high" srcset="https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2025/12/Thiet-ke-chua-co-ten-84.webp 1000w" sizes="(max-width: 300px) 100vw, 300px" /></noscript>
-										</a>
-									</div>
-									<div class="image-tools is-small top right show-on-hover">
-									</div>
-									<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-									</div>
-									<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-										<a class="quick-view" data-prod="17129" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>
-									</div>
+								<div class="badge-container absolute left top z-1">
 								</div>
+								<div class="product-small box ">
+									<div class="box-image">
+										<div class="image-zoom">
+											<a href="/chi-tiet/@product.Slug" aria-label="@product.Name">
+												<img width="300" height="300" src="@product.Image" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="@product.Name" />
+											</a>
+										</div>
+										<div class="image-tools is-small top right show-on-hover">
+										</div>
+										<div class="image-tools is-small hide-for-small bottom left show-on-hover">
+										</div>
+										<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+											<a class="quick-view" data-prod="17129" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>
+										</div>
+									</div>
 
-								<div class="box-text box-text-products text-center grid-style-2">
-									<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/may-khu-trung-sach-innosmart-rfid-bs700st-300/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Máy khử trùng sách INNOSMART RFID-BS700ST-300</a></p></div><div class="price-wrapper">
-										<span class="price"><span class="amount">Liên hệ</span></span>
+									<div class="box-text box-text-products text-center grid-style-2">
+										<div class="price-wrapper" style="font-weight:bold">
+											<p class="name product-title woocommerce-loop-product__title"><a href="/chi-tiet/@product.Slug" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a></p>
+											@if (product.SalePrice > 0)
+											{
+												<!-- Giá gốc -->
+												<span class="price old-price" style="display:block; text-decoration: line-through; color:#999;">
+													@product.Price ₫
+												</span>
+
+												<!-- Giá sale -->
+												<span class="price sale-price" style="display:block; color:#d00;">
+													@product.SalePrice ₫
+												</span>
+											}
+											else if (product.Price > 0)
+											{
+												<!-- Giá thường -->
+												<span class="price" style="display:block;">
+													@product.Price ₫
+												</span>
+											}
+
+											<!-- Liên hệ: luôn có, luôn dòng mới -->
+											<span class="contact-price" style="display:block; margin-top:3px; color:red">
+												Liên hệ
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
 
+					}
 					@* end list product *@
 			
 				</div><!-- row -->
+				@functions {
+					string BuildProductPageUrl(int page, string parentSlug, string slug)
+					{
+						if (!string.IsNullOrEmpty(parentSlug) && !string.IsNullOrEmpty(slug))
+						{
+							// /san-pham/{parent}/{slug}/page/{page}
+							return $"/san-pham/{parentSlug}/{slug}/page/{page}";
+						}
+
+						if (!string.IsNullOrEmpty(parentSlug) && string.IsNullOrEmpty(slug))
+						{
+							// /san-pham/{parent}/page/{page}
+							return $"/san-pham/{parentSlug}/page/{page}";
+						}
+
+						// Route mặc định: /san-pham/page/{page}
+						return $"/san-pham/page/{page}";
+					}
+				}
 				<div class="container">
 					<nav class="woocommerce-pagination">
-						<ul class="page-numbers nav-pagination links text-center"><li><span aria-current="page" class="page-number current">1</span></li><li><a class="page-number" href="https://inno.com.vn/san-pham/page/2/">2</a></li><li><a class="page-number" href="https://inno.com.vn/san-pham/page/3/">3</a></li><li><a class="page-number" href="https://inno.com.vn/san-pham/page/4/">4</a></li><li><span class="page-number dots">&hellip;</span></li><li><a class="page-number" href="https://inno.com.vn/san-pham/page/18/">18</a></li><li><a class="page-number" href="https://inno.com.vn/san-pham/page/19/">19</a></li><li><a class="page-number" href="https://inno.com.vn/san-pham/page/20/">20</a></li><li><a class="next page-number" href="https://inno.com.vn/san-pham/page/2/"><i class="icon-angle-right"></i></a></li></ul>
+						<ul class="page-numbers nav-pagination links text-center">
+
+							@* Nút Previous *@
+							@if (ViewBag.Page > 1)
+							{
+								<li>
+									<a class="page-number" href="@BuildProductPageUrl(ViewBag.Page - 1, ViewBag.ParentSlug, ViewBag.Slug)">
+										<i class="icon-angle-left"></i>
+									</a>
+								</li>
+							}
+
+							@* Các số trang *@
+							@for (int i = 1; i <= ViewBag.TotalPages; i++)
+							{
+								if (i == ViewBag.Page)
+								{
+									<li><span class="page-number current">@i</span></li>
+								}
+								else
+								{
+									<li>
+										<a class="page-number" href="@BuildProductPageUrl(i, ViewBag.ParentSlug, ViewBag.Slug)">
+											@i
+										</a>
+									</li>
+								}
+							}
+
+							@* Nút Next *@
+							@if (ViewBag.Page < ViewBag.TotalPages)
+							{
+								<li>
+									<a class="page-number" href="@BuildProductPageUrl(ViewBag.Page + 1, ViewBag.ParentSlug, ViewBag.Slug)">
+										<i class="icon-angle-right"></i>
+									</a>
+								</li>
+							}
+
+						</ul>
 					</nav>
 				</div>
+
 
 			</div><!-- shop container -->
 
@@ -186,79 +275,23 @@
 						<aside id="woocommerce_product_categories-13" class="widget woocommerce widget_product_categories">
 							<span class="widget-title shop-sidebar">Danh mục sản phẩm</span><div class="is-divider small"></div>
 							<ul class="product-categories">
-								<li class="cat-item cat-item-243 cat-parent">
-									<a href="https://inno.com.vn/noi-that-thong-minh/">Nội thất thông minh</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-244"><a href="https://inno.com.vn/ban-ghe-cho-lop-hoc-hien-dai/">Bàn ghế cho lớp học hiện đại</a></li>
-										<li class="cat-item cat-item-245"><a href="https://inno.com.vn/ban-ghe-cho-lop-hoc-thong-minh/">Bàn ghế cho lớp học thông minh</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-246 cat-parent">
-									<a href="https://inno.com.vn/phan-mem-inclass/">Phần mềm Inclass</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-330"><a href="https://inno.com.vn/phan-mem-phong-hoc-ngoai-ngu/">Phần mềm phòng học ngoại ngữ</a></li>
-										<li class="cat-item cat-item-331"><a href="https://inno.com.vn/phan-mem-phong-hoc-thong-minh/">Phần mềm phòng học thông minh</a></li>
-										<li class="cat-item cat-item-332"><a href="https://inno.com.vn/phan-mem-quan-ly-tap-trung-va-sao-luu-du-lieu/">Phần mềm quản lý tập trung và sao lưu dữ liệu</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-249 cat-parent">
-									<a href="https://inno.com.vn/phan-mem-thu-vien-thong-minh/">Phần mềm thư viện thông minh</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-270"><a href="https://inno.com.vn/nen-tang-learnpath/">Nền tảng LearnPath</a></li>
-										<li class="cat-item cat-item-269"><a href="https://inno.com.vn/phan-mem-quan-ly-thu-vien-oliver/">Phần mềm quản lý thư viện Oliver</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-288"><a href="https://inno.com.vn/phu-kien-giao-duc/">Phụ kiện giáo dục</a></li>
-								<li class="cat-item cat-item-250"><a href="https://inno.com.vn/robot-thong-minh/">Robot thông minh</a></li>
-								<li class="cat-item cat-item-235 cat-parent">
-									<a href="https://inno.com.vn/thiet-bi-giang-day-truc-tuyen/">Thiết bị giảng dạy trực tuyến</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-236"><a href="https://inno.com.vn/camera-truc-tuyen/">Camera trực tuyến</a></li>
-										<li class="cat-item cat-item-237"><a href="https://inno.com.vn/microphone-da-huong/">Microphone đa hướng</a></li>
-										<li class="cat-item cat-item-238"><a href="https://inno.com.vn/thiet-bi-ghi-hinh-va-phat-truc-tuyen/">Thiết bị ghi hình và phát trực tuyến</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-226 cat-parent">
-									<a href="https://inno.com.vn/thiet-bi-hien-thi-tuong-tac-thong-minh/">Thiết bị hiển thị tương tác thông minh</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-229"><a href="https://inno.com.vn/ban-tuong-tac-thong-minh/">Bàn tương tác thông minh</a></li>
-										<li class="cat-item cat-item-233"><a href="https://inno.com.vn/man-hinh-ghep-lcd/">Màn hình ghép LCD</a></li>
-										<li class="cat-item cat-item-234"><a href="https://inno.com.vn/man-hinh-hien-thi-thong-tin/">Màn hình hiển thị thông tin</a></li>
-										<li class="cat-item cat-item-231"><a href="https://inno.com.vn/man-hinh-kiosk-tra-cuu/">Màn hình Kiosk tra cứu</a></li>
-										<li class="cat-item cat-item-232"><a href="https://inno.com.vn/man-hinh-led-module/">Màn hình LED module</a></li>
-										<li class="cat-item cat-item-228"><a href="https://inno.com.vn/man-hinh-tuong-tac-thong-minh/">Màn hình tương tác thông minh</a></li>
-										<li class="cat-item cat-item-251"><a href="https://inno.com.vn/may-chieu-thu-vat-the/">Máy chiếu (thu) vật thể</a></li>
-										<li class="cat-item cat-item-227"><a href="https://inno.com.vn/may-chieu-giao-duc/">Máy chiếu giáo dục</a></li>
-										<li class="cat-item cat-item-230"><a href="https://inno.com.vn/tivi-giao-duc-thong-minh/">Tivi giáo dục thông minh</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-286 cat-parent">
-									<a href="https://inno.com.vn/thiet-bi-so-hoa/">Thiết bị số hóa</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-287"><a href="https://inno.com.vn/may-scan-sach/">Máy scan sách</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-247 cat-parent">
-									<a href="https://inno.com.vn/thiet-bi-thu-vien-thong-minh/">Thiết bị thư viện thông minh</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-334"><a href="https://inno.com.vn/may-khu-trung-sach/">Máy khử trùng sách</a></li>
-										<li class="cat-item cat-item-248"><a href="https://inno.com.vn/thiet-bi-tvtm-cong-nghe-em/">Thiết bị TVTM công nghệ EM</a></li>
-										<li class="cat-item cat-item-252"><a href="https://inno.com.vn/thiet-bi-tvtm-cong-nghe-rfid/">Thiết bị TVTM công nghệ RFID</a></li>
-										<li class="cat-item cat-item-273"><a href="https://inno.com.vn/tu-sach-thong-minh/">Tủ sách thông minh</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-239 cat-parent">
-									<a href="https://inno.com.vn/thiet-bi-truong-hoc-thong-minh/">Thiết bị trường học thông minh</a>
-									<ul class='children'>
-										<li class="cat-item cat-item-311"><a href="https://inno.com.vn/am-thanh-di-dong/">Âm thanh di động</a></li>
-										<li class="cat-item cat-item-242"><a href="https://inno.com.vn/he-thong-quan-ly-chia-khoa-thong-minh/">Hệ thống quản lý chìa khóa thông minh</a></li>
-										<li class="cat-item cat-item-241"><a href="https://inno.com.vn/may-tinh-bang-smarttab/">Máy tính bảng SmartTab</a></li>
-										<li class="cat-item cat-item-333"><a href="https://inno.com.vn/thiet-bi-kiem-soat-ra-vao/">Thiết bị kiểm soát ra vào</a></li>
-										<li class="cat-item cat-item-240"><a href="https://inno.com.vn/thiet-bi-kiem-tra-danh-gia-voting-system/">Thiết bị kiểm tra đánh giá voting system</a></li>
-										<li class="cat-item cat-item-317"><a href="https://inno.com.vn/tu-sac-thong-minh/">Tủ sạc thông minh</a></li>
-									</ul>
-								</li>
-								<li class="cat-item cat-item-16"><a href="https://inno.com.vn/uncategorized/">Uncategorized</a></li>
+								@* list danh mục cha *@
+								@foreach(var p in ViewBag.CategoryParent)
+								{
+									<li class="cat-item cat-item-243 cat-parent">
+										<a href="/san-pham/@p.Slug">@p.Name</a>
+										<ul class='children'>
+											@foreach(var c in ViewBag.Category)
+											{
+												@if (c.ParentId == p.Id)
+												{
+													<li class="cat-item cat-item-244"><a href="/san-pham/@p.Slug/@c.Slug">@c.Name</a></li>
+												}
+											}
+										</ul>
+									</li>
+								}
+								@* end list danh mục cha *@
 							</ul>
 						</aside><aside id="woocommerce_price_filter-9" class="widget woocommerce widget_price_filter">
 							<span class="widget-title shop-sidebar">Lọc theo giá</span><div class="is-divider small"></div>
