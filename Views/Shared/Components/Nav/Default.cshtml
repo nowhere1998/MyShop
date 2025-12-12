@@ -140,7 +140,7 @@
                 <div id="logo" class="flex-col logo">
 
                     <!-- Header logo -->
-                    <a href="/index" title="INNO Việt Nam - Nhà sản xuất, cung cấp các sản phẩm, giải pháp dành cho Giáo dục" rel="home">
+                    <a href="/" title="INNO Việt Nam - Nhà sản xuất, cung cấp các sản phẩm, giải pháp dành cho Giáo dục" rel="home">
                         <img width="300" height="78" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%2078'%3E%3C/svg%3E" class="header_logo header-logo" alt="INNO Việt Nam" data-lazy-src="https://inno.com.vn/wp-content/uploads/2022/04/Bang-Hieu-INNO-300px.png" /><noscript><img width="300" height="78" src="/user/assets/wp-content/uploads/2022/04/Bang-Hieu-INNO-300px.png" class="header_logo header-logo" alt="INNO Việt Nam" /></noscript><img width="300" height="78" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%2078'%3E%3C/svg%3E" class="header-logo-dark" alt="INNO Việt Nam" data-lazy-src="https://inno.com.vn/wp-content/uploads/2022/04/Bang-Hieu-INNO-300px.png" /><noscript><img width="300" height="78" src="/user/assets/wp-content/uploads/2022/04/Bang-Hieu-INNO-300px.png" class="header-logo-dark" alt="INNO Việt Nam" /></noscript>
                     </a>
                 </div>
@@ -161,6 +161,7 @@
                 <!-- Right Elements -->
                 <div class="flex-col hide-for-medium flex-right">
                     <ul class="header-nav header-nav-main nav nav-right  nav-spacing-xlarge nav-uppercase nav-prompts-overlay">
+                        <li id="menu-item-9937" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9937 menu-item-design-default"><a href="/" class="nav-top-link">Trang chủ</a></li>
                         <li id="menu-item-12350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12350 menu-item-design-container-width menu-item-has-block has-dropdown">
                             <a href="/san-pham" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">Sản phẩm<i class="icon-angle-down"></i></a><div class="sub-menu nav-dropdown">
                                 <section class="section" id="section_916592305">
@@ -394,117 +395,51 @@
                                 <div class="row row-small" id="row-2113312476">
 
                                     @* start menu side bar  *@
-                                    <div id="col-566444468" class="col medium-3 small-6 large-3">
-                                        <div class="col-inner">
+                                     @foreach(Category pc in ViewBag.ParentCategories)
+                                     {
+                                        <div id="col-566444468" class="col medium-3 small-6 large-3">
+                                            <div class="col-inner">
 
 
 
-                                            <div id="text-1150801981" class="text">
+                                                <div id="text-1150801981" class="text">
 
 
-                                                <p><strong>Thiết bị hiển thị tương tác</strong></p>
+                                                    <p><strong>@pc.Name</strong></p>
 
-                                                <style>
-                                                    #text-1150801981 {
-                                                        color: #dd3333;
-                                                    }
-
-                                                        #text-1150801981 > * {
+                                                    <style>
+                                                        #text-1150801981 {
                                                             color: #dd3333;
                                                         }
-                                                </style>
-                                            </div>
 
-                                            <div class="ux-menu stack stack-col justify-start">
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/may-chieu-giao-duc">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Máy chiếu giáo dục
-                                                        </span>
-                                                    </a>
+                                                            #text-1150801981 > * {
+                                                                color: #dd3333;
+                                                            }
+                                                    </style>
                                                 </div>
 
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/may-chieu-thu-vat-the">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Máy chiếu (thu) vật thể
-                                                        </span>
-                                                    </a>
+                                                <div class="ux-menu stack stack-col justify-start">
+                                                    @foreach(Category c in ViewBag.Categories)
+                                                    {
+                                                        @if(c.ParentId == pc.Id)
+                                                        {
+                                                            <div class="ux-menu-link flex menu-item">
+                                                                <a class="ux-menu-link__link flex" href="/san-pham/@pc.Slug/@c.Slug">
+                                                                    <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
+                                                                        @c.Name
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        }
+                                                    }
                                                 </div>
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/man-hinh-tuong-tac-thong-minh">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Màn hình tương tác thông minh
-                                                        </span>
-                                                    </a>
-                                                </div>
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/ban-tuong-tac-thong-minh">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Bàn tương tác thông minh
-                                                        </span>
-                                                    </a>
-                                                </div>
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/tivi-giao-duc-thong-minh">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Tivi giáo dục thông minh
-                                                        </span>
-                                                    </a>
-                                                </div>
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/man-hinh-kiosk-tra-cuu">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Màn hình Kiosk tra cứu
-                                                        </span>
-                                                    </a>
-                                                </div>
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/man-hinh-led-module">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Màn hình LED module
-                                                        </span>
-                                                    </a>
-                                                </div>
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/man-hinh-ghep-lcd">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Màn hình ghép LCD
-                                                        </span>
-                                                    </a>
-                                                </div>
-
-
-                                                <div class="ux-menu-link flex menu-item">
-                                                    <a class="ux-menu-link__link flex" href="/man-hinh-hien-thi-thong-tin">
-                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                            Màn hình hiển thị thông tin
-                                                        </span>
-                                                    </a>
-                                                </div>
-
 
 
                                             </div>
-
-
                                         </div>
-                                    </div>
+                                     }
+ {
+                                    
 
                                     @* end menu side bar *@
 
