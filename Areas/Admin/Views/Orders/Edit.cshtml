@@ -1,109 +1,112 @@
 ﻿@model MyShop.Models.Order
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Sửa đơn hàng";
 }
 
-<h1>Edit</h1>
+<div class="container mt-4">
 
-<h4>Order</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="OrderCode" class="control-label"></label>
-                <input asp-for="OrderCode" class="form-control" />
-                <span asp-validation-for="OrderCode" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CustomerId" class="control-label"></label>
-                <select asp-for="CustomerId" class="form-control" asp-items="ViewBag.CustomerId"></select>
-                <span asp-validation-for="CustomerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingAddress" class="control-label"></label>
-                <input asp-for="ShippingAddress" class="form-control" />
-                <span asp-validation-for="ShippingAddress" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Note" class="control-label"></label>
-                <input asp-for="Note" class="form-control" />
-                <span asp-validation-for="Note" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PaymentMethod" class="control-label"></label>
-                <input asp-for="PaymentMethod" class="form-control" />
-                <span asp-validation-for="PaymentMethod" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PaymentStatus" class="control-label"></label>
-                <input asp-for="PaymentStatus" class="form-control" />
-                <span asp-validation-for="PaymentStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="OrderStatus" class="control-label"></label>
-                <input asp-for="OrderStatus" class="form-control" />
-                <span asp-validation-for="OrderStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubtotalAmount" class="control-label"></label>
-                <input asp-for="SubtotalAmount" class="form-control" />
-                <span asp-validation-for="SubtotalAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalAmount" class="control-label"></label>
-                <input asp-for="TotalAmount" class="form-control" />
-                <span asp-validation-for="TotalAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DiscountAmount" class="control-label"></label>
-                <input asp-for="DiscountAmount" class="form-control" />
-                <span asp-validation-for="DiscountAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ShippingFee" class="control-label"></label>
-                <input asp-for="ShippingFee" class="form-control" />
-                <span asp-validation-for="ShippingFee" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+    <h2 class="text-primary mb-3">Sửa đơn hàng</h2>
+
+    <div class="mb-3">
+        <a asp-action="Index" class="btn btn-secondary">
+            <i class="fa fa-arrow-left"></i> Trở lại
+        </a>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="Id" />
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        <div class="row">
+            <div class="col">
+                <label class="form-label">Mã đơn hàng</label>
+                <input asp-for="OrderCode" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <label class="form-label">Họ tên</label>
+                <input asp-for="FullName" class="form-control" />
+            </div>
+            <div class="col">
+                <label class="form-label">Email</label>
+                <input asp-for="Email" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <label class="form-label">Số điện thoại</label>
+                <input asp-for="Phone" class="form-control" />
+            </div>
+            <div class="col">
+                <label class="form-label">Địa chỉ giao hàng</label>
+                <input asp-for="ShippingAddress" class="form-control" />
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Ghi chú</label>
+            <input asp-for="Note" class="form-control" />
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <label class="form-label">Phương thức thanh toán</label>
+                <select asp-for="PaymentMethod" class="form-control">
+                    <option value="COD" selected="@(Model.PaymentMethod == "COD")">COD</option>
+                    <option value="Banking" selected="@(Model.PaymentMethod == "Banking")">Banking</option>
+                    <option value="Momo" selected="@(Model.PaymentMethod == "Momo")">Momo</option>
+                </select>
+            </div>
+
+            <div class="col">
+                <label class="form-label">Trạng thái thanh toán</label>
+                <select asp-for="PaymentStatus" class="form-control">
+                    <option value="Pending" selected="@(Model.PaymentStatus == "Pending")">Chờ thanh toán</option>
+                    <option value="Paid" selected="@(Model.PaymentStatus == "Paid")">Đã thanh toán</option>
+                    <option value="Refunded" selected="@(Model.PaymentStatus == "Refunded")">Hoàn tiền</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="mt-3">
+            <label class="form-label">Trạng thái đơn hàng</label>
+            <select asp-for="OrderStatus" class="form-control">
+                <option value="pending" selected="@(Model.OrderStatus == "pending")">Chờ xử lý</option>
+                <option value="shipping" selected="@(Model.OrderStatus == "shipping")">Đang giao</option>
+                <option value="completed" selected="@(Model.OrderStatus == "completed")">Hoàn thành</option>
+                <option value="cancelled" selected="@(Model.OrderStatus == "cancelled")">Đã hủy</option>
+            </select>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <label class="form-label">Tạm tính</label>
+                <input asp-for="SubtotalAmount" class="form-control" />
+            </div>
+            <div class="col">
+                <label class="form-label">Tổng tiền</label>
+                <input asp-for="TotalAmount" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <label class="form-label">Giảm giá</label>
+                <input asp-for="DiscountAmount" class="form-control" />
+            </div>
+            <div class="col">
+                <label class="form-label">Phí giao hàng</label>
+                <input asp-for="ShippingFee" class="form-control" />
+            </div>
+        </div>
+
+        <div class="mt-3 text-end">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-save"></i> Lưu lại
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,84 +1,228 @@
 ﻿@model MyShop.Models.Product
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit sản phẩm";
 }
 
-<h1>Edit</h1>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="text-primary">Edit sản phẩm</h3>
+    </div>
 
-<h4>Product</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="CategoryId" class="control-label"></label>
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="CategoryId" class="form-label">Danh mục</label>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+
+            <div class="col-md-6">
+                <label asp-for="DealerId" class="form-label">Nhà cung cấp</label>
+                <select asp-for="DealerId" class="form-control" asp-items="ViewBag.DealerId"></select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+                <input asp-for="Name" class="form-control" id="Name" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Slug" class="control-label"></label>
-                <input asp-for="Slug" class="form-control" />
+            <div class="col-md-6">
+                <label asp-for="Slug" class="form-label">Slug</label>
+                <input asp-for="Slug" readonly class="form-control" id="Slug" />
                 <span asp-validation-for="Slug" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="DealerId" class="control-label"></label>
-                <select asp-for="DealerId" class="form-control" asp-items="ViewBag.DealerId"></select>
-                <span asp-validation-for="DealerId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SalePrice" class="control-label"></label>
-                <input asp-for="SalePrice" class="form-control" />
-                <span asp-validation-for="SalePrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
-                <span asp-validation-for="Image" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CreatedAt" class="control-label"></label>
-                <input asp-for="CreatedAt" class="form-control" />
-                <span asp-validation-for="CreatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="UpdatedAt" class="control-label"></label>
-                <input asp-for="UpdatedAt" class="form-control" />
-                <span asp-validation-for="UpdatedAt" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+        </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Price" class="form-label">Giá</label>
+                <input asp-for="Price" type="number" class="form-control" />
+            </div>
+            <div class="col-md-6">
+                <label asp-for="SalePrice" class="form-label">Giá khuyến mãi</label>
+                <input asp-for="SalePrice" type="number" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Hình ảnh chính -->
+        <div class="mb-3">
+            <label class="form-label">Hình ảnh chính</label>
+            <button type="button" id="btnBrowse" class="btn btn-primary btn-sm">Chọn ảnh</button>
+            <input asp-for="Image" class="form-control mt-1" />
+            <div>
+                <img src="@Model.Image" id="PictureView" class="mt-2" width="100" />
+            </div>
+        </div>
+
+        <!-- Gallery ảnh phụ -->
+        <div class="mb-3">
+            <label class="form-label">Ảnh phụ (tối đa 5 ảnh)</label>
+            <button type="button" id="btnBrowseGallery" class="btn btn-primary btn-sm">Chọn ảnh phụ</button>
+
+            <!-- Input hidden để lưu JSON cho gallery -->
+            <input type="hidden" asp-for="GalleryImages" id="GalleryImages" />
+
+            <!-- Preview ảnh -->
+            <div id="GalleryPreview" class="mt-2 d-flex gap-2 flex-wrap">
+                @* Hiển thị ảnh hiện có từ DB nếu GalleryImages rỗng *@
+                @if (!string.IsNullOrEmpty(Model.GalleryImages))
+                {
+                    var list = System.Text.Json.JsonSerializer.Deserialize<List<string>>(Model.GalleryImages);
+                    foreach (var img in list)
+                    {
+                        <img src="@img" class="rounded border" style="width:100px;height:100px;object-fit:cover;margin-right:6px;" />
+                    }
+                }
+                else if (Model.ProductImages != null && Model.ProductImages.Any())
+                {
+                    foreach (var img in Model.ProductImages)
+                    {
+                        <img src="@img.ImageUrl" class="rounded border" style="width:100px;height:100px;object-fit:cover;margin-right:6px;" />
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label">Mô tả</label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label asp-for="Status" class="form-label">Trạng thái</label>
+                <select asp-for="Status" class="form-control">
+                    <option value="active" selected="@(Model?.Status == "active")">Hiển thị</option>
+                    <option value="inactive" selected="@(Model?.Status == "inactive")">Ẩn</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <a asp-action="Index" class="btn btn-secondary">Trở lại</a>
+            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Lưu lại</button>
+        </div>
+    </form>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/elfinder/js/elfinder.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('#btnBrowse') != undefined) {
+                $('#btnBrowse').click(function () {
+                    var fm = $('<div id="elfinder" />').dialogelfinder({
+                        url: '/quan-ly-tep-tin/connector',
+                        baseUrl: "/elfinder/",
+                        width: 840,
+                        height: 450,
+                        destroyOnClose: true,
+                        title: 'Quản lý tệp tin',
+                        getFileCallback: function (files, fm) {
+                            $('#Image').val('/' + files[0].path);
+                            $('#PictureView').attr('src', '/' + files[0].path);
+                        },
+                        commandsOptions: {
+                            getfile: {
+                                multiple: true,
+                                oncomplete: 'close',
+                                folders: false
+                            }
+                        }
+                    }).dialogelfinder('instance');
+                })
+            }
+        });
+        CKEDITOR.replace('Content');
+    </script>
+
+    <script type="text/javascript">
+                     $('#btnBrowseGallery').click(function () {
+            var fm = $('<div/>').dialogelfinder({
+                url: '/quan-ly-tep-tin/connector',
+                baseUrl: "/elfinder/",
+                width: 840,
+                height: 450,
+                destroyOnClose: true,
+                title: 'Quản lý tệp tin',
+
+                getFileCallback: function (files, fm) {
+
+                    // Ép thành mảng
+                    let list = [];
+                    if (Array.isArray(files)) list = files;
+                    else list = [files];
+
+                    // Lấy danh sách ảnh cũ trong input
+                    let oldList = [];
+                    try {
+                        oldList = JSON.parse($("#GalleryImages").val() || "[]");
+                    } catch { oldList = []; }
+
+                    // Convert files mới
+                    let newImages = list.map(f => "/" + (f.path ?? f.url ?? f.name));
+
+                    // Ghép ảnh cũ + mới
+                    let merged = [...oldList, ...newImages];
+
+                    // Giới hạn 5 ảnh
+                    if (merged.length > 5) {
+                        alert("Bạn chỉ được chọn tối đa 5 ảnh!");
+                        merged = merged.slice(0, 5);
+                    }
+
+                    // Lưu lại vào input hidden
+                    $("#GalleryImages").val(JSON.stringify(merged));
+
+                    // Hiển thị toàn bộ ảnh
+                    $("#GalleryPreview").html("");
+                    merged.forEach(img => {
+                        $("#GalleryPreview").append(`
+                            <img src="${img}"
+                                 class="rounded border"
+                                 style="width:100px;height:100px;object-fit:cover;margin-right:6px;">
+                        `);
+                    });
+                },
+
+                commandsOptions: {
+                    getfile: {
+                        multiple: true,
+                        oncomplete: 'close',
+                        folders: false
+                    }
+                }
+            }).dialogelfinder('instance');
+        });
+
+    </script>
+    <script>
+        function toSlug(str) {
+            return str
+                .toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // bỏ dấu tiếng Việt
+                .replace(/[^a-z0-9\s-]/g, "")                     // bỏ ký tự đặc biệt
+                .trim()
+                .replace(/\s+/g, "-")                             // khoảng trắng → "-"
+                .replace(/-+/g, "-");                              // bỏ trùng dấu "-"
+        }
+
+        document.getElementById("Name").addEventListener("input", function () {
+            document.getElementById("Slug").value = toSlug(this.value);
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+
 }
+

@@ -3,161 +3,178 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<h1>Create</h1>
-
-<h4>Config</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="MailSmtp" class="control-label"></label>
-                <input asp-for="MailSmtp" class="form-control" />
-                <span asp-validation-for="MailSmtp" class="text-danger"></span>
+<div class="container">
+    <form action="Save" method="post">
+        <br />
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-success"><i class='fas'>&#xf3e5;</i></a>
+        <br />
+        <br />
+        <div class="row">
+            <input type="hidden" class="form-control" asp-for="Id">
+            <div class="col">
+                <label for="" class="form-label">Máy chủ gửi mail</label>
+                <input type="text" class="form-control" asp-for="MailSmtp">
             </div>
-            <div class="form-group">
-                <label asp-for="MailPort" class="control-label"></label>
-                <input asp-for="MailPort" class="form-control" />
-                <span asp-validation-for="MailPort" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Cổng gửi mail</label>
+                <input type="text" class="form-control" asp-for="MailPort">
             </div>
-            <div class="form-group">
-                <label asp-for="MailInfo" class="control-label"></label>
-                <input asp-for="MailInfo" class="form-control" />
-                <span asp-validation-for="MailInfo" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Mail nhận liên hệ</label>
+                <input type="text" class="form-control" asp-for="MailInfo">
             </div>
-            <div class="form-group">
-                <label asp-for="MailNoreply" class="control-label"></label>
-                <input asp-for="MailNoreply" class="form-control" />
-                <span asp-validation-for="MailNoreply" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Mail gửi thông tin</label>
+                <input type="text" class="form-control" asp-for="MailNoreply">
             </div>
-            <div class="form-group">
-                <label asp-for="MailPassword" class="control-label"></label>
-                <input asp-for="MailPassword" class="form-control" />
-                <span asp-validation-for="MailPassword" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Mật khẩu mail gửi</label>
+                <input type="text" class="form-control" asp-for="MailPassword">
             </div>
-            <div class="form-group">
-                <label asp-for="PlaceHead" class="control-label"></label>
-                <input asp-for="PlaceHead" class="form-control" />
-                <span asp-validation-for="PlaceHead" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Dán mã phần Head</label>
+                <input type="text" class="form-control" asp-for="PlaceHead">
             </div>
-            <div class="form-group">
-                <label asp-for="PlaceBody" class="control-label"></label>
-                <input asp-for="PlaceBody" class="form-control" />
-                <span asp-validation-for="PlaceBody" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Email nhận đăng ký</label>
+                <input type="text" class="form-control" asp-for="GoogleId">
             </div>
-            <div class="form-group">
-                <label asp-for="GoogleId" class="control-label"></label>
-                <input asp-for="GoogleId" class="form-control" />
-                <span asp-validation-for="GoogleId" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Popup trang chủ</label>
+                <textarea asp-for="Contact"></textarea>
             </div>
-            <div class="form-group">
-                <label asp-for="Contact" class="control-label"></label>
-                <input asp-for="Contact" class="form-control" />
-                <span asp-validation-for="Contact" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Thông tin Coppyright</label>
+                <textarea asp-for="Copyright"></textarea>
             </div>
-            <div class="form-group">
-                <label asp-for="Copyright" class="control-label"></label>
-                <input asp-for="Copyright" class="form-control" />
-                <span asp-validation-for="Copyright" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Tên trang</label>
+                <input type="text" class="form-control" asp-for="HotLine">
             </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Youtube Link</label>
+                <input type="text" class="form-control" asp-for="YoutubeLink">
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Instagrams Link</label>
+                <input type="text" class="form-control" asp-for="PicasaLink">
             </div>
-            <div class="form-group">
-                <label asp-for="Keyword" class="control-label"></label>
-                <input asp-for="Keyword" class="form-control" />
-                <span asp-validation-for="Keyword" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Flickr Link</label>
+                <input type="text" class="form-control" asp-for="FlickrLink">
             </div>
-            <div class="form-group">
-                <label asp-for="Lang" class="control-label"></label>
-                <input asp-for="Lang" class="form-control" />
-                <span asp-validation-for="Lang" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Facebook Link</label>
+                <input type="text" class="form-control" asp-for="SocialLink1">
             </div>
-            <div class="form-group">
-                <label asp-for="HotLine" class="control-label"></label>
-                <input asp-for="HotLine" class="form-control" />
-                <span asp-validation-for="HotLine" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Twitter Link</label>
+                <input type="text" class="form-control" asp-for="SocialLink2">
             </div>
-            <div class="form-group">
-                <label asp-for="YoutubeLink" class="control-label"></label>
-                <input asp-for="YoutubeLink" class="form-control" />
-                <span asp-validation-for="YoutubeLink" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Google+</label>
+                <input type="text" class="form-control" asp-for="SocialLink3">
             </div>
-            <div class="form-group">
-                <label asp-for="PicasaLink" class="control-label"></label>
-                <input asp-for="PicasaLink" class="form-control" />
-                <span asp-validation-for="PicasaLink" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Linked In</label>
+                <input type="text" class="form-control" asp-for="SocialLink4">
             </div>
-            <div class="form-group">
-                <label asp-for="FlickrLink" class="control-label"></label>
-                <input asp-for="FlickrLink" class="form-control" />
-                <span asp-validation-for="FlickrLink" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Địa chỉ trường</label>
+                <input type="text" class="form-control" asp-for="SocialLink5">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink1" class="control-label"></label>
-                <input asp-for="SocialLink1" class="form-control" />
-                <span asp-validation-for="SocialLink1" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Sologan cho khóa dài hạn</label>
+                <input type="text" class="form-control" asp-for="SocialLink6">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink2" class="control-label"></label>
-                <input asp-for="SocialLink2" class="form-control" />
-                <span asp-validation-for="SocialLink2" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Sologan cho hhóa ngắn hạn</label>
+                <input type="text" class="form-control" asp-for="SocialLink7">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink3" class="control-label"></label>
-                <input asp-for="SocialLink3" class="form-control" />
-                <span asp-validation-for="SocialLink3" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Sologan</label>
+                <input type="text" class="form-control" asp-for="SocialLink8">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink4" class="control-label"></label>
-                <input asp-for="SocialLink4" class="form-control" />
-                <span asp-validation-for="SocialLink4" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Hotline</label>
+                <input type="text" class="form-control" asp-for="SocialLink9">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink5" class="control-label"></label>
-                <input asp-for="SocialLink5" class="form-control" />
-                <span asp-validation-for="SocialLink5" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Title meta</label>
+                <input type="text" class="form-control" asp-for="Title">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink6" class="control-label"></label>
-                <input asp-for="SocialLink6" class="form-control" />
-                <span asp-validation-for="SocialLink6" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Description meta</label>
+                <input type="text" class="form-control" asp-for="Description">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink7" class="control-label"></label>
-                <input asp-for="SocialLink7" class="form-control" />
-                <span asp-validation-for="SocialLink7" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Keyword meta</label>
+                <input type="text" class="form-control" asp-for="Keyword">
             </div>
-            <div class="form-group">
-                <label asp-for="SocialLink8" class="control-label"></label>
-                <input asp-for="SocialLink8" class="form-control" />
-                <span asp-validation-for="SocialLink8" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SocialLink9" class="control-label"></label>
-                <input asp-for="SocialLink9" class="form-control" />
-                <span asp-validation-for="SocialLink9" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-success"><i class='fas'>&#xf3e5;</i></a>
+    </form>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/elfinder/js/elfinder.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('#btnBrowse') != undefined) {
+                $('#btnBrowse').click(function () {
+                    var fm = $('<div id="elfinder" />').dialogelfinder({
+                        url: '/quan-ly-tep-tin/connector',
+                        baseUrl: "/elfinder/",
+                        width: 840,
+                        height: 450,
+                        destroyOnClose: true,
+                        title: 'Quản lý tệp tin',
+                        getFileCallback: function (files, fm) {
+                            $('#Picture').val('/' + files[0].path);
+                            $('#PictureView').attr('src', '/' + files[0].path);
+                        },
+                        commandsOptions: {
+                            getfile: {
+                                multiple: true,
+                                oncomplete: 'close',
+                                folders: false
+                            }
+                        }
+                    }).dialogelfinder('instance');
+                })
+            }
+        });
+        CKEDITOR.replace('Contact');
+        CKEDITOR.replace('Copyright');
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+

@@ -26,10 +26,10 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Advertises
         public async Task<IActionResult> Index(string? name ,int page = 1, int pageSize = 30)
         {
-            var query = _context.Advertises.AsNoTracking();
+            var query = _context.Advertises.OrderBy(x => x.Ord).AsNoTracking();
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x=> x.Id);
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderBy(x=> x.Ord);
             }
             // Tổng số bản ghi sau khi lọc
             var totalCount = await query.CountAsync();
@@ -81,22 +81,43 @@ namespace MyShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Advertise model)
         {
+            // --- Xử lý upload ảnh ---
             var files = HttpContext.Request.Form.Files;
-            if (files.Count() > 0 && files[0].Length > 0)
+            if (files.Count > 0 && files[0].Length > 0)
             {
                 var file = files[0];
-                var FileName = file.FileName;
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", FileName);
+                var fileName = file.FileName;
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
-                    file.CopyTo(stream);
-                    model.Image = FileName;
+                    await file.CopyToAsync(stream);
+                    model.Image = fileName;
                 }
             }
+
+            // --- Xử lý vị trí trùng ---
+            int newOrd = model.Ord ?? 1;
+
+            // Tăng vị trí cho tất cả bản ghi có Position >= newPos
+            var items = await _context.Advertises
+                .Where(a => a.Ord >= newOrd)
+                .ToListAsync();
+
+            foreach (var item in items)
+            {
+                item.Ord += 1;
+            }
+            // --- Lưu bản ghi ---
+            model.Ord = newOrd;
+            model.Active = true;
             _context.Advertises.Add(model);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
+
+
 
         // GET: Admin/Advertises/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -111,6 +132,8 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            List<Page> pages = _context.Pages.ToList();
+            ViewBag.Page = pages;
             return View(advertise);
         }
 
@@ -119,67 +142,69 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Image,Width,Height,Link,Target,Content,Position,PageId,Click,Ord,Active,Lang")] Advertise advertise)
+        public async Task<IActionResult> Edit(int id, Advertise model)
         {
-            if (id != advertise.Id)
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count() > 0 && files[0].Length > 0)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var file = files[0];
+                var FileName = file.FileName;
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", FileName);
+                using (var stream = new FileStream(path, FileMode.Create))
                 {
-                    _context.Update(advertise);
-                    await _context.SaveChangesAsync();
+                    file.CopyTo(stream);
+                    model.Image = FileName;
                 }
-                catch (DbUpdateConcurrencyException)
+            }
+            // XỬ LÝ ORD KHÔNG BỊ TRÙNG
+            // ================================
+            int newOrd = model.Ord ?? 1;
+
+            // Lấy bản ghi cũ (trước khi sửa) để biết Ord cũ
+            var old = await _context.Advertises.AsNoTracking()
+                            .FirstOrDefaultAsync(a => a.Id == id);
+
+            // Nếu Ord thay đổi thì mới xử lý tránh đẩy lung tung
+            if (old != null && old.Ord != newOrd)
+            {
+                // Tăng thứ tự cho tất cả bản ghi có Ord >= newOrd
+                var items = await _context.Advertises
+                    .Where(a => a.Id != id && a.Ord >= newOrd)
+                    .ToListAsync();
+
+                foreach (var item in items)
                 {
-                    if (!AdvertiseExists(advertise.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    item.Ord += 1;
                 }
-                return RedirectToAction(nameof(Index));
+
+                model.Ord = newOrd;
             }
-            return View(advertise);
-        }
-
-        // GET: Admin/Advertises/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var advertise = await _context.Advertises
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (advertise == null)
-            {
-                return NotFound();
-            }
-
-            return View(advertise);
-        }
-
-        // POST: Admin/Advertises/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var advertise = await _context.Advertises.FindAsync(id);
-            if (advertise != null)
-            {
-                _context.Advertises.Remove(advertise);
-            }
-
-            await _context.SaveChangesAsync();
+            _context.Advertises.Update(model);
+            _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Delete(int id)
+        {
+            Advertise model = _context.Advertises.FirstOrDefault(a => a.Id == id);
+
+            int deletedOrd = model.Ord ?? 1;
+
+            // Xoá bản ghi
+            _context.Advertises.Remove(model);
+
+            // Giảm Ord cho toàn bộ bản ghi phía sau
+            var items = _context.Advertises
+                .Where(a => a.Ord > deletedOrd)
+                .ToList();
+
+            foreach (var item in items)
+            {
+                item.Ord -= 1;
+            }
+
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         private bool AdvertiseExists(int id)

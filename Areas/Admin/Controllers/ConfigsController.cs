@@ -22,10 +22,10 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Configs
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Configs.ToListAsync());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(await _context.Configs.ToListAsync());
+        //}
 
         // GET: Admin/Configs/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -68,27 +68,21 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Configs/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var config = await _context.Configs.FindAsync(id);
+            var config = await _context.Configs.FirstOrDefaultAsync();
             if (config == null)
             {
-                return NotFound();
+                return NotFound("Chưa có bản ghi Config nào.");
             }
             return View(config);
         }
-
         // POST: Admin/Configs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,MailSmtp,MailPort,MailInfo,MailNoreply,MailPassword,PlaceHead,PlaceBody,GoogleId,Contact,Copyright,Title,Description,Keyword,Lang,HotLine,YoutubeLink,PicasaLink,FlickrLink,SocialLink1,SocialLink2,SocialLink3,SocialLink4,SocialLink5,SocialLink6,SocialLink7,SocialLink8,SocialLink9")] Config config)
+        public async Task<IActionResult> Edit(int id, Config config)
         {
             if (id != config.Id)
             {
@@ -101,10 +95,13 @@ namespace MyShop.Areas.Admin.Controllers
                 {
                     _context.Update(config);
                     await _context.SaveChangesAsync();
+
+                    // GIỮ NGUYÊN TRANG EDIT
+                    return RedirectToAction(nameof(Edit), new { id = config.Id });
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ConfigExists(config.Id))
+                    if (!_context.Configs.Any(c => c.Id == config.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +110,11 @@ namespace MyShop.Areas.Admin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
+
             return View(config);
         }
+
 
         // GET: Admin/Configs/Delete/5
         public async Task<IActionResult> Delete(int? id)

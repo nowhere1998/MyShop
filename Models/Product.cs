@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyShop.Models
 {
@@ -29,6 +30,10 @@ namespace MyShop.Models
 
         [Display(Name = "Hình ảnh chính")]
         public string? Image { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Hình ảnh phụ")]
+        public string? GalleryImages { get; set; }
 
         [Display(Name = "Mô tả")]
         public string? Description { get; set; }
