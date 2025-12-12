@@ -21,7 +21,7 @@ namespace MyShop.Controllers
 		[Route("san-pham/{parentSlug}/{slug}/page/{page:int}")]
 		public IActionResult Index(string? parentSlug, string? slug, int page = 1)
 		{
-			int pageSize = 1;
+			int pageSize = 12;
 			int totalItems = 0;
 			List<Product> productList = new List<Product>();
 			List<Product> products = new List<Product>();

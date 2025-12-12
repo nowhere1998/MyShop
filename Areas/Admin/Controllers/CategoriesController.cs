@@ -69,7 +69,12 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Categories/Create
         public IActionResult Create()
         {
-            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Name");
+            // Lọc các danh mục gốc (ParentId == null)
+            var rootCategories = _context.Categories
+                                         .Where(c => c.ParentId == null)
+                                         .ToList();
+
+            ViewData["ParentId"] = new SelectList(rootCategories, "Id", "Name");
             return View();
         }
 
