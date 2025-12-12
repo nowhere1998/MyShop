@@ -44,6 +44,7 @@
                     <th>@Html.DisplayNameFor(m => m.First().Image)</th>
                     <th>@Html.DisplayNameFor(m => m.First().Position)</th>
                     <th>@Html.DisplayNameFor(m => m.First().Ord)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Active)</th>
                     <th class="text-center">Hành động</th>
                 </tr>
             </thead>
@@ -60,15 +61,51 @@
                             }
                         </td>
 
-                        <td>@item.Position</td>
+                        <td>
+                            @if (item.Position == 1)
+                            {
+                                <span>Banner</span>
+                            }
+                            else if (item.Position == 2)
+                            {
+                                <span>Slide trang chủ</span>
+                            }
+                            else if (item.Position == 3)
+                            {
+                                <span>Bên phải trang</span>
+                            }
+                            else if (item.Position == 4)
+                            {
+                                <span>Giảng viên</span>
+                            }
+                            else if (item.Position == 5)
+                            {
+                                <span>Đối tác</span>
+                            }
+                            else
+                            {
+                                <span></span>
+                            }
+                        </td>
                         <td>@item.Ord</td>
+                        <td>
+                            @if (item.Active == true)
+                            {
+                                <span class="badge bg-success">Hiển thị</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Ẩn</span>
+                            }
+                        </td>
+
                         <td class="text-center">
                             <a class="btn btn-sm btn-outline-primary me-1"
                                href="@Url.Action("Edit", new { id = item.Id })">
                                 <i class="fa fa-edit"></i>
                             </a>
 
-                            <a class="btn btn-sm btn-outline-danger me-1"
+                            <a class="btn btn-sm btn-outline-danger me-1" onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"
                                href="@Url.Action("Delete", new { id = item.Id })">
                                 <i class="fa fa-trash"></i>
                             </a>

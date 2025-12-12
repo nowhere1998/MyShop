@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using MyShop.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MyShop.Areas.Admin.Controllers
 {
@@ -22,10 +24,28 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            var dbMyShopContext = _context.Products.Include(p => p.Category).Include(p => p.Dealer);
-            return View(await dbMyShopContext.ToListAsync());
+            var query = _context.Products.Include(p => p.Category).Include(p => p.Dealer).OrderBy(x => x.Id).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim()));
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
+
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
         }
 
         // GET: Admin/Products/Details/5
@@ -51,8 +71,8 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id");
-            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Id");
+            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => c.ParentId != null),"Id","Name");
+            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name");
             return View();
         }
 
@@ -61,17 +81,58 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryId,Name,Slug,DealerId,Price,SalePrice,Image,Description,Status,CreatedAt,UpdatedAt")] Product product)
+        public async Task<IActionResult> Create(Product model)
         {
+            // --- Xử lý upload ảnh chính ---
+            var files = HttpContext.Request.Form.Files;
+            if (files.Count > 0 && files[0].Length > 0)
+            {
+                var file = files[0];
+                var fileName = file.FileName;
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                    model.Image = fileName;
+                }
+            }
+
+            // ================================
+            //      XỬ LÝ ẢNH PHỤ (Gallery)
+            // ================================
+            var galleryJson = HttpContext.Request.Form["GalleryImages"];
+
+            if (!string.IsNullOrEmpty(galleryJson))
+            {
+                // Parse JSON thành List<string>
+                var imageList = System.Text.Json.JsonSerializer.Deserialize<List<string>>(galleryJson);
+
+                model.ProductImages = new List<ProductImage>();
+
+                foreach (var img in imageList)
+                {
+                    model.ProductImages.Add(new ProductImage
+                    {
+                        ImageUrl = img  // Lưu đường dẫn ảnh phụ
+                    });
+                }
+            }
+            var exists = await _context.Products.AnyAsync(p => p.Slug == model.Slug);
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên sản phẩm đã tồn tại, vui lòng đổi tên khác.");
+            }
             if (ModelState.IsValid)
             {
-                _context.Add(product);
+                model.CreatedAt = DateTime.Now;
+                _context.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Id", product.DealerId);
-            return View(product);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", model.CategoryId);
+            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name", model.DealerId);
+            return View(model);
         }
 
         // GET: Admin/Products/Edit/5
@@ -82,13 +143,15 @@ namespace MyShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var product = await _context.Products.FindAsync(id);
+            var product = await _context.Products
+                               .Include(p => p.ProductImages)
+                               .FirstOrDefaultAsync(p => p.Id == id);
             if (product == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Id", product.DealerId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name", product.DealerId);
             return View(product);
         }
 
@@ -108,6 +171,44 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 try
                 {
+                    // --- XỬ LÝ ẢNH CHÍNH ---
+                    var files = HttpContext.Request.Form.Files;
+                    if (files.Count > 0 && files[0].Length > 0)
+                    {
+                        var file = files[0];
+                        var fileName = file.FileName;
+                        var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await file.CopyToAsync(stream);
+                            product.Image = "/" + fileName; // Lưu đường dẫn ảnh
+                        }
+                    }
+
+                    // --- XỬ LÝ ẢNH PHỤ (Gallery) ---
+                    var galleryJson = HttpContext.Request.Form["GalleryImages"];
+                    if (!string.IsNullOrEmpty(galleryJson))
+                    {
+                        var imageList = System.Text.Json.JsonSerializer.Deserialize<List<string>>(galleryJson);
+
+                        // Xóa các ảnh phụ cũ
+                        var oldImages = _context.ProductImages.Where(pi => pi.ProductId == product.Id);
+                        _context.ProductImages.RemoveRange(oldImages);
+
+                        // Thêm ảnh mới
+                        product.ProductImages = new List<ProductImage>();
+                        foreach (var img in imageList)
+                        {
+                            product.ProductImages.Add(new ProductImage
+                            {
+                                ImageUrl = img,
+                                ProductId = product.Id
+                            });
+                        }
+                    }
+
+                    product.UpdatedAt = DateTime.Now;
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -124,45 +225,43 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Id", product.CategoryId);
-            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Id", product.DealerId);
+
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name", product.DealerId);
             return View(product);
         }
 
-        // GET: Admin/Products/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var product = await _context.Products
-                .Include(p => p.Category)
-                .Include(p => p.Dealer)
-                .FirstOrDefaultAsync(m => m.Id == id);
+        // GET: Admin/Products/Delete/5
+        public IActionResult Delete(int id)
+        {
+            var product = _context.Products
+                                  .Include(p => p.ProductImages) // nếu có bảng ProductImages
+                                  .FirstOrDefault(a => a.Id == id);
+
             if (product == null)
             {
                 return NotFound();
             }
 
-            return View(product);
-        }
-
-        // POST: Admin/Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
+            // Kiểm tra xem có ràng buộc khóa ngoại nào không
+            if ((product.ProductImages != null && product.ProductImages.Any()) ||
+                _context.OrderDetails.Any(od => od.ProductId == id)) // ví dụ bảng OrderDetails
             {
-                _context.Products.Remove(product);
+                TempData["Error"] = "Sản phẩm đang được sử dụng ở nơi khác, không thể xóa!";
+                return RedirectToAction("Index");
             }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            // Xoá bản ghi
+            _context.Products.Remove(product);
+
+            // Nếu có trường Ord cần giảm, xử lý ở đây
+            _context.SaveChanges();
+
+            TempData["Success"] = "Xóa sản phẩm thành công!";
+            return RedirectToAction("Index");
         }
+
 
         private bool ProductExists(long id)
         {

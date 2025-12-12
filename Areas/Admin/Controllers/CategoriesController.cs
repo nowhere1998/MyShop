@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using MyShop.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,10 +23,28 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Categories
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string name ,int page = 1 ,int pageSize = 30)
         {
-            var dbMyShopContext = _context.Categories.Include(c => c.Parent);
-            return View(await dbMyShopContext.ToListAsync());
+            var query = _context.Categories.Include(c => c.Parent).OrderByDescending(x => x.Id).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.Id);
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
+
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
         }
 
         // GET: Admin/Categories/Details/5
@@ -50,7 +69,7 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Categories/Create
         public IActionResult Create()
         {
-            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Id");
+            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
@@ -59,7 +78,7 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ParentId,Slug,Name,CreatedAt,UpdatedAt")] Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +86,7 @@ namespace MyShop.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Id", category.ParentId);
+            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Name", category.ParentId);
             return View(category);
         }
 
@@ -84,7 +103,7 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Id", category.ParentId);
+            ViewData["ParentId"] = new SelectList(_context.Categories, "Id", "Name", category.ParentId);
             return View(category);
         }
 
@@ -125,37 +144,13 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var category = await _context.Categories
-                .Include(c => c.Parent)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-
-            return View(category);
-        }
-
-        // POST: Admin/Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var category = await _context.Categories.FindAsync(id);
-            if (category != null)
-            {
-                _context.Categories.Remove(category);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            Category model = _context.Categories.FirstOrDefault(a => a.Id == id);
+            // Xoá bản ghi
+            _context.Categories.Remove(model);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         private bool CategoryExists(int id)

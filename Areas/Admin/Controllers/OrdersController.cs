@@ -59,7 +59,7 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,OrderCode,CustomerId,FullName,Email,Phone,ShippingAddress,Note,PaymentMethod,PaymentStatus,OrderStatus,SubtotalAmount,TotalAmount,DiscountAmount,ShippingFee,CreatedAt,UpdatedAt")] Order order)
+        public async Task<IActionResult> Create(Order order)
         {
             if (ModelState.IsValid)
             {
@@ -79,12 +79,11 @@ namespace MyShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.FindAsync(id);
+            var order = await _context.Orders.Include(o => o.OrderDetails).ThenInclude(d => d.Product).FirstOrDefaultAsync(o => o.Id == id);
             if (order == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.CustomerId);
             return View(order);
         }
 

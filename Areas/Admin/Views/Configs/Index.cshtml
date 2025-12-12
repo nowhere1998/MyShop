@@ -1,191 +1,102 @@
 ﻿@model IEnumerable<MyShop.Models.Config>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Cấu hình hệ thống";
 }
 
-<h1>Index</h1>
+<div class="container py-4">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MailSmtp)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MailPort)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MailInfo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MailNoreply)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MailPassword)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlaceHead)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PlaceBody)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.GoogleId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Contact)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Copyright)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Keyword)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Lang)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HotLine)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.YoutubeLink)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PicasaLink)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FlickrLink)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink1)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink2)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink3)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink4)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink5)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink6)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink7)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink8)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SocialLink9)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.MailSmtp)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MailPort)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MailInfo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MailNoreply)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MailPassword)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlaceHead)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlaceBody)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.GoogleId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Contact)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Copyright)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Keyword)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Lang)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.HotLine)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.YoutubeLink)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PicasaLink)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FlickrLink)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink3)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink4)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink5)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink6)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink7)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink8)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SocialLink9)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="text-primary">Cấu hình hệ thống</h3>
+
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fa fa-plus"></i> Thêm mới
+        </a>
+    </div>
+    <form method="get"
+          asp-area="Admin"
+          asp-controller="Configs"
+          asp-action="Index"
+          class="mb-3">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <!-- nút submit là icon search -->
+                <button type="submit" class="btn btn-primary" title="Tìm kiếm">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+            <input type="text"
+                   name="name"
+                   value="@ViewBag.searchName"
+                   class="form-control"
+                   placeholder="Tìm theo tên..." />
+        </div>
+    </form>
+    <table class="table table-hover align-middle">
+        <thead class="table-primary">
+            <tr>
+                <th>SMTP</th>
+                <th>Port</th>
+                <th>Email Info</th>
+                <th>Email NoReply</th>
+                <th>Hotline</th>
+                <th>Tiêu đề</th>
+                <th>Ngôn ngữ</th>
+                <th class="text-center">Hành động</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MailSmtp</td>
+                    <td>@item.MailPort</td>
+                    <td>@item.MailInfo</td>
+                    <td>@item.MailNoreply</td>
+                    <td>@item.HotLine</td>
+                    <td>@item.Title</td>
+                    <td>@item.Lang</td>
+
+                    <td class="text-center">
+                        <a class="btn btn-sm btn-outline-primary me-1"
+                           asp-action="Edit" asp-route-id="@item.Id">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <a class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"
+                           asp-action="Delete" asp-route-id="@item.Id">
+                            <i class="fa fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+
+            @if (ViewBag.Page > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { q = ViewBag.searchName, page = ViewBag.Page - 1 })">«</a>
+                </li>
+            }
+
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("Index", new { q = ViewBag.searchName, page = i })">@i</a>
+                </li>
+            }
+
+            @if (ViewBag.Page < ViewBag.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="@Url.Action("Index", new { q = ViewBag.searchName, page = ViewBag.Page + 1 })">»</a>
+                </li>
+            }
+
+        </ul>
+    </nav>
+</div>

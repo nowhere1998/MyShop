@@ -3,92 +3,145 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit</h1>
-
-<h4>Advertise</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+<link rel="stylesheet" href="~/css/adminstyle.css" />
+<div class="container">
+    
+    <form asp-area="Admin" asp-controller="Advertises" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <div class="table-title" style="margin-top:20px">
+</div>
+        <br />
+        <br />
+        <label for="" class="form-">Vị trí : </label>
+    <select class="form-check-inline" asp-for="Position">
+        <option value="1">Banner</option>
+        <option value="2">Slide trang chủ</option>
+        <option value="3">Bên phải trang</option>
+        <option value="4">Giảng viên</option>
+        <option value="5">Đối tác</option>
+    </select>
+        <input type="hidden" class="form-control" asp-for="Id">
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Tên quảng cáo</label>
+                <input type="text" class="form-control" asp-for="Name">
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" class="form-control" />
+            </div>  
+             <div class="col">
+    <label for="" class="form-label">PageId:</label>
+    <select asp-for="PageId" class="form-control">
+    <option value="">-- Chọn --</option>
+
+    @foreach (var item in ViewBag.Page)
+    {
+        var selected = item.Id == Model.PageId ? "selected" : "";
+        @Html.Raw($"<option value='{item.Id}' {selected}>{item.Name}</option>")
+    }
+    </select>
+
+
+</div>
+        </div>​
+         <div class="form-group">
+             <label for="" class="form-label">Hình ảnh : </label>
+                <button type="button" id="btnBrowse">Chọn ảnh</button>
+                <input asp-for="Image" class=""/>
                 <span asp-validation-for="Image" class="text-danger"></span>
+            <div>
+                <img src="" id="PictureView" width="100" />
             </div>
-            <div class="form-group">
-                <label asp-for="Width" class="control-label"></label>
-                <input asp-for="Width" class="form-control" />
-                <span asp-validation-for="Width" class="text-danger"></span>
+            <span asp-validation-for="Image" class="text-danger"></span>
+         </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Độ rộng</label>
+                <input type="number" class="form-control" asp-for="Width">
             </div>
-            <div class="form-group">
-                <label asp-for="Height" class="control-label"></label>
-                <input asp-for="Height" class="form-control" />
-                <span asp-validation-for="Height" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Chiều cao</label>
+                <input type="number" class="form-control" asp-for="Height">
             </div>
-            <div class="form-group">
-                <label asp-for="Link" class="control-label"></label>
-                <input asp-for="Link" class="form-control" />
-                <span asp-validation-for="Link" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Liên kết</label>
+                <input type="text" class="form-control" asp-for="Link">
             </div>
-            <div class="form-group">
-                <label asp-for="Target" class="control-label"></label>
-                <input asp-for="Target" class="form-control" />
-                <span asp-validation-for="Target" class="text-danger"></span>
+            <div class="col">
+                <label for="" class="form-label">Kiểu liên kết</label>
+                <input type="text" class="form-control" asp-for="Target">
             </div>
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">Nội dung</label>
+            <textarea asp-for="Content"></textarea>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="" class="form-label">Thứ tự</label>
+                <input type="number" class="form-control" asp-for="Ord">
             </div>
-            <div class="form-group">
-                <label asp-for="Position" class="control-label"></label>
-                <input asp-for="Position" class="form-control" />
-                <span asp-validation-for="Position" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PageId" class="control-label"></label>
-                <input asp-for="PageId" class="form-control" />
-                <span asp-validation-for="PageId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Click" class="control-label"></label>
-                <input asp-for="Click" class="form-control" />
-                <span asp-validation-for="Click" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ord" class="control-label"></label>
-                <input asp-for="Ord" class="form-control" />
-                <span asp-validation-for="Ord" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Active" class="control-label"></label>
-                <input asp-for="Active" class="form-control" />
-                <span asp-validation-for="Active" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Lang" class="control-label"></label>
-                <input asp-for="Lang" class="form-control" />
-                <span asp-validation-for="Lang" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+        <br />
+        <div class="mb-3 mt-3">
+    <div class="form-check">
+        <label for="Active" class="form-check-label">Kích hoạt</label>
+        <input type="checkbox" id="Active" class="form-check-input ml-2"
+               name="Active" value="true" @(Model?.Active == true ? "checked" : "") />
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+        <br />
+        <div class="table-title" style="margin-top:20px">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2 style="color:black"></h2>
+        </div>
+        <div class="col-sm-6">
+            <a class="btn btn-primary" asp-controller="Advertise" asp-action="Index">Trở lại<i class='fas'>&#xf3e5;</i></a>
+            <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Lưu lại</button>
+        </div>
+    </div>
 </div>
-
+    </form>
+</div>
+<link rel="stylesheet" href="~/lib/jqueryui/themes/base/theme.css" />
+<link rel="stylesheet" href="~/lib/jqueryui/themes/base/jquery-ui.css" />
+<link rel="stylesheet" href="~/elfinder/css/elfinder.full.css" />
+<link rel="stylesheet" href="~/elfinder/css/theme.min.css" />
+<link rel="stylesheet" href="~/elfinder-material-theme/Material/css/theme-gray.css" />
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/elfinder/js/elfinder.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($('#btnBrowse') != undefined) {
+                $('#btnBrowse').click(function () {
+                    var fm = $('<div id="elfinder" />').dialogelfinder({
+                        url: '/quan-ly-tep-tin/connector',
+                        baseUrl: "/elfinder/",
+                        width: 840,
+                        height: 450,
+                        destroyOnClose: true,
+                        title: 'Quản lý tệp tin',
+                        getFileCallback: function (files, fm) {
+                            $('#Image').val('/' + files[0].path);
+                            $('#PictureView').attr('src', '/' + files[0].path);
+                        },
+                        commandsOptions: {
+                            getfile: {
+                                multiple: true,
+                                oncomplete: 'close',
+                                folders: false
+                            }
+                        }
+                    }).dialogelfinder('instance');
+                })
+            }
+        });
+        CKEDITOR.replace('Content');
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+
