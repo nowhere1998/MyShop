@@ -11,7 +11,7 @@ namespace MyShop.Models
         public long Id { get; set; }
 
         [Display(Name = "Danh mục")]
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
 
         [Display(Name = "Tên sản phẩm")]
         public string? Name { get; set; }
