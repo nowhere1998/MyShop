@@ -58,17 +58,41 @@
                 "dragThreshold" : 15,
                 "pageDots": false,
                 "rightToLeft": false       }'>
-    <div data-thumb="https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-TD-B790-100x100.webp" data-thumb-alt="" class="woocommerce-product-gallery__image slide first"><a href="https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-TD-B790.webp"><img width="600" height="600" src="@Model.Image" class="wp-post-image skip-lazy" alt="@Model.Name" title="@Model.Name"></a></div>  </div>
+    <div data-thumb="/user/assets/wp-content/upload/2022/07/BG-Header.jpg" data-thumb-alt="" class="woocommerce-product-gallery__image slide first">
+		<a href="">
+			<img width="600" height="600" src="@Model.Image" class="wp-post-image skip-lazy" alt="@Model.Name" title="@Model.Name">
+		</a>
+	</div>  
+</div>
 
   <div class="image-tools absolute bottom left z-3">
         <a href="#product-zoom" class="zoom-button button is-outline circle icon tooltip hide-for-small" title="Zoom">
       <i class="icon-expand" ></i>    </a>
    </div>
 </div>
-
-
-
-
+	<div class="product-thumbnails thumbnails slider-no-arrows slider row row-small row-slider slider-nav-small small-columns-4"
+		data-flickity-options='{
+			"cellAlign": "left",
+			"wrapAround": false,
+			"autoPlay": false,
+			"prevNextButtons": true,
+			"asNavFor": ".product-gallery-slider",
+			"percentPosition": true,
+			"imagesLoaded": true,
+			"pageDots": false,
+			"rightToLeft": false,
+			"contain": true
+		}'>
+		@foreach(var pi in ViewBag.ProductImages){
+			<div class="col">
+				<a>
+					<img src="@pi.ImageUrl" alt="" width="300" height="300" class="attachment-woocommerce_thumbnail" />				
+				</a>
+			</div>
+		}
+					
+					</div>
+	
 
 		</div>
 		</div></div>			</div>
@@ -250,7 +274,7 @@
 <h2><span class="ez-toc-section" id="thong_so_ky_thuat"></span>Thông số kỹ thuật<span class="ez-toc-section-end"></span></h2>
 <table style="width: 100%;">
 <tbody>
-	@foreach(var ps in ViewBag.ProductSpec){
+	@foreach(var ps in ViewBag.ProductSpecs){
 		<tr>
 			<th style="width: 46.2162%;">ps.SpecName</th>
 			<th style="width: 52.7027%;">ps.SpecValue</th>

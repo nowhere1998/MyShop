@@ -173,11 +173,12 @@
                                     <div class="section-content relative">
 
                                         @* start menu sản phẩm *@
-                                        @foreach(Category pc in ViewBag.ParentCategories)
-                                        {
-                                            <div class="row row-small" id="row-2090416353">
+                                        
+                                        <div class="row row-small" id="row-2090416353">
+                                            @foreach (Category pc in ViewBag.ParentCategories)
+                                            {
                                                 <div id="col-1884509000" class="col medium-3 small-6 large-3">
-                                                    <div class="col-inner">
+                                                    <div class="">
                                                         <div id="text-820454564" class="text">
                                                             <p><strong>@pc.Name</strong></p>
                                                         </div>
@@ -199,8 +200,8 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        } 
+                                            }
+                                        </div> 
                                         @* end menu sản phẩm *@
                                     </div>
 

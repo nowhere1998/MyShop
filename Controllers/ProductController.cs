@@ -19,7 +19,7 @@ namespace MyShop.Controllers
 		[Route("san-pham/{parentSlug}/page/{page:int}")]
 		[Route("san-pham/{parentSlug}/{slug}")]
 		[Route("san-pham/{parentSlug}/{slug}/page/{page:int}")]
-		public IActionResult Index(string? parentSlug, string? slug, int page = 1)
+		public IActionResult Index(long? minPrice, long? maxPrice, string? orderby, string? parentSlug, string? slug, int page = 1)
 		{
 			int pageSize = 12;
 			int totalItems = 0;
@@ -66,10 +66,6 @@ namespace MyShop.Controllers
 				}
 			}
 
-			// Tổng số sản phẩm sau khi lọc
-			totalItems = totalItems > 0 ? totalItems : query.Count();
-			int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
 			// Lấy danh sách sản phẩm
 			if (!string.IsNullOrEmpty(catSlug) && catSlug.Equals(parentSlug))
 			{
@@ -81,21 +77,67 @@ namespace MyShop.Controllers
 					}
 				}
 				products = productList
-					.Skip((page - 1) * pageSize)
-					.Take(pageSize)
 					.ToList();
 			}
 			else
 			{
 				products = query
 				.OrderByDescending(x => x.Id)
-				.Skip((page - 1) * pageSize)
-				.Take(pageSize)
 				.ToList();
 			}
-			
-			// Lấy danh mục cha + con
-			var categoryParent = _context.Categories.Where(x => x.ParentId == null).ToList();
+
+			//lọc theo orderby
+			if (!string.IsNullOrEmpty(orderby))
+			{
+				if (orderby.Equals("price"))
+				{
+					products = products
+						.OrderBy(x => x.SalePrice>0?x.SalePrice:x.Price)
+						.ToList();
+				}
+
+                if (orderby.Equals("price-desc"))
+                {
+                    products = products
+                        .OrderByDescending(x => x.SalePrice > 0 ? x.SalePrice : x.Price)
+                        .ToList();
+                }
+            }
+
+			//lọc theo giá
+			if (minPrice.HasValue)
+			{
+				products = products
+					.Where(x => (x.SalePrice > 0 ? x.SalePrice : x.Price) >= minPrice.Value)
+					.ToList();
+			}
+
+			if (maxPrice.HasValue)
+			{
+				products = products
+					.Where(x => (x.SalePrice > 0 ? x.SalePrice : x.Price) <= maxPrice.Value)
+					.ToList();
+			}
+
+			// Tổng số sản phẩm sau khi lọc
+			totalItems = totalItems > 0 ? totalItems : products.Count();
+			int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+			decimal raw = _context.Products
+									.Select(x => x.SalePrice > 0 ? x.SalePrice : x.Price)
+									.Max() ?? 0m;
+
+			// Làm tròn lên theo bậc 10.000 rồi convert sang long
+			long topPrice = (long)(
+				Math.Ceiling(raw / 10000m) * 10000m
+			);
+
+			products = products
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+				.ToList();
+
+            // Lấy danh mục cha + con
+            var categoryParent = _context.Categories.Where(x => x.ParentId == null).ToList();
 			var categories = _context.Categories.Where(x => x.ParentId != null).ToList();
 
 			ViewBag.Page = page;
@@ -104,6 +146,10 @@ namespace MyShop.Controllers
 			ViewBag.Category = categories;
 			ViewBag.ParentSlug = parentSlug;
 			ViewBag.Slug = slug;
+			ViewBag.Orderby = orderby;
+			ViewBag.MinPrice = minPrice;
+			ViewBag.MaxPrice = maxPrice;
+			ViewBag.TopPrice = topPrice;
 			return View(products);
 		}
 
@@ -117,11 +163,15 @@ namespace MyShop.Controllers
 			var product = _context.Products
 				.Include(x => x.Category)
 				.FirstOrDefault(x => x.Slug == slug);
-			var productSpec = _context.ProductSpecs
+			var productSpecs = _context.ProductSpecs
+				.Where(x => x.ProductId == product.Id)
+				.ToList();
+			var productImages = _context.ProductImages
 				.Where(x => x.ProductId == product.Id)
 				.ToList();
 			ViewBag.Categories = categories;
-			ViewBag.ProductSpec = productSpec;
+			ViewBag.ProductSpecs = productSpecs;
+			ViewBag.ProductImages = productImages;
 			return View("chi-tiet-san-pham", product);
 		}
 	}

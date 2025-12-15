@@ -612,7 +612,35 @@
 
 		<div class="box-text box-text-products text-center grid-style-2">
 			<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="/chi-tiet/@p.Slug" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@p.Name</a></p></div><div class="price-wrapper">
-	<span class="price"><span class="amount">Liên hệ</span></span>
+											@functions {
+												string FormatPrice(decimal? price)
+												{
+													return (price ?? 0)
+														.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
+												}
+											}
+											@if (p.SalePrice > 0)
+											{
+												<!-- Giá gốc -->
+												<span class="price old-price" style="display:block; text-decoration: line-through; color:white;">
+													@FormatPrice(p.Price) ₫
+												</span>
+
+												<!-- Giá sale -->
+												<span class="price sale-price" style="display:block; color:white;">
+													@FormatPrice(p.SalePrice) ₫
+												</span>
+											}
+											else 
+											{
+												 <!-- Giá thường -->
+												<span class="price" style="display:block;">
+													@FormatPrice(p.Price) ₫
+												</span>
+											}	
+											<span class="contact-price" style="display:block; margin-top:3px; color:white; font-weight:bold">
+												Liên hệ
+											</span>
 </div>		</div>
 	</div>
 		</div>

@@ -21,17 +21,23 @@
 			</div>
 		</div>
 		<div class="flex-col medium-text-center">
-			<form class="woocommerce-ordering" method="get">
+			<form class="woocommerce-ordering" method="get" asp-action="Index">
 				<select name="orderby"
 						class="orderby"
 						aria-label="Đơn hàng của cửa hàng">
-					<option value="popularity">Sắp xếp theo mức độ phổ biến</option>
-					<option value="rating">Sắp xếp theo xếp hạng trung bình</option>
-					<option value="date" selected='selected'>Sắp xếp theo mới nhất</option>
-					<option value="price">Sắp xếp theo giá: thấp đến cao</option>
-					<option value="price-desc">Sắp xếp theo giá: cao đến thấp</option>
+					<option value="date" selected="@(string.IsNullOrEmpty(ViewBag.Orderby) || ViewBag.Orderby == "date")">
+						Sắp xếp theo mới nhất
+					</option>
+
+					<option value="price" selected="@(ViewBag.Orderby == "price")">
+						Sắp xếp theo giá: thấp đến cao
+					</option>
+
+					<option value="price-desc" selected="@(ViewBag.Orderby == "price-desc")">
+						Sắp xếp theo giá: cao đến thấp
+					</option>
 				</select>
-				<input type="hidden" name="paged" value="1" />
+				<input type="hidden" name="page" value="@ViewBag.Page" />
 			</form>
 		</div>
 	</div>
@@ -72,27 +78,33 @@
 									<div class="box-text box-text-products text-center grid-style-2">
 										<div class="price-wrapper" style="font-weight:bold">
 											<p class="name product-title woocommerce-loop-product__title"><a href="/chi-tiet/@product.Slug" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">@product.Name</a></p>
+											@functions {
+												string FormatPrice(decimal? price)
+												{
+													return (price ?? 0)
+														.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
+												}
+											}
 											@if (product.SalePrice > 0)
 											{
 												<!-- Giá gốc -->
 												<span class="price old-price" style="display:block; text-decoration: line-through; color:#999;">
-													@product.Price ₫
+													@FormatPrice(product.Price) ₫
 												</span>
 
 												<!-- Giá sale -->
 												<span class="price sale-price" style="display:block; color:#d00;">
-													@product.SalePrice ₫
+													@FormatPrice(product.SalePrice) ₫
 												</span>
 											}
-											else if (product.Price > 0)
+											else 
 											{
-												<!-- Giá thường -->
+												 <!-- Giá thường -->
 												<span class="price" style="display:block;">
-													@product.Price ₫
+													@FormatPrice(product.Price) ₫
 												</span>
 											}
 
-											<!-- Liên hệ: luôn có, luôn dòng mới -->
 											<span class="contact-price" style="display:block; margin-top:3px; color:red">
 												Liên hệ
 											</span>
@@ -107,24 +119,41 @@
 			
 				</div><!-- row -->
 				@functions {
-					string BuildProductPageUrl(int page, string parentSlug, string slug)
+					string BuildProductPageUrl(
+						int page,
+						string parentSlug,
+						string slug,
+						string orderby,
+						long? minPrice,
+						long? maxPrice)
 					{
+						var url = "";
+
 						if (!string.IsNullOrEmpty(parentSlug) && !string.IsNullOrEmpty(slug))
-						{
-							// /san-pham/{parent}/{slug}/page/{page}
-							return $"/san-pham/{parentSlug}/{slug}/page/{page}";
-						}
+							url = $"/san-pham/{parentSlug}/{slug}/page/{page}";
+						else if (!string.IsNullOrEmpty(parentSlug))
+							url = $"/san-pham/{parentSlug}/page/{page}";
+						else
+							url = $"/san-pham/page/{page}";
 
-						if (!string.IsNullOrEmpty(parentSlug) && string.IsNullOrEmpty(slug))
-						{
-							// /san-pham/{parent}/page/{page}
-							return $"/san-pham/{parentSlug}/page/{page}";
-						}
+						var query = new List<string>();
 
-						// Route mặc định: /san-pham/page/{page}
-						return $"/san-pham/page/{page}";
+						if (!string.IsNullOrEmpty(orderby))
+							query.Add($"orderby={orderby}");
+
+						if (minPrice.HasValue)
+							query.Add($"minPrice={minPrice}");
+
+						if (maxPrice.HasValue)
+							query.Add($"maxPrice={maxPrice}");
+
+						if (query.Any())
+							url += "?" + string.Join("&", query);
+
+						return url;
 					}
 				}
+
 				<div class="container">
 					<nav class="woocommerce-pagination">
 						<ul class="page-numbers nav-pagination links text-center">
@@ -133,7 +162,7 @@
 							@if (ViewBag.Page > 1)
 							{
 								<li>
-									<a class="page-number" href="@BuildProductPageUrl(ViewBag.Page - 1, ViewBag.ParentSlug, ViewBag.Slug)">
+									<a class="page-number" href="@BuildProductPageUrl(ViewBag.Page - 1, ViewBag.ParentSlug, ViewBag.Slug, ViewBag.Orderby, ViewBag.MinPrice, ViewBag.MaxPrice)">
 										<i class="icon-angle-left"></i>
 									</a>
 								</li>
@@ -149,7 +178,7 @@
 								else
 								{
 									<li>
-										<a class="page-number" href="@BuildProductPageUrl(i, ViewBag.ParentSlug, ViewBag.Slug)">
+										<a class="page-number" href="@BuildProductPageUrl(i, ViewBag.ParentSlug, ViewBag.Slug, ViewBag.Orderby, ViewBag.MinPrice, ViewBag.MaxPrice)">
 											@i
 										</a>
 									</li>
@@ -160,7 +189,7 @@
 							@if (ViewBag.Page < ViewBag.TotalPages)
 							{
 								<li>
-									<a class="page-number" href="@BuildProductPageUrl(ViewBag.Page + 1, ViewBag.ParentSlug, ViewBag.Slug)">
+									<a class="page-number" href="@BuildProductPageUrl(ViewBag.Page + 1, ViewBag.ParentSlug, ViewBag.Slug, ViewBag.Orderby, ViewBag.MinPrice, ViewBag.MaxPrice)">
 										<i class="icon-angle-right"></i>
 									</a>
 								</li>
@@ -293,26 +322,59 @@
 								}
 								@* end list danh mục cha *@
 							</ul>
-						</aside><aside id="woocommerce_price_filter-9" class="widget woocommerce widget_price_filter">
-							<span class="widget-title shop-sidebar">Lọc theo giá</span><div class="is-divider small"></div>
-							<form method="get" action="https://inno.com.vn/san-pham/">
-								<div class="price_slider_wrapper">
-									<div class="price_slider" style="display:none;"></div>
-									<div class="price_slider_amount" data-step="10">
-										<label class="screen-reader-text" for="min_price">Giá tối thiểu</label>
-										<input type="text" id="min_price" name="min_price" value="0" data-min="0" placeholder="Giá tối thiểu" />
-										<label class="screen-reader-text" for="max_price">Giá tối đa</label>
-										<input type="text" id="max_price" name="max_price" value="19900000" data-max="19900000" placeholder="Giá tối đa" />
-										<button type="submit" class="button">Lọc</button>
-										<div class="price_label" style="display:none;">
-											Giá: <span class="from"></span> &mdash; <span class="to"></span>
-										</div>
-										<div class="clear"></div>
-									</div>
-								</div>
-							</form>
-
 						</aside>
+						<aside class="widget shop-sidebar">
+							<span class="widget-title">Lọc theo giá</span>
+							<div class="is-divider small"></div>
+
+							<form method="get" action="/san-pham" id="price-filter-form">
+
+								<div class="price-range-wrapper">
+									<div class="price-values">
+
+										<span id="price-min-label">@ViewBag.TopPrice ₫</span>
+										—
+										<span id="price-max-label"@(ViewBag.MaxPrice < ViewBag.TopPrice ? ViewBag.MaxPrice : ViewBag.TopPrice) ₫</span>
+									</div>
+
+									<input type="range"
+										   id="minRange"
+										   min="0"
+										   max="@ViewBag.TopPrice"
+										   step="100000"
+										   value="@(ViewBag.MinPrice > 0 ? ViewBag.MinPrice : 0)">
+
+									<input type="range"
+										   id="maxRange"
+										   min="0"
+										   max="@ViewBag.TopPrice"
+										   step="10000"
+										   value="@(ViewBag.MaxPrice < ViewBag.TopPrice ? ViewBag.MaxPrice : ViewBag.TopPrice)">
+
+									<input type="hidden" name="minPrice" id="minPrice" value="0">
+									<input type="hidden" name="maxPrice" id="maxPrice" value="@ViewBag.TopPrice">
+
+									<button type="submit" class="button">Lọc</button>
+								</div>
+
+							</form>
+						</aside>
+						<style>
+							.price-range-wrapper {
+								padding: 10px 0;
+							}
+
+							.price-values {
+								font-weight: 600;
+								margin-bottom: 10px;
+							}
+
+							input[type="range"] {
+								width: 100%;
+								margin: 5px 0;
+								cursor: pointer;
+}
+						</style>
 					</div>
 				</div>
 			</div>
@@ -320,3 +382,43 @@
 	</div>
 
 </main>
+
+@section Scripts{
+	<script>
+		const minRange = document.getElementById("minRange");
+		const maxRange = document.getElementById("maxRange");
+
+		const minPriceInput = document.getElementById("minPrice");
+		const maxPriceInput = document.getElementById("maxPrice");
+
+		const minLabel = document.getElementById("price-min-label");
+		const maxLabel = document.getElementById("price-max-label");
+
+		const formatMoney = n =>
+			n.toLocaleString("vi-VN") + "₫";
+
+		function syncPrice() {
+			let min = parseInt(minRange.value);
+			let max = parseInt(maxRange.value);
+
+			if (min > max) {
+				[min, max] = [max, min];
+			}
+
+			minPriceInput.value = min;
+			maxPriceInput.value = max;
+
+			minLabel.textContent = formatMoney(min);
+			maxLabel.textContent = formatMoney(max);
+		}
+
+		minRange.addEventListener("input", syncPrice);
+		maxRange.addEventListener("input", syncPrice);
+
+		syncPrice();
+
+		minRange.value = "@(ViewBag.MinPrice ?? 0)";
+		maxRange.value = "@(ViewBag.MaxPrice ?? ViewBag.TopPrice)";
+		syncPrice();
+	</script>
+}
