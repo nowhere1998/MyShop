@@ -41,8 +41,8 @@
         <div class="mb-3">
             <label class="form-label fw-semibold">Loại trang</label>
             <select asp-for="Type" class="form-select" id="pageType">
-                <option value="link">Trang liên kết</option>
-                <option value="page">Trang nội dung</option>
+                <option value="0">Trang liên kết</option>
+                <option value="1">Trang nội dung</option>
             </select>
         </div>
         <!-- Nội dung chi tiết -->
@@ -69,14 +69,17 @@
 
         <!-- Chọn module -->
         <div class="mb-3 d-none" id="moduleLinkBox">
+            <label class="form-label fw-semibold">Chọn module</label>
             <select id="moduleLink" class="form-select">
                 <option value="">-- Chọn module --</option>
-                <option value="/tin-tuc">Tin tức</option>
-                <option value="/san-pham">Sản phẩm</option>
-                <option value="/lien-he">Liên hệ</option>
-                <option value="/gioi-thieu">Giới thiệu</option>
+
+                @foreach (var item in ViewBag.Categories as List<SelectListItem>)
+                {
+                    <option value="@item.Value">@item.Text</option>
+                }
             </select>
         </div>
+
 
         <!-- Hidden input binding Model -->
         <input asp-for="Link" type="hidden" id="finalLink" />
@@ -121,7 +124,8 @@
         <!-- Thứ tự -->
         <div class="mb-3">
             <label class="form-label fw-semibold">Thứ tự</label>
-            <input asp-for="Ord" type="number" class="form-control" placeholder="Ví dụ: 1, 2, 3..." />
+            <input asp-for="Ord" type="number" min="1" class="form-control" placeholder="Ví dụ: 1, 2, 3..." />
+            <span asp-validation-for="Ord" class="text-danger"></span>
         </div>
 
         <!-- Kích hoạt -->
@@ -151,7 +155,7 @@
         const detailBox = document.getElementById("detailBox");
 
         function togglePageType() {
-            if (pageType.value === "page") {
+            if (pageType.value == 1) {
                 // Trang nội dung → hiện textarea
                 detailBox.classList.remove("d-none");
             } else {

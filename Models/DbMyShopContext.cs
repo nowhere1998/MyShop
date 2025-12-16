@@ -441,9 +441,13 @@ public partial class DbMyShopContext : DbContext
 
         modelBuilder.Entity<Page>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__page__3214EC079E814B9E");
+            entity.HasKey(e => e.Id)
+                  .HasName("PK__page__3214EC079E814B9E");
 
-            entity.ToTable("page");
+            entity.ToTable("page", tb =>
+            {
+                tb.HasTrigger("tg_Update_Level_page"); // 👈 TÊN TRIGGER THẬT TRONG SQL
+            });
 
             entity.Property(e => e.Content).HasMaxLength(4000);
             entity.Property(e => e.Description).HasMaxLength(256);

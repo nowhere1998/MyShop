@@ -15,7 +15,7 @@ namespace MyShop.Areas.Admin.Controllers
     public class PagesController : Controller
     {
         private readonly DbMyShopContext _context;
-
+        static string Level = "";
         public PagesController(DbMyShopContext context)
         {
             _context = context;
@@ -24,10 +24,10 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Pages
         public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            var query = _context.Pages.OrderBy(x => x.Ord).AsNoTracking();
+            var query = _context.Pages.OrderBy(x => x.Level).AsNoTracking();
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderBy(x => x.Ord);
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderBy(x => x.Level);
             }
             // Tổng số bản ghi sau khi lọc
             var totalCount = await query.CountAsync();
@@ -65,20 +65,11 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Pages/Create
-        public IActionResult Create()
+        public IActionResult Create(string? strLevel)
         {
-            // Danh mục sản phẩm
-            var Cat = _context.Categories
-                .AsNoTracking()
-                .Select(x => new SelectListItem
-                {
-                    Text = x.Name,                      // Tên hiển thị
-                    Value = "/san-pham/" + x.Slug      // Link gán cho Page.Link
-                })
-                .ToList();
-
-            ViewBag.Categories = Cat;
-
+            LoadCategories();
+            if (strLevel != null)
+                Level = strLevel;
             return View();
         }
 
@@ -88,30 +79,43 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Tag,Content,Detail,Level,Title,Description,Keyword,Type,Link,Target,Index,Position,Ord,Active,Lang,GroupId")] Page page)
+        public async Task<IActionResult> Create(Page model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(page);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                LoadCategories(); // ← BẮT BUỘC
+                return View(model);
             }
-            return View(page);
+            // ✅ Nếu Link null hoặc rỗng → gán mặc định "/"
+            if (string.IsNullOrWhiteSpace(model.Link))
+            {
+                model.Link = "/";
+            }
+            model.Level = Level + model.Level;
+            model.Level = Level + "00000";
+            Level = "";
+            _context.Add(model);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Admin/Pages/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id , string? strLevel)
         {
             if (id == null)
             {
+                if (strLevel != null)
+                    Level = strLevel;
                 return NotFound();
             }
 
             var page = await _context.Pages.FindAsync(id);
             if (page == null)
             {
+                LoadCategories();
                 return NotFound();
             }
+            LoadCategories();
             return View(page);
         }
 
@@ -120,9 +124,9 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Tag,Content,Detail,Level,Title,Description,Keyword,Type,Link,Target,Index,Position,Ord,Active,Lang,GroupId")] Page page)
+        public async Task<IActionResult> Edit(int id,  Page model)
         {
-            if (id != page.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
@@ -131,12 +135,15 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(page);
+                    model.Level = Level + model.Level;
+                    model.Level = Level + "00000";
+                    Level = "";
+                    _context.Update(model);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PageExists(page.Id))
+                    if (!PageExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -147,45 +154,69 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(page);
+            return View(model);
         }
 
         // GET: Admin/Pages/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
+            Page model = _context.Pages.FirstOrDefault(a => a.Id == id);
+
+            int deletedOrd = model.Ord ?? 1;
+
+            // Xoá bản ghi
+            _context.Pages.Remove(model);
+
+            // Giảm Ord cho toàn bộ bản ghi phía sau
+            var items = _context.Pages
+                .Where(a => a.Ord > deletedOrd)
+                .ToList();
+
+            foreach (var item in items)
             {
-                return NotFound();
+                item.Ord -= 1;
             }
 
-            var page = await _context.Pages
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (page == null)
-            {
-                return NotFound();
-            }
-
-            return View(page);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
-
-        // POST: Admin/Pages/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var page = await _context.Pages.FindAsync(id);
-            if (page != null)
-            {
-                _context.Pages.Remove(page);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
         private bool PageExists(int id)
         {
             return _context.Pages.Any(e => e.Id == id);
         }
+        private void LoadCategories()
+        {
+            var categories = _context.Categories
+                .AsNoTracking()
+                .OrderBy(x => x.ParentId)
+                .ThenBy(x => x.Id)
+                .ToList();
+
+            var result = new List<SelectListItem>();
+
+            var parents = categories.Where(x => x.ParentId == null);
+
+            foreach (var parent in parents)
+            {
+                result.Add(new SelectListItem
+                {
+                    Text = parent.Name,
+                    Value = "/san-pham/" + parent.Slug
+                });
+
+                foreach (var child in categories.Where(x => x.ParentId == parent.Id))
+                {
+                    result.Add(new SelectListItem
+                    {
+                        Text = "— " + child.Name,
+                        Value = "/san-pham/" + parent.Slug + "/" + child.Slug
+                    });
+                }
+            }
+
+            ViewBag.Categories = result;
+        }
+
+
     }
 }

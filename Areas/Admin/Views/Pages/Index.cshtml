@@ -54,50 +54,38 @@
                 foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Name</td>
-
+                        <td>@StringHelper.ShowNameLevel(item.Name, item.Level)</td>
                         <td>
-                            <span class="badge bg-secondary">
-                                @item.Tag
-                            </span>
+                            @(item.Type == 0 ? "Trang liên kết" : "Trang nội dung")
                         </td>
-
-                        <td title="@item.Title">
-                            @(item.Title?.Length > 40
-                                                ? item.Title.Substring(0, 40) + "..."
-                                                : item.Title)
-                </td>
-
+                        <td>@item.Link</td>
+                        <td>@item.Target</td>
                         <td>
-                            <span class="badge bg-info">
-                                @item.Type
-                            </span>
+                            @(item.Position == 1 ? "Menu trên" :
+                              item.Position == 2 ? "Menu giữa" :
+                              item.Position == 3 ? "Menu dưới" :
+                              item.Position == 4 ? "Giữa dưới" : "---")
                         </td>
-
-                        <td>@item.Position</td>
 
                         <td>@item.Ord</td>
-
                         <td>
                             <span class="badge @(item.Active == 1 ? "bg-success" : "bg-secondary")">
                                 @(item.Active == 1 ? "Hiển thị" : "Ẩn")
                             </span>
                         </td>
                         <td class="text-center">
+                            <a class="btn btn-sm btn-outline-info me-1"
+                               asp-action="Create"
+                               asp-route-strLevel="@item.Level"
+                               title="Chi tiết">
+                                <i class="fa fa-plus"></i>
+                            </a>
                             <a class="btn btn-sm btn-outline-primary me-1"
                                asp-action="Edit"
                                asp-route-id="@item.Id"
                                title="Sửa">
                                 <i class="fa fa-edit"></i>
                             </a>
-
-                            <a class="btn btn-sm btn-outline-info me-1"
-                               asp-action="Details"
-                               asp-route-id="@item.Id"
-                               title="Chi tiết">
-                                <i class="fa fa-eye"></i>
-                            </a>
-
                             <form asp-action="Delete"
                                   asp-route-id="@item.Id"
                                   method="post"
