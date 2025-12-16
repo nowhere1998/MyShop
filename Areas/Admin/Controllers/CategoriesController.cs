@@ -23,29 +23,51 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Categories
-        public async Task<IActionResult> Index(string name ,int page = 1 ,int pageSize = 30)
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            var query = _context.Categories.Include(c => c.Parent).OrderByDescending(x => x.Id).AsNoTracking();
+            var query = _context.Categories
+                .Include(x => x.Parent)
+                .AsNoTracking();
+
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.Id);
+                query = query.Where(x =>
+                    x.Name!.ToLower().Contains(name.ToLower().Trim()));
             }
-            // Tổng số bản ghi sau khi lọc
+
             var totalCount = await query.CountAsync();
 
-            // Lấy dữ liệu từng trang
-            var data = await query
+            var list = await query
+                .OrderBy(x => x.ParentId)
+                .ThenBy(x => x.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Gửi biến qua View
+            // 🔥 Sắp xếp CHA → CON
+            var result = new List<Category>();
+
+            var parents = list.Where(x => x.ParentId == null).ToList();
+
+            foreach (var parent in parents)
+            {
+                result.Add(parent);
+
+                var children = list
+                    .Where(x => x.ParentId == parent.Id)
+                    .ToList();
+
+                result.AddRange(children);
+            }
+
             ViewData["SearchName"] = name;
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-            return View(data);
+
+            return View(result);
         }
+
 
         // GET: Admin/Categories/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -77,6 +99,7 @@ namespace MyShop.Areas.Admin.Controllers
             ViewData["ParentId"] = new SelectList(rootCategories, "Id", "Name");
             return View();
         }
+
 
         // POST: Admin/Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.

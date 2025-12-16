@@ -118,7 +118,14 @@ Layout = null;
                         <img src="~/admin/assets/images/avatar.jpg" class="img-circle elevation-2" alt="User Image" />
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block" style="text-transform: uppercase;"></a>
+                        <a href="#" class="d-block" style="text-transform: uppercase;">
+                            @if (User.Identity != null && User.Identity.IsAuthenticated)
+                            {
+                                <a href="#" class="d-block text-uppercase">
+                                    @User.FindFirst("FullName")?.Value
+                                </a>
+                            }
+                        </a>
                     </div>
                 </div>
 

@@ -49,6 +49,7 @@ namespace MyShop.Models
         public int? Position { get; set; }
 
         [Display(Name = "Thứ tự")]
+        [Required(ErrorMessage = "Thứ tự không được để trống")]
         public int? Ord { get; set; }
 
         [Display(Name = "Kích hoạt")]
