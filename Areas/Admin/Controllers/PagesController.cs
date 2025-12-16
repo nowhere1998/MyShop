@@ -22,9 +22,28 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Pages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            return View(await _context.Pages.ToListAsync());
+            var query = _context.Pages.OrderBy(x => x.Ord).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderBy(x => x.Ord);
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
+
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
         }
 
         // GET: Admin/Pages/Details/5
@@ -48,8 +67,21 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Pages/Create
         public IActionResult Create()
         {
+            // Danh mục sản phẩm
+            var Cat = _context.Categories
+                .AsNoTracking()
+                .Select(x => new SelectListItem
+                {
+                    Text = x.Name,                      // Tên hiển thị
+                    Value = "/san-pham/" + x.Slug      // Link gán cho Page.Link
+                })
+                .ToList();
+
+            ViewBag.Categories = Cat;
+
             return View();
         }
+
 
         // POST: Admin/Pages/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
