@@ -22,10 +22,30 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Dealers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            return View(await _context.Dealers.ToListAsync());
+            var query = _context.Dealers.OrderByDescending(x => x.Id).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.Id);
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
+
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
         }
+
 
         // GET: Admin/Dealers/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -119,36 +139,13 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Dealers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var dealer = await _context.Dealers
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (dealer == null)
-            {
-                return NotFound();
-            }
-
-            return View(dealer);
-        }
-
-        // POST: Admin/Dealers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var dealer = await _context.Dealers.FindAsync(id);
-            if (dealer != null)
-            {
-                _context.Dealers.Remove(dealer);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            Dealer model = _context.Dealers.FirstOrDefault(a => a.Id == id);
+            // Xoá bản ghi
+            _context.Dealers.Remove(model);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         private bool DealerExists(int id)
