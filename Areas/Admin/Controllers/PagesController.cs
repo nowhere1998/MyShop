@@ -159,26 +159,35 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Pages/Delete/5
         public IActionResult Delete(int id)
         {
-            Page model = _context.Pages.FirstOrDefault(a => a.Id == id);
+            var model = _context.Pages.FirstOrDefault(a => a.Id == id);
+            if (model == null) return NotFound();
 
+            string levelPrefix = model.Level; // ví dụ "00001"
             int deletedOrd = model.Ord ?? 1;
 
-            // Xoá bản ghi
-            _context.Pages.Remove(model);
+            // Lấy toàn bộ cha + con + cháu theo Level
+            var toDelete = _context.Pages
+                .Where(a => a.Level.StartsWith(levelPrefix))
+                .ToList();
 
-            // Giảm Ord cho toàn bộ bản ghi phía sau
-            var items = _context.Pages
+            int deletedCount = toDelete.Count;
+
+            _context.Pages.RemoveRange(toDelete);
+
+            // Dồn lại Ord
+            var remain = _context.Pages
                 .Where(a => a.Ord > deletedOrd)
                 .ToList();
 
-            foreach (var item in items)
+            foreach (var item in remain)
             {
-                item.Ord -= 1;
+                item.Ord -= deletedCount;
             }
 
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
+
         private bool PageExists(int id)
         {
             return _context.Pages.Any(e => e.Id == id);
