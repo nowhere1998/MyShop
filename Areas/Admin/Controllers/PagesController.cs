@@ -104,8 +104,6 @@ namespace MyShop.Areas.Admin.Controllers
         {
             if (id == null)
             {
-                if (strLevel != null)
-                    Level = strLevel;
                 return NotFound();
             }
 
@@ -115,6 +113,7 @@ namespace MyShop.Areas.Admin.Controllers
                 LoadCategories();
                 return NotFound();
             }
+            Level = page.Level.Substring(0, page.Level.Length - 5);
             LoadCategories();
             return View(page);
         }
