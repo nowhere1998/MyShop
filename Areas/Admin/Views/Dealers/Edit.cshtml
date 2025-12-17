@@ -14,8 +14,8 @@
     </div>
 
     <!-- Form -->
-    <form asp-action="Create" method="post" id="dealerForm">
-        <input asp-for="Id" type="hidden" class="form-control" />
+    <form asp-action="Edit" method="post" id="dealerForm">
+        @* <input asp-for="Id" type="hidden" class="form-control" /> *@
         <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
         <div class="row mb-3">
