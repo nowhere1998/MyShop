@@ -9,7 +9,19 @@
 			<div class="is-medium">
 				<nav class="woocommerce-breadcrumb breadcrumbs ">
 					<a href="/">Trang chủ</a> 
-					<span class="divider">&#47;</span> Sản phẩm</nav>
+					<span class="divider">&#47;</span> 
+					<a href="/san-pham">Sản phẩm</a> 
+					@if (string.IsNullOrEmpty(ViewBag.ParentSlug))
+					{
+						<span class="divider">&#47;</span>
+						<a href="/san-pham/@ViewBag.ParentSlug">@ViewBag.CategoryParentName</a> 
+					}
+					@if (string.IsNullOrEmpty(ViewBag.Slug))
+					{
+						<span class="divider">&#47;</span>
+						<a href="/san-pham/@ViewBag.ParentSlug/@ViewBag.Slug">@ViewBag.CategoryName</a> 
+					} 
+				</nav>
 			</div>
 			<div class="category-filtering category-filter-row show-for-medium">
 				<a href="#" data-open="#shop-sidebar" data-visible-after="true" data-pos="left" class="filter-button uppercase plain">
@@ -52,7 +64,9 @@
 
 				<div class="woocommerce-notices-wrapper"></div><div class="products row row-small large-columns-4 medium-columns-3 small-columns-2 has-shadow row-box-shadow-1-hover has-equal-box-heights equalize-box">
 					@* start list product *@
-					@foreach(var product in Model)
+					@if (Model.Any())
+					{
+						@foreach(var product in Model)
 					{
 						<div class="product-small col has-hover product type-product post-17129 status-publish first instock product_cat-may-khu-trung-sach has-post-thumbnail shipping-taxable purchasable product-type-simple">
 							<div class="col-inner">
@@ -114,6 +128,11 @@
 							</div>
 						</div>
 
+					}
+					}
+					else
+					{
+						<p>Không tìm thấy sản phẩm nào phù hợp với lựa chọn của bạn!</p>
 					}
 					@* end list product *@
 			
@@ -327,7 +346,7 @@
 							<span class="widget-title">Lọc theo giá</span>
 							<div class="is-divider small"></div>
 
-							<form method="get" action="/san-pham" id="price-filter-form">
+							<form method="get" action="/san-pham@(!string.IsNullOrEmpty(ViewBag.ParentSlug) ? "/" + ViewBag.ParentSlug : "")@(!string.IsNullOrEmpty(ViewBag.Slug) ? "/" + ViewBag.Slug : "")" id="price-filter-form">
 
 								<div class="price-range-wrapper">
 									<div class="price-values">
@@ -341,7 +360,7 @@
 										   id="minRange"
 										   min="0"
 										   max="@ViewBag.TopPrice"
-										   step="100000"
+										   step="10000"
 										   value="@(ViewBag.MinPrice > 0 ? ViewBag.MinPrice : 0)">
 
 									<input type="range"

@@ -19,7 +19,7 @@ namespace MyShop.Controllers
 		[Route("san-pham/{parentSlug}/page/{page:int}")]
 		[Route("san-pham/{parentSlug}/{slug}")]
 		[Route("san-pham/{parentSlug}/{slug}/page/{page:int}")]
-		public IActionResult Index(long? minPrice, long? maxPrice, string? orderby, string? parentSlug, string? slug, int page = 1)
+		public IActionResult Index(long? minPrice, long? maxPrice, string? orderby, string? parentSlug, string? slug, int page = 1, string search = "")
 		{
 			int pageSize = 12;
 			int totalItems = 0;
@@ -28,6 +28,18 @@ namespace MyShop.Controllers
 			List<int> childIds = new List<int>();
 			// Xác định slug danh mục
 			string? catSlug = slug ?? parentSlug;
+			string? categoryParentName = "";
+			string? categoryName = "";
+			if(string.IsNullOrEmpty(parentSlug))
+			{
+				var category = _context.Categories.FirstOrDefault(x => x.Slug == parentSlug);
+				categoryParentName = category?.Name;
+			}
+			if (string.IsNullOrEmpty(slug))
+			{
+				var category = _context.Categories.FirstOrDefault(x => x.Slug == slug);
+				categoryName = category?.Name;
+			}
 
 			IQueryable<Product> query = _context.Products.AsQueryable();
 
@@ -35,7 +47,6 @@ namespace MyShop.Controllers
 			if (!string.IsNullOrEmpty(catSlug))
 			{
 				var category = _context.Categories.FirstOrDefault(x => x.Slug == catSlug);
-
 				if (category != null)
 				{
 					// Nếu là danh mục CHA
@@ -119,6 +130,17 @@ namespace MyShop.Controllers
 					.ToList();
 			}
 
+			//lọc theo tên
+			if (!string.IsNullOrEmpty(search))
+			{
+				products = products
+					.Where(x =>
+						x.Name.Trim().ToLower().Contains(search.Trim().ToLower())
+						|| x.Slug.Trim().ToLower().Contains(search.Trim().ToLower())
+						)
+					.ToList();
+			}
+
 			// Tổng số sản phẩm sau khi lọc
 			totalItems = totalItems > 0 ? totalItems : products.Count();
 			int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
@@ -137,8 +159,14 @@ namespace MyShop.Controllers
 				.ToList();
 
             // Lấy danh mục cha + con
-            var categoryParent = _context.Categories.Where(x => x.ParentId == null).ToList();
-			var categories = _context.Categories.Where(x => x.ParentId != null).ToList();
+            var categoryParent = _context.Categories
+				.Where(x => x.ParentId == null)
+				.ToList();
+			var categories = _context.Categories
+				.Include(x => x.Products)
+				.Where(x => x.ParentId != null)
+				.Where(x => x.Products.Any())
+				.ToList();
 
 			ViewBag.Page = page;
 			ViewBag.TotalPages = totalPages;
@@ -150,6 +178,9 @@ namespace MyShop.Controllers
 			ViewBag.MinPrice = minPrice;
 			ViewBag.MaxPrice = maxPrice;
 			ViewBag.TopPrice = topPrice;
+			ViewBag.CategoryParentName = categoryParentName;
+			ViewBag.CategoryName = categoryName;
+			ViewBag.Search = search;
 			return View(products);
 		}
 
@@ -163,6 +194,8 @@ namespace MyShop.Controllers
 			var product = _context.Products
 				.Include(x => x.Category)
 				.FirstOrDefault(x => x.Slug == slug);
+			var category = _context.Categories.FirstOrDefault(x => x.Id == product.CategoryId);
+			var relatedProducts = _context.Products.Where(x => x.CategoryId == category.Id).ToList();
 			var productSpecs = _context.ProductSpecs
 				.Where(x => x.ProductId == product.Id)
 				.ToList();
@@ -172,6 +205,7 @@ namespace MyShop.Controllers
 			ViewBag.Categories = categories;
 			ViewBag.ProductSpecs = productSpecs;
 			ViewBag.ProductImages = productImages;
+			ViewBag.RelatedProducts = relatedProducts;
 			return View("chi-tiet-san-pham", product);
 		}
 	}

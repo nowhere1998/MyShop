@@ -178,10 +178,10 @@
 
 <div class="add-to-cart-container form-minimal is-normal">
 	
-	<form class="cart" action="https://inno.com.vn/am-thanh-di-dong-khong-day-innosmart-td-b790/" method="post" enctype='multipart/form-data'>
+	<form class="cart" action="/cart/add" method="get" enctype='multipart/form-data'>
 		
 			<div class="quantity buttons_added form-minimal">
-		<input type="button" value="-" class="minus button is-form">				<label class="screen-reader-text" for="quantity_693a1041b1b64">Âm thanh di động không dây INNOSMART TD-B790 số lượng</label>
+		<input type="button" value="-" class="minus button is-form">				<label class="screen-reader-text" for="quantity_693a1041b1b64">@Model.Name</label>
 		<input
 			type="number"
 						id="quantity_693a1041b1b64"
@@ -197,7 +197,9 @@
 				inputmode="numeric"
 				autocomplete="off"
 					/>
-				<input type="button" value="+" class="plus button is-form">	</div>
+		<input type="button" value="+" class="plus button is-form">	
+		<input type="hidden" name="id" value="@Model.Id"/>
+	</div>
 	
 		<button type="submit" name="add-to-cart" value="16398" class="single_add_to_cart_button button alt">Thêm vào giỏ hàng</button>
 
@@ -316,220 +318,108 @@
 
 	
   
-		<div class="row has-equal-box-heights equalize-box large-columns-3 medium-columns-2 small-columns-2 row-small slider row-slider slider-nav-reveal slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}' >
+		<div class="row has-equal-box-heights equalize-box large-columns-3 medium-columns-2 small-columns-2 row-small slider row-slider slider-nav-reveal slider-nav-push"
+     data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold": 5, "cellAlign": "left", "wrapAround": true, "prevNextButtons": true, "percentPosition": true, "pageDots": false, "rightToLeft": false, "autoPlay": false}'>
 
-  
+    <!-- PRODUCT ITEM -->
+	@if(ViewBag.RelatedProducts != null && ViewBag.RelatedProducts.Count > 0){
+		@foreach(var p in ViewBag.RelatedProducts){
 			<div class="product-small col has-hover product type-product post-16500 status-publish instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-he-thong-quan-ly-chia-khoa-thong-minh has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
+        <div class="col-inner">
 
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb70tm-lw/" aria-label="Tủ quản lý chìa khóa thông minh INNOSMART KB70TM-LW">
-						<div class="label-custom bcn"><span>Terminal</span></div><img width="300" height="300" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Tủ quản lý chìa khóa thông minh INNOSMART KB70TM-LW" decoding="async" data-lazy-srcset="https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T.webp 1000w" data-lazy-sizes="(max-width: 300px) 100vw, 300px" data-lazy-src="https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-300x300.webp" /><noscript><img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Tủ quản lý chìa khóa thông minh INNOSMART KB70TM-LW" decoding="async" srcset="https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB70T.webp 1000w" sizes="(max-width: 300px) 100vw, 300px" /></noscript>				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="16500" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
+            <div class="badge-container absolute left top z-1"></div>
 
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb70tm-lw/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Tủ quản lý chìa khóa thông minh INNOSMART KB70TM-LW</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div><div class="product-small col has-hover product type-product post-16501 status-publish instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-he-thong-quan-ly-chia-khoa-thong-minh has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
+            <div class="product-small box">
+                <div class="box-image">
+                    <div class="image-zoom">
+                        <a href="/chi-tiet/@p.Slug"
+                           aria-label="@p.Name">
 
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb100tm-lw/" aria-label="Tủ quản lý chìa khóa thông minh INNOSMART KB100TM-LW">
-						<div class="label-custom bcn"><span>Terminal</span></div><img width="300" height="300" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20300%20300'%3E%3C/svg%3E" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Tủ quản lý chìa khóa thông minh INNOSMART KB100TM-LW" decoding="async" data-lazy-srcset="https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM.webp 900w" data-lazy-sizes="(max-width: 300px) 100vw, 300px" data-lazy-src="https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-300x300.webp" /><noscript><img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Tủ quản lý chìa khóa thông minh INNOSMART KB100TM-LW" decoding="async" srcset="https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2025/07/KB100TM.webp 900w" sizes="(max-width: 300px) 100vw, 300px" /></noscript>				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="16501" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
+                            <div class="label-custom bcn">
+                                <span>Terminal</span>
+                            </div>
 
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb100tm-lw/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Tủ quản lý chìa khóa thông minh INNOSMART KB100TM-LW</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div><div class="product-small col has-hover product type-product post-12654 status-publish last instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-thiet-bi-kiem-tra-danh-gia-voting-system has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
+                            <img width="300"
+                                 height="300"	
+                                 src="@p.Image"
+                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                 alt="@p.Name"
+                                 />
 
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/thiet-bi-kiem-tra-trac-nghiem-danh-cho-hoc-sinh-innosmart-vt-800-s/" aria-label="Thiết bị kiểm tra trắc nghiệm dành cho học sinh INNOSMART VT-800-S">
-						<img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Thiết bị kiểm tra trắc nghiệm dành cho học sinh INNOSMART VT-800-S" decoding="async" loading="lazy" srcset="https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2024/03/bo-dieu-khien-danh-cho-hs-VT-800-S-2.webp 1000w" sizes="auto, (max-width: 300px) 100vw, 300px" />				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="12654" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
+                            <noscript>
+                                <img width="300"
+                                     height="300"
+                                     src="@p.Image"
+                                     class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+                                     alt="@p.Name" />
+                            </noscript>
+                        </a>
+                    </div>
 
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/thiet-bi-kiem-tra-trac-nghiem-danh-cho-hoc-sinh-innosmart-vt-800-s/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Thiết bị kiểm tra trắc nghiệm dành cho học sinh INNOSMART VT-800-S</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div><div class="product-small col has-hover product type-product post-16499 status-publish first instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-he-thong-quan-ly-chia-khoa-thong-minh has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
+                    <div class="image-tools is-small top right show-on-hover"></div>
+                    <div class="image-tools is-small hide-for-small bottom left show-on-hover"></div>
 
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb50tm-lw/" aria-label="Tủ quản lý chìa khóa thông minh INNOSMART KB50TM-LW">
-						<div class="label-custom bcn"><span>Terminal</span></div><img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Tủ quản lý chìa khóa thông minh INNOSMART KB50TM-LW" decoding="async" loading="lazy" srcset="https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2024/09/INNO-KEYBOX-KB50T.webp 1000w" sizes="auto, (max-width: 300px) 100vw, 300px" />				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="16499" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
+                    <div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
+                        <a class="quick-view" data-prod="16500" href="#quick-view">
+                            <span class="dashicons dashicons-visibility"></span>
+                        </a>
+                    </div>
+                </div>
 
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb50tm-lw/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Tủ quản lý chìa khóa thông minh INNOSMART KB50TM-LW</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div><div class="product-small col has-hover product type-product post-12795 status-publish instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-may-tinh-bang-smarttab has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
+                <div class="box-text box-text-products text-center grid-style-2">
+                    <div class="title-wrapper">
+                        <p class="name product-title woocommerce-loop-product__title">
+                            <a href="/chi-tiet/@p.Slug"
+                               class="woocommerce-LoopProduct-link woocommerce-loop-product__link">
+                                @p.Name
+                            </a>
+                        </p>
+                    </div>
 
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/may-tinh-bang-inno-smarttab-f1071yi-a/" aria-label="Máy tính bảng INNOSMART Smarttab F1071YI A">
-						<img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2024/03/Smarttab-F1071YI-A-new-1-600x600-1-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Máy tính bảng INNOSMART Smarttab F1071YI A" decoding="async" loading="lazy" srcset="https://inno.com.vn/wp-content/uploads/2024/03/Smarttab-F1071YI-A-new-1-600x600-1-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2024/03/Smarttab-F1071YI-A-new-1-600x600-1-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2024/03/Smarttab-F1071YI-A-new-1-600x600-1-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2024/03/Smarttab-F1071YI-A-new-1-600x600-1-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2024/03/Smarttab-F1071YI-A-new-1-600x600-1.webp 600w" sizes="auto, (max-width: 300px) 100vw, 300px" />				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="12795" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
+                    <div class="price-wrapper">
+                        @functions {
+							string FormatPrice(decimal? price)
+							{
+								return (price ?? 0)
+									.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
+							}
+						}
+						@if (p.SalePrice > 0)
+						{
+							<!-- Giá gốc -->
+							<span class="price old-price" style="display:block; text-decoration: line-through; color:#999;">
+								@FormatPrice(p.Price) ₫
+							</span>
 
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/may-tinh-bang-inno-smarttab-f1071yi-a/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Máy tính bảng INNOSMART Smarttab F1071YI A</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div><div class="product-small col has-hover product type-product post-16503 status-publish instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-he-thong-quan-ly-chia-khoa-thong-minh has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
+							<!-- Giá sale -->
+							<span class="price sale-price" style="display:block; color:#d00;">
+								@FormatPrice(p.SalePrice) ₫
+							</span>
+						}
+						else 
+						{
+							<!-- Giá thường -->
+							<span class="price" style="display:block;">
+								@FormatPrice(p.Price) ₫
+							</span>
+						}
 
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb200tm-lw/" aria-label="Tủ quản lý chìa khóa thông minh INNOSMART KB200TM-LW">
-						<div class="label-custom bcn"><span>Terminal</span></div><img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Tủ quản lý chìa khóa thông minh INNOSMART KB200TM-LW" decoding="async" loading="lazy" srcset="https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2025/07/KB200TM-LW.webp 900w" sizes="auto, (max-width: 300px) 100vw, 300px" />				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="16503" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
+						<span class="contact-price" style="display:block; margin-top:3px; color:red">
+							Liên hệ
+						</span>
+                    </div>
+                </div>
+            </div>
 
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb200tm-lw/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Tủ quản lý chìa khóa thông minh INNOSMART KB200TM-LW</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div><div class="product-small col has-hover product type-product post-16491 status-publish last instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-he-thong-quan-ly-chia-khoa-thong-minh has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
+        </div>
+    </div>
+		}
+	}
+    
 
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb50aio-lw/" aria-label="Tủ quản lý chìa khóa thông minh INNOSMART KB50AIO-LW">
-						<div class="label-custom bcn"><span>Standalone</span></div><img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Tủ quản lý chìa khóa thông minh INNOSMART KB50AIO-LW" decoding="async" loading="lazy" srcset="https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2025/07/Tu-quan-ly-chia-khoa-thong-minh-INNOSMART-KB50AIO-LW.webp 900w" sizes="auto, (max-width: 300px) 100vw, 300px" />				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="16491" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
+    <!-- Các product tiếp theo giữ nguyên cấu trúc tương tự -->
+</div>
 
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/tu-quan-ly-chia-khoa-thong-minh-innosmart-kb50aio-lw/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Tủ quản lý chìa khóa thông minh INNOSMART KB50AIO-LW</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div><div class="product-small col has-hover product type-product post-13151 status-publish first instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-am-thanh-di-dong has-post-thumbnail shipping-taxable purchasable product-type-simple">
-		<div class="col-inner">
-	
-	<div class="badge-container absolute left top z-1">
-
-	</div>
-		<div class="product-small box ">
-			<div class="box-image">
-				<div class="image-zoom">
-					<a href="https://inno.com.vn/am-thanh-di-dong-khong-day-inno-sm-a778/" aria-label="Âm thanh di động không dây INNOSMART SM-A778">
-						<img width="300" height="300" src="https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-300x300.webp" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" alt="Âm thanh di động không dây INNOSMART SM-A778" decoding="async" loading="lazy" srcset="https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-300x300.webp 300w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-400x400.webp 400w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-800x800.webp 800w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-280x280.webp 280w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-768x768.webp 768w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-100x100.webp 100w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-600x600.webp 600w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1-50x50.webp 50w, https://inno.com.vn/wp-content/uploads/2024/03/am-thanh-di-dong-SM-A778-1.webp 1000w" sizes="auto, (max-width: 300px) 100vw, 300px" />				</a>
-				</div>
-				<div class="image-tools is-small top right show-on-hover">
-								</div>
-				<div class="image-tools is-small hide-for-small bottom left show-on-hover">
-								</div>
-				<div class="image-tools grid-tools text-center hide-for-small bottom hover-slide-in show-on-hover">
-					  <a class="quick-view" data-prod="13151" href="#quick-view"><span class="dashicons dashicons-visibility"></span></a>			</div>
-						</div>
-
-			<div class="box-text box-text-products text-center grid-style-2">
-				<div class="title-wrapper"><p class="name product-title woocommerce-loop-product__title"><a href="https://inno.com.vn/am-thanh-di-dong-khong-day-inno-sm-a778/" class="woocommerce-LoopProduct-link woocommerce-loop-product__link">Âm thanh di động không dây INNOSMART SM-A778</a></p></div><div class="price-wrapper">
-		<span class="price"><span class="amount">Liên hệ</span></span>
-	</div>		</div>
-		</div>
-			</div>
-	</div>
-			</div>
-		</div>
 
 	
 

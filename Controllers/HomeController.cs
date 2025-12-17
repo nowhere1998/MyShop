@@ -20,8 +20,12 @@ namespace MyShop.Controllers
         {
             var categories = _context.Categories
                 .Include(c => c.Parent)
+                .Include(c => c.Products)
                 .OrderByDescending(c => c.Id)
                 .Where(c => c.ParentId != null && c.Products != null)
+                .Where(c => c.Products.Any())
+                .Skip(0)
+                .Take(10)
                 .ToList();
             var products = _context.Products
                 .ToList();
