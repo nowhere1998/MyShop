@@ -118,10 +118,12 @@
 													@FormatPrice(product.Price) ₫
 												</span>
 											}
-
-											<span class="contact-price" style="display:block; margin-top:3px; color:red">
-												Liên hệ
-											</span>
+											<a href="/lien-he">
+												<span class="contact-price" style="display:block; margin-top:3px; color:red">
+													Liên hệ
+												</span>
+											</a>
+											
 										</div>
 									</div>
 								</div>
@@ -323,23 +325,26 @@
 						<aside id="woocommerce_product_categories-13" class="widget woocommerce widget_product_categories">
 							<span class="widget-title shop-sidebar">Danh mục sản phẩm</span><div class="is-divider small"></div>
 							<ul class="product-categories">
-								@* list danh mục cha *@
-								@foreach(var p in ViewBag.CategoryParent)
+								@* list danh mục sản phẩm *@
+								@foreach(var pl2 in ViewBag.PagesL2)
 								{
-									<li class="cat-item cat-item-243 cat-parent">
-										<a href="/san-pham/@p.Slug">@p.Name</a>
-										<ul class='children'>
-											@foreach(var c in ViewBag.Category)
-											{
-												@if (c.ParentId == p.Id)
+									@if(pl2.Level.Substring(0, 5) == ViewBag.PageTinTucLevel)
+									{
+										<li class="cat-item cat-item-243 cat-parent">
+											<a href="@pl2.Link">@pl2.Name</a>
+											<ul class='children'>
+												@foreach(var pl3 in ViewBag.PagesL3)
 												{
-													<li class="cat-item cat-item-244"><a href="/san-pham/@p.Slug/@c.Slug">@c.Name</a></li>
+													@if (pl3.Level.Substring(0, 10) == pl2.Level)
+													{
+														<li class="cat-item cat-item-244"><a href="@pl3.Link">@pl3.Name</a></li>
+													}
 												}
-											}
-										</ul>
-									</li>
+											</ul>
+										</li>
+									}
 								}
-								@* end list danh mục cha *@
+								@* end list danh mục sản phẩm *@
 							</ul>
 						</aside>
 						<aside class="widget shop-sidebar">

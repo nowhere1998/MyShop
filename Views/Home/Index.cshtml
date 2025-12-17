@@ -46,85 +46,88 @@
             "friction": 0.6        }'
         >
         
-  @* start banner *@
-  <div class="banner has-hover" id="banner-1630907743">
-          <div class="banner-inner fill">
-        <div class="banner-bg fill" >
-            <div class="bg fill bg-fill "></div>
+	@* start banner *@
+	@foreach(var banner in ViewBag.Banners){
+			<div class="banner has-hover" id="banner-@banner.Id">
+			  <div class="banner-inner fill">
+			<div class="banner-bg fill" >
+				<div class="bg fill bg-fill "></div>
                                     
-                    </div>
+						</div>
 		
-        <div class="banner-layers container">
-            <div class="fill banner-link"></div>            
-   <div id="text-box-1440129412" class="text-box banner-layer x50 md-x85 lg-x85 y50 md-y85 lg-y85 res-text">
-       <div class="hover-bounce">              <div data-animate="fadeInUp">           <div class="text-box-content text dark text-shadow-2">
+			<div class="banner-layers container">
+				<div class="fill banner-link"></div>            
+	   <div id="text-box-1440129412" class="text-box banner-layer x50 md-x85 lg-x85 y50 md-y85 lg-y85 res-text">
+		   <div class="hover-bounce">              <div data-animate="fadeInUp">           <div class="text-box-content text dark text-shadow-2">
               
-              <div class="text-inner text-center">
+				  <div class="text-inner text-center">
                   
-	<div id="text-2026530580" class="text">
+		<div id="text-2026530580" class="text">
 		
-<p><strong>Giải pháp</strong></p>
+	@* <p><strong>Giải pháp</strong></p> *@
 		
-<style>
-#text-2026530580 {
-  line-height: 0.75;
-  text-align: center;
-}
-</style>
-	</div>
+	<style>
+	#text-2026530580 {
+	  line-height: 0.75;
+	  text-align: center;
+	}
+	</style>
+		</div>
 	
-	<div id="text-897089529" class="text">
+		<div id="text-897089529" class="text">
 		
-<h2 class="uppercase"><strong> THƯ VIỆN THÔNG MINH</strong></h2>
+	<h2 class="uppercase"><strong> @banner.Name</strong></h2>
 		
-<style>
-#text-897089529 {
-  text-align: center;
-  color: rgb(255,255,255);
-}
-#text-897089529 > * {
-  color: rgb(255,255,255);
-}
-</style>
-	</div>
+	<style>
+	#text-897089529 {
+	  text-align: center;
+	  color: rgb(255,255,255);
+	}
+	#text-897089529 > * {
+	  color: rgb(255,255,255);
+	}
+	</style>
+		</div>
 	
-	<div id="text-2102520162" class="text hide-for-small">
+		<div id="text-2102520162" class="text hide-for-small">
 		
-<p>Tối ưu hóa quản lý tài liệu, tra cứu thông tin và tạo điều kiện thuận lợi cho việc nghiên cứu học tập của học sinh.</p>
+	@* <p>Tối ưu hóa quản lý tài liệu, tra cứu thông tin và tạo điều kiện thuận lợi cho việc nghiên cứu học tập của học sinh.</p> *@
 		
-<style>
-#text-2102520162 {
-  font-size: 1.55rem;
-  text-align: center;
-  color: rgb(255,255,255);
-}
-#text-2102520162 > * {
-  color: rgb(255,255,255);
-}
-</style>
-	</div>
+	<style>
+	#text-2102520162 {
+	  font-size: 1.55rem;
+	  text-align: center;
+	  color: rgb(255,255,255);
+	}
+	#text-2102520162 > * {
+	  color: rgb(255,255,255);
+	}
+	</style>
+		</div>
 	
-              </div>
-           </div>
-       </div>              </div>       
+				  </div>
+			   </div>
+		   </div>              </div>       
 
-    </div>
+		</div>
  
-        </div>
-      </div>
+			</div>
+		  </div>
 
             
-<style>
-#banner-1630907743 {
-  padding-top: 40%;
-}
-#banner-1630907743 .bg.bg-loaded {
-  background-image: url(/user/assets/wp-content/uploads/2024/03/BANNER-PAGE-INNO-18-03.webp);
-}
-</style>
-  </div>
+	<style>
+	#banner-@(banner.Id) {
+	  padding-top: 40%;
+	}
+	#banner-@(banner.Id) .bg.bg-loaded {
+	  background-image: url(@banner.Image);
+	}
+	</style>
+	  </div>
+	}
+  
 
-  @* end banner *@
+	@* end banner *@
 
   @* <div class="banner has-hover" id="banner-538845971">
           <div class="banner-inner fill">
@@ -638,9 +641,12 @@
 													@FormatPrice(p.Price) ₫
 												</span>
 											}	
-											<span class="contact-price" style="display:block; margin-top:3px; color:white; font-weight:bold">
-												Liên hệ
-											</span>
+											<a href="/lien-he">
+												<span class="contact-price" style="display:block; margin-top:3px; color:white; font-weight:bold">
+													Liên hệ
+												</span>
+											</a>
+											
 </div>		</div>
 	</div>
 		</div>

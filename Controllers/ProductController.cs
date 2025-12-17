@@ -154,6 +154,7 @@ namespace MyShop.Controllers
 			);
 
 			products = products
+				.Where(p => p.Status == "active")
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
 				.ToList();
@@ -168,7 +169,24 @@ namespace MyShop.Controllers
 				.Where(x => x.Products.Any())
 				.ToList();
 
-			ViewBag.Page = page;
+			//Lấy page danh mục
+            var pagesL2 = _context.Pages
+                .OrderBy(x => x.Ord)
+                .Where(x => x.Level != null && x.Level.Length == 10 && x.Active == 1)
+                .ToList();
+
+            var pagesL3 = _context.Pages
+                .OrderBy(x => x.Ord)
+                .Where(x => x.Level != null && x.Level.Length == 15 && x.Active == 1)
+                .ToList();
+
+            var pageSanPham = _context.Pages.FirstOrDefault(x => x.Name.Trim().ToLower() == "sản phẩm");
+
+            ViewBag.PagesL2 = pagesL2;
+            ViewBag.PagesL3 = pagesL3;
+            ViewBag.PageTinTucLevel = pageSanPham?.Level;
+
+            ViewBag.Page = page;
 			ViewBag.TotalPages = totalPages;
 			ViewBag.CategoryParent = categoryParent;
 			ViewBag.Category = categories;

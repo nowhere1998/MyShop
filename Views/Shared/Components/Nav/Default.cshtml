@@ -14,8 +14,16 @@
 
                 <div class="flex-col hide-for-medium flex-right">
                     <ul class="nav top-bar-nav nav-right nav-small  nav-divided">
-                        <li id="menu-item-13189" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13189 menu-item-design-default"><a href="/tin-tuc" class="nav-top-link">Tin tức</a></li>
-                        <li id="menu-item-13190" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13190 menu-item-design-default"><a href="/lien-he" class="nav-top-link">Liên hệ</a></li>
+                        @foreach(var pl1 in ViewBag.PagesL1)
+                        {
+                            @if(pl1.Page.Name == "tin tức" || pl1.Page.Name == "liên hệ")
+                            {
+                                <li id="menu-item-13189" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13189 menu-item-design-default">
+                                    <a href="@pl1.Page.Link" class="nav-top-link" style="text-transform:capitalize">@pl1.Page.Name</a>
+                                </li>
+                            }
+                        }
+                        
                         @* <li id="menu-item-13191" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13191 menu-item-design-default menu-item-has-block has-dropdown">
                         <a href="#" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">Catalogue<i class="icon-angle-down"></i></a><div class="sub-menu nav-dropdown">
                         <div class="row row-collapse row-full-width" id="row-55742565">
@@ -161,124 +169,77 @@
                 <!-- Right Elements -->
                 <div class="flex-col hide-for-medium flex-right">
                     <ul class="header-nav header-nav-main nav nav-right  nav-spacing-xlarge nav-uppercase nav-prompts-overlay">
-                        <li id="menu-item-9937" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9937 menu-item-design-default"><a href="/" class="nav-top-link">Trang chủ</a></li>
-                        <li id="menu-item-12350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12350 menu-item-design-container-width menu-item-has-block has-dropdown">
-                            <a href="/san-pham" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">Sản phẩm<i class="icon-angle-down"></i></a><div class="sub-menu nav-dropdown">
-                                <section class="section" id="section_916592305">
-                                    <div class="bg section-bg fill bg-fill  bg-loaded">
-                                    </div>
-
-
-
-                                    <div class="section-content relative">
-
-                                        @* start menu sản phẩm *@
-                                        
-                                        <div class="row row-small" id="row-2090416353">
-                                            @foreach (Category pc in ViewBag.ParentCategories)
-                                            {
-                                                <div id="col-1884509000" class="col medium-3 small-6 large-3">
-                                                    <div class="">
-                                                        <div id="text-820454564" class="text">
-                                                            <p><strong>@pc.Name</strong></p>
-                                                        </div>
-                                                        <div class="ux-menu stack stack-col justify-start">
-                                                            @foreach(Category c in ViewBag.Categories)
-                                                            {
-                                                                @if(c.ParentId == pc.Id)
-                                                                {
-                                                                    <div class="ux-menu-link flex menu-item">
-                                                                        <a class="ux-menu-link__link flex" href="/san-pham/@pc.Slug/@c.Slug">
-                                                                            <i class="ux-menu-link__icon text-center icon-angle-right"></i>			
-                                                                            <span class="ux-menu-link__text">
-                                                                                @c.Name
-                                                                            </span>
-                                                                        </a>
-                                                                    </div>
-                                                                }
-                                                            }
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
-                                        </div> 
-                                        @* end menu sản phẩm *@
-                                    </div>
-
-                                </section>
-                            </div>
-                        </li>
-                        <li id="menu-item-237" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-237 menu-item-design-container-width menu-item-has-block has-dropdown">
-                            <a href="/giai-phap" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">Giải pháp<i class="icon-angle-down"></i></a><div class="sub-menu nav-dropdown">
-                                <section class="section" id="section_684967678">
-                                    <div class="bg section-bg fill bg-fill  bg-loaded">
-                                    </div>
-
-
-
-                                    <div class="section-content relative">
-
-                                        @* start menu giải pháp *@
-                                        <div class="row row-small" id="row-457532805">
-
-
-                                            <div id="col-654135007" class="col medium-3 small-6 large-3">
-                                                <div class="col-inner">
-
-
-
-                                                    <div id="text-2960779738" class="text">
-
-
-                                                        <p><strong>Phòng học hiện đại</strong></p>
-
-                                                        <style>
-                                                            #text-2960779738 {
-                                                                color: #dd3333;
-                                                            }
-
-                                                                #text-2960779738 > * {
-                                                                    color: #dd3333;
-                                                                }
-                                                        </style>
-                                                    </div>
-
-                                                    <div class="ux-menu stack stack-col justify-start">
-
-
-                                                        <div class="ux-menu-link flex menu-item">
-                                                            <a class="ux-menu-link__link flex" href="#">
-                                                                <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                                    Phòng học hiện đại khối mầm non
-                                                                </span>
-                                                            </a>
-                                                        </div>
-
-
-                                                    </div>
-
-
-                                                </div>
+                        @* list pages *@
+                        @foreach(var pl1 in ViewBag.PagesL1)
+                        {
+                            @if (pl1.HasChild && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <li id="menu-item-12350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12350 menu-item-design-container-width menu-item-has-block has-dropdown">
+                                    <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">
+                                        @pl1.Page.Name<i class="icon-angle-down"></i>
+                                    </a>
+                                    <div class="sub-menu nav-dropdown">
+                                        <section class="section" id="section_916592305">
+                                            <div class="bg section-bg fill bg-fill  bg-loaded">
                                             </div>
 
 
-                                        </div>
-                                        @* end menu giải pháp *@
-                                    </div>
 
-                                </section>
-                            </div>
-                        </li>
-                        <li id="menu-item-13196" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13196 menu-item-design-default has-dropdown">
-                            <a href="#" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">Dịch vụ<i class="icon-angle-down"></i></a>
-                            <ul class="sub-menu nav-dropdown nav-dropdown-simple">
-                                <li id="menu-item-15582" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15582"><a href="/dich-vu-lap-dat">Dịch vụ lắp đặt – bảo trì – sửa chữa</a></li>
-                                <li id="menu-item-15706" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15706"><a href="/dich-vu-cho-thue">Dịch vụ cho thuê thiết bị</a></li>
-                                <li id="menu-item-15583" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15583"><a href="/quy-dinh-bao-hanh">Quy định bảo hành</a></li>
-                            </ul>
-                        </li>
-                        <li id="menu-item-9937" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-9937 menu-item-design-default"><a href="/ho-tro" class="nav-top-link">Hỗ trợ</a></li>
-                        <li id="menu-item-238" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-238 menu-item-design-default"><a href="/gioi-thieu" class="nav-top-link">Giới thiệu</a></li>
+                                            <div class="section-content relative">
+
+                                                @* start menu sản phẩm *@
+
+                                                <div class="row row-small" id="row-2090416353">
+                                                    @foreach (var pl2 in ViewBag.PagesL2)
+                                                    {
+                                                        @if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
+                                                        {
+                                                            <div id="col-1884509000" class="col medium-3 small-6 large-3">
+                                                                <div class="">
+                                                                    <div id="text-820454564" class="text">
+                                                                        <a href="@pl2.Link">
+                                                                            <p><strong>@pl2.Name</strong></p>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="ux-menu stack stack-col justify-start">
+                                                                        @foreach (var pl3 in ViewBag.PagesL3)
+                                                                        {
+                                                                            @if (pl3.Level.Substring(0, 10) == pl2.Level)
+                                                                            {
+                                                                                <div class="ux-menu-link flex menu-item">
+                                                                                    <a class="ux-menu-link__link flex" href="@pl3.Link">
+                                                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>
+                                                                                        <span class="ux-menu-link__text">
+                                                                                            @pl3.Name
+                                                                                        </span>
+                                                                                    </a>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                                @* end menu sản phẩm *@
+                                            </div>
+
+                                        </section>
+                                    </div>
+                                </li>
+                            }
+                            else if (!pl1.HasChild && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <li id="menu-item-12350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12350 menu-item-design-container-width menu-item-has-block has-dropdown">
+                                    <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">
+                                        @pl1.Page.Name
+                                    </a>
+                                </li>
+                            }
+                        }
+                        
+                        @* end list page *@
                         <li class="header-divider"></li>
                         <li class="header-block">
                             <div class="header-block-block-1">
@@ -395,54 +356,56 @@
 
                                 <div class="row row-small" id="row-2113312476">
 
-                                    @* start menu side bar  *@
-                                     @foreach(Category pc in ViewBag.ParentCategories)
-                                     {
-                                        <div id="col-566444468" class="col medium-3 small-6 large-3">
-                                            <div class="col-inner">
+                                    @* list sản phẩm side bar  *@
+                                    @foreach(var pl2 in ViewBag.PagesL2)
+                                    {
+                                        @if (pl2.Level.Substring(0, 5) == ViewBag.PageTinTucLevel)
+                                        {
+                                            <div id="col-566444468" class="col medium-6 small-6 large-6">
+                                                <div class="col-inner">
 
 
 
-                                                <div id="text-1150801981" class="text">
+                                                    <div id="text-1150801981" class="text">
 
+                                                        <a href="@pl2.Link">
+                                                            <p><strong>@pl2.Name</strong></p>
+                                                        </a>
 
-                                                    <p><strong>@pc.Name</strong></p>
-
-                                                    <style>
-                                                        #text-1150801981 {
-                                                            color: #dd3333;
-                                                        }
-
-                                                            #text-1150801981 > * {
+                                                        <style>
+                                                            #text-1150801981 {
                                                                 color: #dd3333;
                                                             }
-                                                    </style>
-                                                </div>
 
-                                                <div class="ux-menu stack stack-col justify-start">
-                                                    @foreach(Category c in ViewBag.Categories)
-                                                    {
-                                                        @if(c.ParentId == pc.Id)
+                                                                #text-1150801981 > * {
+                                                                    color: #dd3333;
+                                                                }
+                                                        </style>
+                                                    </div>
+
+                                                    <div class="ux-menu stack stack-col justify-start">
+                                                        @foreach (var pl3 in ViewBag.PagesL3)
                                                         {
-                                                            <div class="ux-menu-link flex menu-item">
-                                                                <a class="ux-menu-link__link flex" href="/san-pham/@pc.Slug/@c.Slug">
-                                                                    <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
-                                                                        @c.Name
-                                                                    </span>
-                                                                </a>
-                                                            </div>
+                                                            @if (pl3.Level.Substring(0, 10) == pl2.Level)
+                                                            {
+                                                                <div class="ux-menu-link flex menu-item">
+                                                                    <a class="ux-menu-link__link flex" href="@pl3.Link">
+                                                                        <i class="ux-menu-link__icon text-center icon-angle-right"></i>			<span class="ux-menu-link__text">
+                                                                            @pl3.Name
+                                                                        </span>
+                                                                    </a>
+                                                                </div>
+                                                            }
                                                         }
-                                                    }
+                                                    </div>
+
+
                                                 </div>
-
-
                                             </div>
-                                        </div>
-                                     }
- {
-                                    
-
-                                    @* end menu side bar *@
+                                        } 
+                                    }
+                                   
+                                    @* end list sản phẩm side bar *@
 
                                 </div>
 
@@ -453,31 +416,44 @@
                 </li>
             </ul>
             <ul class="nav nav-sidebar nav-vertical nav-uppercase" data-tab="1">
-                <li id="menu-item-16088" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-14718 current_page_item menu-item-16088"><a href="/" aria-current="page">Trang chủ</a></li>
-                <li id="menu-item-16091" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16091"><a href="/gioi-thieu">Giới thiệu</a></li>
-                <li id="menu-item-16090" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-16090">
-                    <a href="/giai-phap">Giải pháp</a>
-                    @* start menu sidebar list giải pháp  *@
-                    <ul class="sub-menu nav-sidebar-ul children">
-                        <li id="menu-item-16097" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-16097">
-                            <a href="#">Phòng học hiện đại</a>
-                            <ul class="sub-menu nav-sidebar-ul">
-                                <li id="menu-item-16110" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16110"><a href="#">Giải pháp phòng học hiện đại khối mầm non</a></li>
+                @* list menu sidebar *@
+                @foreach(var pl1 in ViewBag.PagesL1)
+                {
+                    @if (pl1.HasChild && !string.Equals(pl1.Page.Name?.Trim(), "sản phẩm", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <li id="menu-item-16090" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-16090">
+                            <a href="@pl1.Page.Link">@pl1.Page.Name</a>
+                            <ul class="sub-menu nav-sidebar-ul children">
+                                @foreach(var pl2 in ViewBag.PagesL2)
+                                {
+                                    @if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
+                                    {
+                                        <li id="menu-item-16097" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-16097">
+                                            <a href="@pl2.Link">@pl2.Name</a>
+                                            <ul class="sub-menu nav-sidebar-ul">
+                                                @foreach(var pl3 in ViewBag.PagesL3){
+                                                    @if (pl3.Level.Substring(0, 10) == pl2.Level)
+                                                    {
+                                                        <li id="menu-item-16110" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16110">
+                                                            <a href="@pl3.Link">@pl3.Name</a>
+                                                        </li>
+                                                    } 
+                                                }
+                                            </ul>
+                                        </li>
+                                    }
+                                }
                             </ul>
                         </li>
-                    </ul>
-                    @* end menu sidebar list giải pháp *@
-                </li>
-                <li id="menu-item-16093" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-16093">
-                    <a href="#">Dịch vụ</a>
-                    <ul class="sub-menu nav-sidebar-ul children">
-                        <li id="menu-item-16095" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16095"><a href="/dich-vu-lap-dat">Dịch vụ lắp đặt – bảo trì – sửa chữa</a></li>
-                        <li id="menu-item-16094" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16094"><a href="/dich-vu-cho-thue">Dịch vụ cho thuê thiết bị</a></li>
-                        <li id="menu-item-16103" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16103"><a href="/quy-dinh-bao-hanh">Quy định bảo hành</a></li>
-                    </ul>
-                </li>
-                <li id="menu-item-16089" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16089"><a href="/tin-tuc">Tin tức</a></li>
-                <li id="menu-item-16092" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-16092"><a href="/lien-he">Liên hệ</a></li>
+                    }
+                    else if (!pl1.HasChild && !string.Equals(pl1.Page.Name?.Trim(), "sản phẩm", StringComparison.OrdinalIgnoreCase))
+                    {
+                        <li id="menu-item-16088" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-14718 current_page_item menu-item-16088">
+                            <a href="@pl1.Page.Link" aria-current="page">@pl1.Page.Name</a>
+                        </li>
+                    }
+                }
+                @* end list menu sidebar *@
                 <li class="html header-social-icons ml-0">
                     <div class="social-icons follow-icons"><a href="http://url/" target="_blank" rel="noopener noreferrer nofollow" data-label="Facebook" class="icon plain facebook tooltip" title="Follow on Facebook" aria-label="Follow on Facebook"><i class="icon-facebook"></i></a><a href="http://url/" target="_blank" rel="noopener noreferrer nofollow" data-label="Instagram" class="icon plain instagram tooltip" title="Follow on Instagram" aria-label="Follow on Instagram"><i class="icon-instagram"></i></a><a href="http://url/" data-label="Twitter" target="_blank" rel="noopener noreferrer nofollow" class="icon plain twitter tooltip" title="Follow on Twitter" aria-label="Follow on Twitter"><i class="icon-twitter"></i></a><a href="mailto:your@email" data-label="E-mail" target="_blank" rel="nofollow" class="icon plain email tooltip" title="Send us an email" aria-label="Send us an email"><i class="icon-envelop"></i></a></div>
                 </li>

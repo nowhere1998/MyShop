@@ -23,14 +23,20 @@ namespace MyShop.Controllers
                 .Include(c => c.Products)
                 .OrderByDescending(c => c.Id)
                 .Where(c => c.ParentId != null && c.Products != null)
-                .Where(c => c.Products.Any())
+                .Where(c => c.Products.Any(p => p.Status == "active"))
                 .Skip(0)
                 .Take(10)
                 .ToList();
             var products = _context.Products
+                .Where(p => p.Status == "active")
+                .ToList();
+            var banners = _context.Advertises
+                .Where(x => x.Position == 1)
+                .OrderBy(x => x.Ord)
                 .ToList();
             ViewBag.Categories = categories;
             ViewBag.Products = products;
+            ViewBag.Banners = banners;  
             return View();
         }
 
