@@ -10,7 +10,7 @@
 
     <h3 class="text-primary mb-3">Thêm bài viết</h3>
 
-    <form asp-action="Create" method="post">
+    <form asp-action="Create" method="post" enctype="multipart/form-data">
 
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -57,7 +57,13 @@
             <span asp-validation-for="Content" class="text-danger"></span>
         </div>
 
-       
+
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Hình ảnh</label>
+            <input name="photo" type="file" class="form-control" />
+        </div>
+
         <div class="mt-5">
             <a asp-action="Index" class="btn btn-secondary">Trở lại</a>
             <button type="submit" class="btn btn-success">

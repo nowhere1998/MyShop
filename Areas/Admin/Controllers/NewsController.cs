@@ -79,8 +79,10 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(News news)
+        public async Task<IActionResult> Create(News news , IFormFile? photo)
         {
+            
+
             var exists = await _context.News.AnyAsync(p => p.Slug == news.Slug);
             if (exists)
             {
@@ -88,6 +90,20 @@ namespace MyShop.Areas.Admin.Controllers
             }
             if (ModelState.IsValid)
             {
+
+                var file = HttpContext.Request.Form.Files.FirstOrDefault();
+                if (photo != null && photo.Length != 0)
+                {
+                    // Lưu file và đường dẫn
+                    var filePath = Path.Combine("wwwroot/images", photo.FileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await photo.CopyToAsync(stream);
+                    }
+
+                    // Gán đường dẫn cho thuộc tính Thumbnail
+                    news.Hinhanh = "/images/" + photo.FileName;
+                }
 
                 // Người đăng bài = user đang login
                 var userIdClaim = User.FindFirst("UserId");
@@ -132,13 +148,29 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,Title,Slug,Excerpt,Content,AuthorId,GroupId,Status,PublishedAt,CreatedAt,UpdatedAt")] News news)
+        public async Task<IActionResult> Edit(long id,News news , IFormFile? photo, string? pictureOld)
         {
             if (id != news.Id)
             {
                 return NotFound();
             }
-            var exists = await _context.Pages.AnyAsync(p => p.Tag == news.Slug && p.Id != news.Id);
+            if (photo != null && photo.Length > 0)
+            {
+                // Đường dẫn lưu ảnh mới
+                var filePath = Path.Combine("wwwroot/images", photo.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
+
+                news.Hinhanh = "/images/" + photo.FileName;
+            }
+            else
+            {
+                news.Hinhanh = pictureOld;
+            }
+            var exists = await _context.News.AnyAsync(p => p.Slug == news.Slug && p.Id != news.Id);
             if (exists)
             {
                 ModelState.AddModelError("Title", "Tên đã tồn tại, vui lòng đổi tên khác.");

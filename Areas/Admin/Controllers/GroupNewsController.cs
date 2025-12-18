@@ -131,7 +131,7 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,GroupNews model , IFormFile? photo, string pictureOld)
+        public async Task<IActionResult> Edit(int id,GroupNews model , IFormFile? photo, string? pictureOld)
         {
             if (id != model.Id)
             {

@@ -167,7 +167,7 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            var exists = await _context.GroupNews.AnyAsync(p => p.Tag == product.Slug && p.Id != product.Id);
+            var exists = await _context.Products.AnyAsync(p => p.Slug == product.Slug && p.Id != product.Id);
 
             if (exists)
             {
