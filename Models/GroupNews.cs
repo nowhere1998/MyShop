@@ -28,6 +28,7 @@ namespace MyShop.Models
         public string? Keyword { get; set; }
 
         [Display(Name = "Thứ tự")]
+        [Required(ErrorMessage = "Thứ tự không được để trống")]
         public int? Ord { get; set; }
 
         [Display(Name = "Độ ưu tiên")]

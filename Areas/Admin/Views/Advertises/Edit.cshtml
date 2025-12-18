@@ -47,7 +47,7 @@
                 <input asp-for="Image" class=""/>
                 <span asp-validation-for="Image" class="text-danger"></span>
             <div>
-                <img src="" id="PictureView" width="100" />
+                <img id="PictureView" class="mt-3" src="@(string.IsNullOrEmpty(Model.Image) ? "" : Model.Image)" width="100" />
             </div>
             <span asp-validation-for="Image" class="text-danger"></span>
          </div>

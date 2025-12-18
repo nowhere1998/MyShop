@@ -22,10 +22,28 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/News
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            var dbMyShopContext = _context.News.Include(n => n.Author).Include(n => n.Group);
-            return View(await dbMyShopContext.ToListAsync());
+            var query = _context.News.OrderByDescending(x => x.Id).Include(x => x.Group).Include(x=> x.PostedBy).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.Title.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.Id);
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
+
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
         }
 
         // GET: Admin/News/Details/5
@@ -37,7 +55,7 @@ namespace MyShop.Areas.Admin.Controllers
             }
 
             var news = await _context.News
-                .Include(n => n.Author)
+                .Include(n => n.PostedBy)
                 .Include(n => n.Group)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (news == null)
@@ -52,7 +70,7 @@ namespace MyShop.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Id");
+            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name");
             return View();
         }
 
@@ -61,18 +79,36 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Slug,Excerpt,Content,AuthorId,GroupId,Status,PublishedAt,CreatedAt,UpdatedAt")] News news)
+        public async Task<IActionResult> Create(News news)
         {
+            var exists = await _context.News.AnyAsync(p => p.Slug == news.Slug);
+            if (exists)
+            {
+                ModelState.AddModelError("Title", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            }
             if (ModelState.IsValid)
             {
-                _context.Add(news);
+
+                // Người đăng bài = user đang login
+                var userIdClaim = User.FindFirst("UserId");
+                if (userIdClaim != null)
+                {
+                    news.PostedById = long.Parse(userIdClaim.Value);
+                }
+
+                // Ngày tạo
+                news.CreatedAt = DateTime.Now;
+                news.UpdatedAt = DateTime.Now;
+
+                _context.News.Add(news);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", news.AuthorId);
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Id", news.GroupId);
+
+            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name", news.GroupId);
             return View(news);
         }
+
 
         // GET: Admin/News/Edit/5
         public async Task<IActionResult> Edit(long? id)
@@ -87,8 +123,7 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", news.AuthorId);
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Id", news.GroupId);
+            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name", news.GroupId);
             return View(news);
         }
 
@@ -103,7 +138,11 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
+            var exists = await _context.Pages.AnyAsync(p => p.Tag == news.Slug && p.Id != news.Id);
+            if (exists)
+            {
+                ModelState.AddModelError("Title", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -124,44 +163,21 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", news.AuthorId);
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Id", news.GroupId);
+            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name", news.GroupId);
             return View(news);
         }
 
         // GET: Admin/News/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
+            var model = _context.News.FirstOrDefault(a => a.Id == id);
+            if (model == null)
                 return NotFound();
-            }
 
-            var news = await _context.News
-                .Include(n => n.Author)
-                .Include(n => n.Group)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (news == null)
-            {
-                return NotFound();
-            }
+            _context.News.Remove(model);
+            _context.SaveChanges();
 
-            return View(news);
-        }
-
-        // POST: Admin/News/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var news = await _context.News.FindAsync(id);
-            if (news != null)
-            {
-                _context.News.Remove(news);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
 
         private bool NewsExists(long id)

@@ -15,18 +15,36 @@ namespace MyShop.Areas.Admin.Controllers
     public class GroupNewsController : Controller
     {
         private readonly DbMyShopContext _context;
-
+        static string Level = "";
         public GroupNewsController(DbMyShopContext context)
         {
             _context = context;
         }
 
         // GET: Admin/GroupNews
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            return View(await _context.GroupNews.ToListAsync());
-        }
+            var query = _context.GroupNews.OrderBy(x => x.Level).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderBy(x => x.Level);
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
 
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
+        }
         // GET: Admin/GroupNews/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -46,8 +64,10 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/GroupNews/Create
-        public IActionResult Create()
+        public IActionResult Create(string? strLevel)
         {
+            if (strLevel != null)
+                Level = strLevel;
             return View();
         }
 
@@ -56,15 +76,38 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Tag,Level,Title,Description,Keyword,Ord,Priority,Index,Active,Lang,Type1,Type2,Type3,Type4,Type5,Hinhanh")] GroupNews groupNews)
+        public async Task<IActionResult> Create(GroupNews model, IFormFile? photo)
         {
+            // ✅ Xử lý upload ảnh
+            var file = HttpContext.Request.Form.Files.FirstOrDefault();
+            if (photo != null && photo.Length != 0)
+            {
+                // Lưu file và đường dẫn
+                var filePath = Path.Combine("wwwroot/images", photo.FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
+
+                // Gán đường dẫn cho thuộc tính Thumbnail
+                model.Hinhanh = "/images/" + photo.FileName;
+            }
+
+            var exists = await _context.GroupNews.AnyAsync(p => p.Tag == model.Tag);
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            }
+            model.Level = Level + model.Level;
+            model.Level = Level + "00000";
+            Level = "";
             if (ModelState.IsValid)
             {
-                _context.Add(groupNews);
+                _context.Add(model);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(groupNews);
+            return View(model);
         }
 
         // GET: Admin/GroupNews/Edit/5
@@ -88,23 +131,47 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Tag,Level,Title,Description,Keyword,Ord,Priority,Index,Active,Lang,Type1,Type2,Type3,Type4,Type5,Hinhanh")] GroupNews groupNews)
+        public async Task<IActionResult> Edit(int id,GroupNews model , IFormFile? photo, string pictureOld)
         {
-            if (id != groupNews.Id)
+            if (id != model.Id)
             {
                 return NotFound();
             }
+            var exists = await _context.GroupNews.AnyAsync(p => p.Tag == model.Tag && p.Id != model.Id);
 
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng nhập tên khác.");
+            }
+            if (photo != null && photo.Length > 0)
+            {
+                // Đường dẫn lưu ảnh mới
+                var filePath = Path.Combine("wwwroot/images", photo.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await photo.CopyToAsync(stream);
+                }
+
+               model.Hinhanh = "/images/" + photo.FileName;
+            }
+            else
+            {
+                model.Hinhanh = pictureOld;
+            }
+            model.Level = Level + model.Level;
+            model.Level = Level + "00000";
+            Level = "";
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(groupNews);
+                    _context.Update(model);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GroupNewsExists(groupNews.Id))
+                    if (!GroupNewsExists(model.Id))
                     {
                         return NotFound();
                     }
@@ -115,41 +182,28 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(groupNews);
+            return View(model);
         }
 
         // GET: Admin/GroupNews/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var model = _context.Pages.FirstOrDefault(a => a.Id == id);
+            if (model == null) return NotFound();
 
-            var groupNews = await _context.GroupNews
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (groupNews == null)
-            {
-                return NotFound();
-            }
+            string levelPrefix = model.Level; // ví dụ "00001"
 
-            return View(groupNews);
+            // Xóa cha + toàn bộ con cháu
+            var toDelete = _context.Pages
+                .Where(a => a.Level.StartsWith(levelPrefix))
+                .ToList();
+
+            _context.Pages.RemoveRange(toDelete);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
-        // POST: Admin/GroupNews/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var groupNews = await _context.GroupNews.FindAsync(id);
-            if (groupNews != null)
-            {
-                _context.GroupNews.Remove(groupNews);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool GroupNewsExists(int id)
         {
