@@ -9,5 +9,11 @@ namespace MyShop.Controllers
 		{
 			return View();
 		}
-	}
+
+        [Route("chi-tiet-tin-tuc")]
+        public IActionResult Chitiet()
+        {
+            return View("chi-tiet-tin-tuc");
+        }
+    }
 }

@@ -21,7 +21,10 @@ namespace MyShop.Controllers.Components
 				.Where(c => c.ParentId != null)
 				.ToList();
             var pagesL1 = _context.Pages
-				.Where(l1 => l1.Level != null && l1.Level.Length == 5 && l1.Active == 1)
+				.Where(l1 => l1.Level != null 
+					&& l1.Level.Length == 5 
+					&& l1.Active == 1
+					&& l1.Position == 1)
 				.OrderBy(l1 => l1.Ord)
 				.Select(l1 => new PageL1
 				{
@@ -35,15 +38,23 @@ namespace MyShop.Controllers.Components
 
             var pagesL2 = _context.Pages
 				.OrderBy(x => x.Ord)
-				.Where(x => x.Level != null && x.Level.Length == 10 && x.Active == 1)
+				.Where(x => x.Level != null 
+					&& x.Level.Length == 10 
+					&& x.Active == 1
+					&& x.Position == 1)
 				.ToList();
 
 			var pagesL3 = _context.Pages
 				.OrderBy(x => x.Ord)
-				.Where(x => x.Level != null && x.Level.Length == 15 && x.Active == 1)
+				.Where(x => x.Level != null 
+					&& x.Level.Length == 15 
+					&& x.Active == 1
+					&& x.Position == 1)
 				.ToList();
 
-			var pageSanPham = _context.Pages.FirstOrDefault(x => x.Name.Trim().ToLower() == "sản phẩm");
+			var pageSanPham = _context.Pages
+				.Where(x => x.Position == 1 && x.Active == 1)
+				.FirstOrDefault(x => x.Name.Trim().ToLower() == "sản phẩm");
 
 			ViewBag.Categories = categories;
 			ViewBag.ParentCategories = parentCategories;

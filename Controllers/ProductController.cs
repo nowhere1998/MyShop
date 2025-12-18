@@ -180,7 +180,9 @@ namespace MyShop.Controllers
                 .Where(x => x.Level != null && x.Level.Length == 15 && x.Active == 1)
                 .ToList();
 
-            var pageSanPham = _context.Pages.FirstOrDefault(x => x.Name.Trim().ToLower() == "sản phẩm");
+            var pageSanPham = _context.Pages
+				.Where(x => x.Position == 1 && x.Active == 1)
+				.FirstOrDefault(x => x.Name.Trim().ToLower() == "sản phẩm");
 
             ViewBag.PagesL2 = pagesL2;
             ViewBag.PagesL3 = pagesL3;

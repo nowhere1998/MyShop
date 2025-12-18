@@ -34,7 +34,8 @@ namespace MyShop.Controllers
                 .Where(x => x.Position == 1)
                 .OrderBy(x => x.Ord)
                 .ToList();
-            ViewBag.Categories = categories;
+            
+			ViewBag.Categories = categories;
             ViewBag.Products = products;
             ViewBag.Banners = banners;  
             return View();
