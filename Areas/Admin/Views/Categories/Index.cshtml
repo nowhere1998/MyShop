@@ -6,7 +6,7 @@
 
 <body class="bg-light">
 
-    <main class="py-4 container">
+    <main class="py-4">
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3 class="text-primary">Danh sách danh mục</h3>
@@ -34,6 +34,12 @@
                        placeholder="Tìm theo tên..." />
             </div>
         </form>
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger text-center">
+                @TempData["Error"]
+            </div>
+        }
         <table class="table table-hover align-middle" style="border-collapse:collapse;">
             <thead class="table-primary">
                 <tr style="border-bottom:2px solid #cfd4da;">

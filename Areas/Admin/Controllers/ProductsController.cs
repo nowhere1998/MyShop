@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyShop.Models;
 using System;
 using System.Collections.Generic;
@@ -121,7 +122,7 @@ namespace MyShop.Areas.Admin.Controllers
             var exists = await _context.Products.AnyAsync(p => p.Slug == model.Slug);
             if (exists)
             {
-                ModelState.AddModelError("Name", "Tên sản phẩm đã tồn tại, vui lòng đổi tên khác.");
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
             }
             if (ModelState.IsValid)
             {
@@ -165,6 +166,12 @@ namespace MyShop.Areas.Admin.Controllers
             if (id != product.Id)
             {
                 return NotFound();
+            }
+            var exists = await _context.GroupNews.AnyAsync(p => p.Tag == product.Slug && p.Id != product.Id);
+
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng nhập tên khác.");
             }
 
             if (ModelState.IsValid)

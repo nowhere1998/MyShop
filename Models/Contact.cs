@@ -18,8 +18,8 @@ namespace MyShop.Models
         [Display(Name = "Số điện thoại")]
         public string? Phone { get; set; }
 
-        [Display(Name = "Địa chỉ")]
-        public string? Address { get; set; }
+        [Display(Name = "Tin nhắn")]
+        public string? Message { get; set; }
 
         [Display(Name = "Ngày tạo")]
         public DateTime? CreatedAt { get; set; }

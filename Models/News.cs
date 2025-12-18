@@ -21,8 +21,11 @@ namespace MyShop.Models
         [Display(Name = "Nội dung")]
         public string? Content { get; set; }
 
-        [Display(Name = "Mã tác giả")]
-        public long? AuthorId { get; set; }
+        [Display(Name = "Người đăng bài")]
+        public long? PostedById { get; set; }
+
+        [Display(Name = "Tác giả")]
+        public string? AuthorName { get; set; }
 
         [Display(Name = "Nhóm tin tức")]
         public int? GroupId { get; set; }
@@ -39,7 +42,7 @@ namespace MyShop.Models
         [Display(Name = "Ngày cập nhật")]
         public DateTime? UpdatedAt { get; set; }
 
-        public virtual User? Author { get; set; }
+        public virtual User? PostedBy { get; set; }
 
         public virtual GroupNews? Group { get; set; }
     }

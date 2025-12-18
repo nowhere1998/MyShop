@@ -81,6 +81,11 @@ namespace MyShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Page model)
         {
+            var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag);
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            }
             if (!ModelState.IsValid)
             {
                 LoadCategories(); // ← BẮT BUỘC
@@ -113,6 +118,7 @@ namespace MyShop.Areas.Admin.Controllers
                 LoadCategories();
                 return NotFound();
             }
+
             Level = page.Level.Substring(0, page.Level.Length - 5);
             LoadCategories();
             return View(page);
@@ -127,7 +133,15 @@ namespace MyShop.Areas.Admin.Controllers
         {
             if (id != model.Id)
             {
+                LoadCategories();
                 return NotFound();
+            }
+
+            var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag && p.Id != model.Id);
+            if (exists)
+            {
+                LoadCategories();
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
             }
 
             if (ModelState.IsValid)
@@ -163,30 +177,18 @@ namespace MyShop.Areas.Admin.Controllers
             if (model == null) return NotFound();
 
             string levelPrefix = model.Level; // ví dụ "00001"
-            int deletedOrd = model.Ord ?? 1;
 
-            // Lấy toàn bộ cha + con + cháu theo Level
+            // Xóa cha + toàn bộ con cháu
             var toDelete = _context.Pages
                 .Where(a => a.Level.StartsWith(levelPrefix))
                 .ToList();
 
-            int deletedCount = toDelete.Count;
-
             _context.Pages.RemoveRange(toDelete);
-
-            // Dồn lại Ord
-            var remain = _context.Pages
-                .Where(a => a.Ord > deletedOrd)
-                .ToList();
-
-            foreach (var item in remain)
-            {
-                item.Ord -= deletedCount;
-            }
-
             _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
+
 
         private bool PageExists(int id)
         {

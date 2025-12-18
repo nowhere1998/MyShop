@@ -186,26 +186,16 @@ namespace MyShop.Areas.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
-            Advertise model = _context.Advertises.FirstOrDefault(a => a.Id == id);
+            var model = _context.Advertises.FirstOrDefault(a => a.Id == id);
+            if (model == null)
+                return NotFound();
 
-            int deletedOrd = model.Ord ?? 1;
-
-            // Xoá bản ghi
             _context.Advertises.Remove(model);
-
-            // Giảm Ord cho toàn bộ bản ghi phía sau
-            var items = _context.Advertises
-                .Where(a => a.Ord > deletedOrd)
-                .ToList();
-
-            foreach (var item in items)
-            {
-                item.Ord -= 1;
-            }
-
             _context.SaveChanges();
+
             return RedirectToAction("Index");
         }
+
 
         private bool AdvertiseExists(int id)
         {

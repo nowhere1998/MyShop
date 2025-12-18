@@ -108,6 +108,11 @@ namespace MyShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
+            var exists = await _context.Categories.AnyAsync(p => p.Slug == category.Slug);
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(category);
@@ -140,13 +145,17 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ParentId,Slug,Name,CreatedAt,UpdatedAt")] Category category)
+        public async Task<IActionResult> Edit(int id, Category category)
         {
             if (id != category.Id)
             {
                 return NotFound();
             }
-
+            var exists = await _context.Categories.AnyAsync(p => p.Slug == category.Slug && p.Id != category.Id);
+            if (exists)
+            {
+                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            }
             if (ModelState.IsValid)
             {
                 try
@@ -174,9 +183,38 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Categories/Delete/5
         public IActionResult Delete(int id)
         {
-            Category model = _context.Categories.FirstOrDefault(a => a.Id == id);
-            // Xoá bản ghi
-            _context.Categories.Remove(model);
+            // Lấy danh mục cha
+            var parent = _context.Categories
+                .Include(c => c.Products)
+                .FirstOrDefault(c => c.Id == id);
+
+            if (parent == null)
+                return NotFound();
+
+            // Lấy toàn bộ danh mục con
+            var children = _context.Categories
+                .Include(c => c.Products)
+                .Where(c => c.ParentId == id)
+                .ToList();
+
+            // Kiểm tra sản phẩm ở CHA
+            if (parent.Products != null && parent.Products.Any())
+            {
+                TempData["Error"] = "Danh mục đang có sản phẩm, không thể xoá!";
+                return RedirectToAction("Index");
+            }
+
+            // Kiểm tra sản phẩm ở CON
+            if (children.Any(c => c.Products != null && c.Products.Any()))
+            {
+                TempData["Error"] = "Danh mục con đang có sản phẩm, không thể xoá!";
+                return RedirectToAction("Index");
+            }
+
+            // Xoá con trước – cha sau
+            _context.Categories.RemoveRange(children);
+            _context.Categories.Remove(parent);
+
             _context.SaveChanges();
             return RedirectToAction("Index");
         }

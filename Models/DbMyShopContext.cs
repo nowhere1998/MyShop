@@ -210,9 +210,9 @@ public partial class DbMyShopContext : DbContext
             entity.ToTable("contacts");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Address)
-                .HasMaxLength(100)
-                .HasColumnName("address");
+            entity.Property(e => e.Message)
+                .HasMaxLength(500)
+                .HasColumnName("message");
             entity.Property(e => e.CreatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("created_at");
@@ -295,6 +295,10 @@ public partial class DbMyShopContext : DbContext
         modelBuilder.Entity<GroupNews>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK__GroupNew__3214EC070EDC241F");
+            entity.ToTable("GroupNews", tb =>
+            {
+                tb.HasTrigger("tg_Update_Level_GroupNews"); // 👈 TÊN TRIGGER THẬT TRONG SQL
+            });
 
             entity.Property(e => e.Description).HasMaxLength(256);
             entity.Property(e => e.Hinhanh)
@@ -321,7 +325,7 @@ public partial class DbMyShopContext : DbContext
             entity.HasIndex(e => e.Slug, "UQ__news__32DD1E4CE26D4397").IsUnique();
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AuthorId).HasColumnName("author_id");
+            entity.Property(e => e.PostedById).HasColumnName("posted_by_id");
             entity.Property(e => e.Content)
                 .HasColumnType("ntext")
                 .HasColumnName("content");
@@ -343,15 +347,19 @@ public partial class DbMyShopContext : DbContext
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("datetime")
                 .HasColumnName("updated_at");
-
-            entity.HasOne(d => d.Author).WithMany(p => p.News)
-                .HasForeignKey(d => d.AuthorId)
+            entity.Property(e => e.AuthorName)
+                            .HasMaxLength(255)
+                            .HasColumnName("author_name");
+            entity.HasOne(d => d.PostedBy).WithMany(p => p.News)
+                .HasForeignKey(d => d.PostedById)
                 .HasConstraintName("fk_news_author");
 
             entity.HasOne(d => d.Group).WithMany(p => p.News)
                 .HasForeignKey(d => d.GroupId)
                 .HasConstraintName("fk_news_group");
         });
+
+
 
         modelBuilder.Entity<Order>(entity =>
         {
