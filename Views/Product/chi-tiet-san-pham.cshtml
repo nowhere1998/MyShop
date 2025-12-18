@@ -63,6 +63,17 @@
 			<img width="600" height="600" src="@Model.Image" class="wp-post-image skip-lazy" alt="@Model.Name" title="@Model.Name">
 		</a>
 	</div>  
+
+	@foreach (var pi in ViewBag.ProductImages)
+    {
+        <div class="woocommerce-product-gallery__image slide">
+            <a href="@pi.ImageUrl">
+                <img width="600" height="600"
+                     src="@pi.ImageUrl"
+                     alt="@Model.Name">
+            </a>
+        </div>
+    }
 </div>
 
   <div class="image-tools absolute bottom left z-3">
@@ -83,6 +94,11 @@
 			"rightToLeft": false,
 			"contain": true
 		}'>
+		<div class="col">
+			<a href="">
+				<img src="@Model.Image" alt="" width="300" height="300" class="attachment-woocommerce_thumbnail" />		
+			</a>
+		</div>  
 		@foreach(var pi in ViewBag.ProductImages){
 			<div class="col">
 				<a>
@@ -466,6 +482,7 @@
 }
 </style>
 	</section>
+
 				<div id="product-sidebar" class="mfp-hide">
 				<div class="sidebar-inner">
 					
@@ -541,7 +558,7 @@
 		</div>
 	</div>
 	
-	
+			
 
 		
 <style>
