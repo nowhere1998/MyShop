@@ -172,7 +172,7 @@
                         @* list pages *@
                         @foreach(var pl1 in ViewBag.PagesL1)
                         {
-                            @if (pl1.HasChild && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
+                            @if (pl1.HasChild && pl1.HasChildL3 && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
                             {
                                 <li id="menu-item-12350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12350 menu-item-design-container-width menu-item-has-block has-dropdown">
                                     <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">
@@ -235,6 +235,23 @@
                                     <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">
                                         @pl1.Page.Name
                                     </a>
+                                </li>
+                            }
+                            else if (pl1.HasChild && !pl1.HasChildL3 && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
+                            {
+                                <li id="menu-item-13196" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13196 menu-item-design-default has-dropdown">
+                                    <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">@pl1.Page.Name<i class="icon-angle-down"></i></a>
+                                    <ul class="sub-menu nav-dropdown nav-dropdown-simple">
+                                        @foreach(var pl2 in ViewBag.PagesL2)
+                                        {
+                                            @if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
+                                            {
+                                                <li id="menu-item-15582" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-15582">
+                                                    <a href="@pl2.Link">@pl2.Name</a>
+                                                </li>
+                                            }
+                                        }
+                                    </ul>
                                 </li>
                             }
                         }

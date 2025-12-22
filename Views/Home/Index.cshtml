@@ -76,8 +76,8 @@
 	
 		<div id="text-897089529" class="text">
 		
-	<h2 class="uppercase"><strong> @banner.Name</strong></h2>
-		
+	@* <h2 class="uppercase"><strong> @banner.Name</strong></h2> *@
+	@Html.Raw(banner.Content)	
 	<style>
 	#text-897089529 {
 	  text-align: center;
@@ -562,7 +562,7 @@
 			
 	<div id="text-3759061839" class="text hide-for-small">
 		
-<p><a href="/san-pham/@c.Parent.Slug/@c.Slug">Xem thêm <i class="fas fa-angle-right"></i></a></p>
+<p><a href="/san-pham/@c.Parent.Slug/@c.Slug">Xem thêm <i class="fa fa-angle-right"></i></a></p>
 		
 <style>
 #text-3759061839 {
