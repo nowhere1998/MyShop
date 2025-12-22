@@ -19,7 +19,7 @@ namespace MyShop.Controllers
         }
 
 		[Route("lien-he")]
-		[HttpPost("")]
+		[HttpPost]
 		[ValidateAntiForgeryToken]
 		public IActionResult Add(Contact model)
 		{
