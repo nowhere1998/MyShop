@@ -8,9 +8,9 @@
 
 <div class="container mt-4">
 
-    <h3 class="text-primary mb-3">Thêm bài viết</h3>
+    <h3 class="text-primary mb-3">Chỉnh sửa bài viết</h3>
 
-    <form asp-action="Edit" method="post">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
         <input asp-for="Id" type="hidden" class="form-control" />
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -55,6 +55,22 @@
             <label asp-for="Content" class="form-label">Nội dung</label>
             <textarea asp-for="Content" id="Content" class="form-control" rows="6"></textarea>
             <span asp-validation-for="Content" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-semibold">Hình ảnh</label>
+
+            <input name="photo" type="file" class="form-control" />
+
+            <input type="hidden" name="pictureOld" value="@Model.Hinhanh" />
+
+            @if (!string.IsNullOrEmpty(Model.Hinhanh))
+            {
+                <div class="mt-2">
+                    <img src="@Model.Hinhanh"
+                         style="max-height:120px;border-radius:6px;" />
+                </div>
+            }
         </div>
 
 

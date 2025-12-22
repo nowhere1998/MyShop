@@ -350,6 +350,8 @@ public partial class DbMyShopContext : DbContext
             entity.Property(e => e.AuthorName)
                             .HasMaxLength(255)
                             .HasColumnName("author_name");
+            entity.Property(e => e.Hinhanh)
+               .HasMaxLength(300);
             entity.HasOne(d => d.PostedBy).WithMany(p => p.News)
                 .HasForeignKey(d => d.PostedById)
                 .HasConstraintName("fk_news_author");

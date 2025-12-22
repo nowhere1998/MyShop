@@ -41,6 +41,7 @@ namespace MyShop.Models
 
         [Display(Name = "Ngày cập nhật")]
         public DateTime? UpdatedAt { get; set; }
+        public string? Hinhanh { get; set; }
 
         public virtual User? PostedBy { get; set; }
 

@@ -39,6 +39,7 @@
                 <th>Slug</th>
                 <th>Nhóm</th>
                 <th>Tác giả</th>
+                <th>Hình ảnh</th>
                 <th>Trạng thái</th>
                 <th class="text-center">Hành động</th>
             </tr>
@@ -60,6 +61,14 @@
                         @item.AuthorName
                     </td>
 
+                    <td>
+                        @if (!string.IsNullOrEmpty(item.Hinhanh))
+                        {
+                            <img src="@item.Hinhanh"
+                                 alt="@item.Title"
+                                 style="height:50px;border-radius:6px;" />
+                        }
+                    </td>
                     <td>
                         @if (item.Status == 1)
                         {

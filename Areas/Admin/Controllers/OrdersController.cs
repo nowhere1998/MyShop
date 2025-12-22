@@ -161,5 +161,18 @@ namespace MyShop.Areas.Admin.Controllers
         {
             return _context.Orders.Any(e => e.Id == id);
         }
+
+        public IActionResult Print(int id)
+        {
+            var order = _context.Orders
+                .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.Product)
+                .FirstOrDefault(o => o.Id == id);
+
+            if (order == null)
+                return NotFound();
+
+            return View(order);
+        }
     }
 }

@@ -63,7 +63,10 @@
             </div>
             <div class="col">
                 <label for="" class="form-label mb-2">Kiểu liên kết</label>
-                <input type="text" class="form-control" asp-for="Target">
+                  <select asp-for="Target" class="form-select">
+                    <option value="_self">Trang hiện tại</option>
+                    <option value="_blank">Trang mới</option>
+                </select>
             </div>
         </div>
         <div class="mb-3">

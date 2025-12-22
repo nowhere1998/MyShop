@@ -50,8 +50,8 @@
                         <td>
                             @(string.IsNullOrEmpty(item.Message)
                                                     ? ""
-                                                    : item.Message.Length > 100
-                                                    ? item.Message.Substring(0, 100) + "..."
+                                                    : item.Message.Length > 10
+                                                    ? item.Message.Substring(0, 10) + "..."
                                                     : item.Message)
 
                         @if (!string.IsNullOrEmpty(item.Message) && item.Message.Length > 50)
