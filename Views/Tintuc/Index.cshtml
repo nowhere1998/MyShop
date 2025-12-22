@@ -27,7 +27,7 @@
 										<div class="box-image" style="width:40%;">
 											<div class="image-cover" style="padding-top:56%;">
 												<a href="/chi-tiet-tin-tuc/@n.Slug" class="plain" aria-label="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT">
-													<img width="600" height="400" src="https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058-600x400.webp" class="attachment-medium size-medium wp-post-image" alt="@n.Title" decoding="async" loading="lazy" />
+													<img width="600" height="400" src="@n.Hinhanh" class="attachment-medium size-medium wp-post-image" alt="@n.Title" decoding="async" loading="lazy" />
 												</a>
 											</div>
 										</div>
@@ -39,23 +39,29 @@
 													<a href="/chi-tiet-tin-tuc/@n.Slug" class="plain">@n.Title</a>
 												</h5>
 												<div class="is-divider"></div>
-												<p class="from_the_blog_excerpt">
+												<p class="from_the_blog_excerpt" style="white-space:normal; word-break: break-word">
 													@{
 														var html = n.Content ?? "";
 														var text = Regex.Replace(html, "<.*?>", "").Trim();
 
-														var maxLength = 50;
+														var maxLength = 150;
 														if (text.Length > maxLength)
 														{
 															var cut = text.Substring(0, maxLength);
 															var lastSpace = cut.LastIndexOf(" ");
-															text = cut.Substring(0, lastSpace) + "...";
+
+															if (lastSpace > 0)
+															{
+																text = cut.Substring(0, lastSpace) + "...";
+															}
+															else
+															{
+																text = cut + "...";
+															}
 														}
 													}
 													@text
 												</p>
-
-
 
 											</div>
 										</div>

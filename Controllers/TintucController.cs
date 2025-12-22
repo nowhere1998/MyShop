@@ -39,10 +39,17 @@ namespace MyShop.Controllers
         public IActionResult Chitiet(string slug = "")
         {
 			var post = new News();
-			if(string.IsNullOrEmpty(slug))
+			var newPosts = _context.News
+				.OrderByDescending (x => x.Id)
+				.Where(x => x.Status == 1)
+				.Skip(0)
+				.Take(5)
+				.ToList();
+			if(!string.IsNullOrEmpty(slug))
 			{
 				post = _context.News.Where(x => x.Status == 1).FirstOrDefault(post => post.Slug == slug);
 			}
+			ViewBag.NewPosts = newPosts;
             return View("chi-tiet-tin-tuc", post);
         }
     }

@@ -25,6 +25,6 @@ namespace MyShop.Models
         public DateTime? CreatedAt { get; set; }
 
         [Display(Name = "Trạng thái")]
-        public string? Status { get; set; }
+        public string? Status { get; set; } 
     }
 }
