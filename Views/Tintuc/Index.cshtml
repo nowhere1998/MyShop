@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<MyShop.Models.News>
+@using System.Text.RegularExpressions
+@{
 	ViewData["Title"] = "Tin tức";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -14,39 +16,102 @@
 
 
 				<div class="row large-columns-1 medium-columns- small-columns-1">
-
 					@* list tin tức *@
-					<div class="col post-item">
-						<div class="col-inner">
-							<div class="box box-vertical box-text-bottom box-blog-post has-hover">
-								<div class="box-image" style="width:40%;">
-									<div class="image-cover" style="padding-top:56%;">
-										<a href="/chi-tiet-tin-tuc" class="plain" aria-label="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT">
-											<img width="600" height="400" src="https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058-600x400.webp" class="attachment-medium size-medium wp-post-image" alt="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&amp;ĐT" decoding="async" loading="lazy" srcset="https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058-600x400.webp 600w, https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058-768x512.webp 768w, https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058.webp 900w" sizes="auto, (max-width: 600px) 100vw, 600px" title="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&amp;ĐT 1">
-										</a>
-									</div>
-								</div>
-								<div class="box-text text-left">
-									<div class="box-text-inner blog-post-inner">
+					@if (Model.Any())
+					{
+						@foreach (News n in Model)
+						{
+							<div class="col post-item">
+								<div class="col-inner">
+									<div class="box box-vertical box-text-bottom box-blog-post has-hover">
+										<div class="box-image" style="width:40%;">
+											<div class="image-cover" style="padding-top:56%;">
+												<a href="/chi-tiet-tin-tuc/@n.Slug" class="plain" aria-label="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT">
+													<img width="600" height="400" src="https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058-600x400.webp" class="attachment-medium size-medium wp-post-image" alt="@n.Title" decoding="async" loading="lazy" />
+												</a>
+											</div>
+										</div>
+										<div class="box-text text-left">
+											<div class="box-text-inner blog-post-inner">
 
 
-										<h5 class="post-title is-large ">
-											<a href="https://inno.com.vn/inno-viet-nam-tham-du-hoi-nghi-chuyen-doi-so-trong-giao-duc-va-dao-tao-2025-cua-bo-gddt/" class="plain">INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT</a>
-										</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo năm 2025 do Bộ...					</p>
+												<h5 class="post-title is-large ">
+													<a href="/chi-tiet-tin-tuc/@n.Slug" class="plain">@n.Title</a>
+												</h5>
+												<div class="is-divider"></div>
+												<p class="from_the_blog_excerpt">
+													@{
+														var html = n.Content ?? "";
+														var text = Regex.Replace(html, "<.*?>", "").Trim();
+
+														var maxLength = 50;
+														if (text.Length > maxLength)
+														{
+															var cut = text.Substring(0, maxLength);
+															var lastSpace = cut.LastIndexOf(" ");
+															text = cut.Substring(0, lastSpace) + "...";
+														}
+													}
+													@text
+												</p>
 
 
 
+											</div>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						}
+					}
+					else
+					{
+						<p>Tin tức đang cập nhật ...</p>
+					}
 					@* end list tin tức *@
 
 				</div>
-				<ul class="page-numbers nav-pagination links text-center"><li><span aria-current="page" class="page-number current">1</span></li><li><a class="page-number" href="https://inno.com.vn/tin-tuc/page/2/">2</a></li><li><a class="page-number" href="https://inno.com.vn/tin-tuc/page/3/">3</a></li><li><a class="page-number" href="https://inno.com.vn/tin-tuc/page/4/">4</a></li><li><span class="page-number dots">&hellip;</span></li><li><a class="page-number" href="https://inno.com.vn/tin-tuc/page/12/">12</a></li><li><a class="next page-number" href="https://inno.com.vn/tin-tuc/page/2/"><i class="icon-angle-right"></i></a></li></ul>
+				@if (ViewBag.TotalPages > 1)
+				{
+					<ul class="page-numbers nav-pagination links text-center">
+
+						@* Prev *@
+						@if (ViewBag.CurrentPage > 1)
+						{
+							<li>
+								<a class="prev page-number" href="/tin-tuc/page/@(ViewBag.CurrentPage - 1)">
+									<i class="icon-angle-left"></i>
+								</a>
+							</li>
+						}
+
+						@for (int i = 1; i <= ViewBag.TotalPages; i++)
+						{
+							if (i == ViewBag.CurrentPage)
+							{
+								<li>
+									<span class="page-number current">@i</span>
+								</li>
+							}
+							else
+							{
+								<li>
+									<a class="page-number" href="/tin-tuc/page/@i">@i</a>
+								</li>
+							}
+						}
+
+						@* Next *@
+						@if (ViewBag.CurrentPage < ViewBag.TotalPages)
+						{
+							<li>
+								<a class="next page-number" href="/tin-tuc/page/@(ViewBag.CurrentPage + 1)">
+									<i class="icon-angle-right"></i>
+								</a>
+							</li>
+						}
+					</ul>
+				}
 			</div>
 			<div class="post-sidebar large-3 col">
 				<div class="is-sticky-column" data-sticky-mode="javascript">
