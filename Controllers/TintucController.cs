@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using MyShop.Models;
 
 namespace MyShop.Controllers
@@ -28,7 +29,14 @@ namespace MyShop.Controllers
 				.Skip((page - 1) * pageSize)
 				.Take(pageSize)
 				.ToList();
+			var newPosts = _context.News
+				.OrderByDescending(x => x.Id)
+				.Where(x => x.Status == 1)
+				.Skip(0)
+				.Take(5)
+				.ToList();
 
+			ViewBag.NewPosts = newPosts;
 			ViewBag.CurrentPage = page;
 			ViewBag.TotalPages = totalPages;
 
