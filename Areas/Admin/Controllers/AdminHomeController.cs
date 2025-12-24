@@ -17,10 +17,22 @@ namespace MyShop.Areas.Admin.Controllers
             _context = context;
         }
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            ViewBag.TotalUsers = await _context.Users.CountAsync();
+
+            ViewBag.TotalOrders = await _context.Orders
+                .CountAsync();
+
+            ViewBag.TotalProducts = await _context.Products
+                .Where(p => p.Status == "active")
+                .CountAsync();
+
+            ViewBag.TotalNews = await _context.News.CountAsync();
+
             return View();
         }
+
 
         [Route("login")]
         public IActionResult Login()

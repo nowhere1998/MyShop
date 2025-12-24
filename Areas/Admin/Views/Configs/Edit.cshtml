@@ -34,9 +34,13 @@
         </div>
         <div class="row">
             <div class="col">
-                <label for="" class="form-label">Mật khẩu mail gửi</label>
-                <input type="text" class="form-control" asp-for="MailPassword">
+                <label class="form-label">Mật khẩu mail gửi</label>
+                <input type="password"
+                       name="MailPassword"
+                       class="form-control"
+                       placeholder="Nhập mật khẩu mới (để trống nếu không đổi)">
             </div>
+
             <div class="col">
                 <label for="" class="form-label">Dán mã phần Head</label>
                 <input type="text" class="form-control" asp-for="PlaceHead">
@@ -78,11 +82,11 @@
                 <input type="text" class="form-control" asp-for="FlickrLink">
             </div>
             <div class="col">
-                <label for="" class="form-label">Facebook Link</label>
+                <label for="" class="form-label">Hotline 1</label>
                 <input type="text" class="form-control" asp-for="SocialLink1">
             </div>
             <div class="col">
-                <label for="" class="form-label">Twitter Link</label>
+                <label for="" class="form-label">Hotline 2</label>
                 <input type="text" class="form-control" asp-for="SocialLink2">
             </div>
         </div>
@@ -118,7 +122,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <label for="" class="form-label">Hotline</label>
+                <label for="" class="form-label">Facebook Link</label>
                 <input type="text" class="form-control" asp-for="SocialLink9">
             </div>
             <div class="col">

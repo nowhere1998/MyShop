@@ -71,12 +71,16 @@ namespace MyShop.Areas.Admin.Controllers
         public async Task<IActionResult> Edit()
         {
             var config = await _context.Configs.FirstOrDefaultAsync();
+
+            // Nếu chưa có thì tạo mới để người dùng nhập
             if (config == null)
             {
-                return NotFound("Chưa có bản ghi Config nào.");
+                config = new Config();
             }
+
             return View(config);
         }
+
         // POST: Admin/Configs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -93,6 +97,12 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 try
                 {
+                    
+                    // 👉 CHỈ update mật khẩu nếu có nhập
+                    if (!string.IsNullOrWhiteSpace(config.MailPassword))
+                    {
+                        config.MailPassword = Cipher.GenerateMD5(config.MailPassword);
+                    }
                     _context.Update(config);
                     await _context.SaveChangesAsync();
 

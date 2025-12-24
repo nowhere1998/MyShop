@@ -63,6 +63,7 @@ namespace MyShop.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                order.CreatedAt = DateTime.Now;
                 _context.Add(order);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
