@@ -80,7 +80,10 @@ namespace MyShop.Areas.Admin.Controllers
 
             if (categoryId.HasValue)
             {
-                query = query.Where(x => x.CategoryId == categoryId.Value);
+                query = query.Where(x =>
+                    x.CategoryId == categoryId.Value ||
+                    x.Category.ParentId == categoryId.Value
+                );
             }
 
             // =======================
