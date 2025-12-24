@@ -25,11 +25,7 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products
-        public async Task<IActionResult> Index(
-    int? categoryId,
-    string? name,
-    int page = 1,
-    int pageSize = 30)
+        public async Task<IActionResult> Index(int? categoryId,string? name,int page = 1,int pageSize = 30)
         {
             // =======================
             // 1️⃣ BUILD CATEGORY CHA – CON
