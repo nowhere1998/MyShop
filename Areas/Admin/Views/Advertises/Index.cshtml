@@ -121,21 +121,21 @@
                 @if (ViewBag.Page > 1)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { q = ViewBag.searchName, page = ViewBag.Page - 1 })">«</a>
+                        <a class="page-link" href="@Url.Action("Index", new { name = ViewBag.searchName, page = ViewBag.Page - 1 })">«</a>
                     </li>
                 }
 
                 @for (int i = 1; i <= ViewBag.TotalPages; i++)
                 {
                     <li class="page-item @(i == ViewBag.Page ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index", new { q = ViewBag.searchName, page = i })">@i</a>
+                        <a class="page-link" href="@Url.Action("Index", new { name = ViewBag.searchName, page = i })">@i</a>
                     </li>
                 }
 
                 @if (ViewBag.Page < ViewBag.TotalPages)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="@Url.Action("Index", new { q = ViewBag.searchName, page = ViewBag.Page + 1 })">»</a>
+                        <a class="page-link" href="@Url.Action("Index", new { name = ViewBag.searchName, page = ViewBag.Page + 1 })">»</a>
                     </li>
                 }
 

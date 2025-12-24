@@ -3,33 +3,32 @@
 }
 
 <div class="dashboard-container">
-    <h1 class="title">Dashboard</h1>
+    <h1 class="title">Trang chủ</h1>
 
-    <div class="cards">
-        <div class="card">
-            <h2>👤 Users</h2>
-            <span class="number">150</span>
-            <p>Active users on system</p>
-        </div>
-
-        <div class="card">
-            <h2>🛒 Orders</h2>
-            <span class="number">32</span>
-            <p>New orders today</p>
-        </div>
-
-        <div class="card">
-            <h2>📦 Products</h2>
-            <span class="number">248</span>
-            <p>Available products</p>
-        </div>
-
-        <div class="card">
-            <h2>📰 News</h2>
-            <span class="number">18</span>
-            <p>Latest posts</p>
-        </div>
+    <div class="card">
+        <h2>👤 Người dùng</h2>
+        <span class="number">@ViewBag.TotalUsers</span>
+        <p>Người dùng hoạt động trong hệ thống</p>
     </div>
+
+    <div class="card">
+        <h2>🛒 Đơn hàng</h2>
+        <span class="number">@ViewBag.TotalOrders</span>
+        <p>Tổng số đơn hàng</p>
+    </div>
+
+    <div class="card">
+        <h2>📦 Sản phẩm</h2>
+        <span class="number">@ViewBag.TotalProducts</span>
+        <p>Tổng số sản phẩm</p>
+    </div>
+
+    <div class="card">
+        <h2>📰 Bài viết</h2>
+        <span class="number">@ViewBag.TotalNews</span>
+        <p>Tổng số bài viết</p>
+    </div>
+
 </div>
 
 <style>

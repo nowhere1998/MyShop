@@ -25,29 +25,90 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products
-        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
+        public async Task<IActionResult> Index(
+    int? categoryId,
+    string? name,
+    int page = 1,
+    int pageSize = 30)
         {
-            var query = _context.Products.Include(p => p.Category).Include(p => p.Dealer).OrderBy(x => x.Id).AsNoTracking();
+            // =======================
+            // 1️⃣ BUILD CATEGORY CHA – CON
+            // =======================
+            ViewBag.CategoryId = categoryId;
+
+            var categories = await _context.Categories
+                .AsNoTracking()
+                .ToListAsync();
+
+            List<SelectListItem> categoryItems = new();
+
+            void BuildCategory(int? parentId, string prefix)
+            {
+                var childs = categories
+                    .Where(c => c.ParentId == parentId)
+                    .OrderBy(c => c.Name)
+                    .ToList();
+
+                foreach (var c in childs)
+                {
+                    categoryItems.Add(new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = prefix + c.Name,
+                        Selected = categoryId == c.Id
+                    });
+
+                    // Đệ quy danh mục con
+                    BuildCategory(c.Id, prefix + "— ");
+                }
+            }
+
+            BuildCategory(null, "");
+
+            ViewBag.Categories = categoryItems;
+
+            // =======================
+            // 2️⃣ QUERY SẢN PHẨM
+            // =======================
+            var query = _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Dealer)
+                .AsNoTracking()
+                .AsQueryable();
+
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim()));
+                query = query.Where(x =>
+                    x.Name.ToLower().Contains(name.ToLower().Trim()));
             }
-            // Tổng số bản ghi sau khi lọc
+
+            if (categoryId.HasValue)
+            {
+                query = query.Where(x => x.CategoryId == categoryId.Value);
+            }
+
+            // =======================
+            // 3️⃣ PHÂN TRANG
+            // =======================
             var totalCount = await query.CountAsync();
 
-            // Lấy dữ liệu từng trang
             var data = await query
+                .OrderByDescending(x => x.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Gửi biến qua View
+            // =======================
+            // 4️⃣ VIEW DATA
+            // =======================
             ViewData["SearchName"] = name;
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
             return View(data);
         }
+
 
         // GET: Admin/Products/Details/5
         public async Task<IActionResult> Details(long? id)
