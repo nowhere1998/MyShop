@@ -72,6 +72,9 @@ namespace MyShop.Controllers.Components
 				.FirstOrDefault(x => x.Name.Trim().ToLower() == "sản phẩm");
 
             var config = _context.Configs.FirstOrDefault();
+			var logo = _context.Advertises
+				.Where(x => x.Position == 6)
+				.FirstOrDefault() ?? new Advertise();
 
             if (config == null)
             {
@@ -106,6 +109,7 @@ namespace MyShop.Controllers.Components
                 };
             }
 
+			ViewBag.Logo = logo;
 			ViewBag.Config = config;
             ViewBag.Categories = categories;
 			ViewBag.ParentCategories = parentCategories;
