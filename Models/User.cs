@@ -10,12 +10,12 @@ namespace MyShop.Models
         public long Id { get; set; }
 
         [Display(Name = "Tên đăng nhập")]
-        public string Username { get; set; } = null!;
+        public string? Username { get; set; } = null!;
 
         [Display(Name = "Email")]
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; } = null!;
 
-        [Display(Name = "Mật khẩu (đã mã hóa)")]
+        [Display(Name = "Mật khẩu")]
         public string? PasswordHash { get; set; }
 
         [Display(Name = "Họ và tên")]

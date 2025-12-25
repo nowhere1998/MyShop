@@ -25,10 +25,10 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Branches
         public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            var query = _context.Branches.OrderBy(x => x.Id).AsNoTracking();
+            var query = _context.Branches.OrderByDescending(x => x.Id).AsNoTracking();
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderBy(x => x.Id);
+                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.Id);
             }
             // Tổng số bản ghi sau khi lọc
             var totalCount = await query.CountAsync();

@@ -22,9 +22,28 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            return View(await _context.Customers.ToListAsync());
+            var query = _context.Customers.OrderByDescending(x => x.CustomerId).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.FullName.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.CustomerId);
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
+
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
         }
 
         // GET: Admin/Customers/Details/5
@@ -56,10 +75,11 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,FullName,Email,Phone,PasswordHash,Gender,Birthday,Address,ShippingAddress,CreatedAt,UpdatedAt")] Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
             if (ModelState.IsValid)
             {
+                customer.PasswordHash = Cipher.GenerateMD5(customer.PasswordHash);
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -88,7 +108,7 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("CustomerId,FullName,Email,Phone,PasswordHash,Gender,Birthday,Address,ShippingAddress,CreatedAt,UpdatedAt")] Customer customer)
+        public async Task<IActionResult> Edit(long id, Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -99,6 +119,23 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 try
                 {
+                    // lấy mật khẩu cũ từ DB
+                    var oldPassword = await _context.Customers
+                        .Where(x => x.CustomerId == customer.CustomerId)
+                        .Select(x => x.PasswordHash)
+                        .FirstOrDefaultAsync();
+
+                    // 👉 xử lý mật khẩu
+                    if (string.IsNullOrWhiteSpace(customer.PasswordHash))
+                    {
+                        // không nhập → giữ mật khẩu cũ
+                        customer.PasswordHash = oldPassword;
+                    }
+                    else
+                    {
+                        // có nhập → hash mật khẩu mới
+                        customer.PasswordHash = Cipher.GenerateMD5(customer.PasswordHash);
+                    }
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
@@ -119,37 +156,30 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Customers/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
+            // 1️⃣ Kiểm tra khách hàng có đơn hàng không
+            bool hasOrder = _context.Orders
+                .Any(o => o.CustomerId == id);
+
+            if (hasOrder)
             {
-                return NotFound();
+                TempData["Error"] = "Không thể xoá khách hàng đã hoặc đang đặt hàng.";
+                return RedirectToAction("Index");
             }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
-            {
+            // 2️⃣ Lấy khách hàng
+            var model = _context.Customers.FirstOrDefault(x => x.CustomerId == id);
+            if (model == null)
                 return NotFound();
-            }
 
-            return View(customer);
+            // 3️⃣ Xoá
+            _context.Customers.Remove(model);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
-        // POST: Admin/Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var customer = await _context.Customers.FindAsync(id);
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
         private bool CustomerExists(long id)
         {

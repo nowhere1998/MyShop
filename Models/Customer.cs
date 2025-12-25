@@ -18,7 +18,7 @@ namespace MyShop.Models
         [Display(Name = "Số điện thoại")]
         public string? Phone { get; set; }
 
-        [Display(Name = "Mật khẩu (đã mã hóa)")]
+        [Display(Name = "Mật khẩu")]
         public string? PasswordHash { get; set; }
 
         [Display(Name = "Giới tính")]

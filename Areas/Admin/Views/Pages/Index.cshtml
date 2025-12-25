@@ -59,7 +59,17 @@
                             @(item.Type == 0 ? "Trang liên kết" : "Trang nội dung")
                         </td>
                         <td>@item.Link</td>
-                        <td>@item.Target</td>
+                        <td>
+                            @if (item.Target == "_blank")
+                            {
+                                <span class="badge bg-info">Trang mới</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Trang hiện tại</span>
+                            }
+                        </td>
+
                         <td>
                             @(item.Position == 1 ? "Menu trên" :
                               item.Position == 2 ? "Menu giữa" :

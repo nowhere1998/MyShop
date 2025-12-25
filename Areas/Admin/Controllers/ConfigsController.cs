@@ -97,10 +97,22 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 try
                 {
-                    
-                    // 👉 CHỈ update mật khẩu nếu có nhập
-                    if (!string.IsNullOrWhiteSpace(config.MailPassword))
+
+                    // lấy mật khẩu cũ từ DB
+                    var oldPassword = await _context.Configs
+                        .Where(x => x.Id == config.Id)
+                        .Select(x => x.MailPassword)
+                        .FirstOrDefaultAsync();
+
+                    // 👉 xử lý mật khẩu
+                    if (string.IsNullOrWhiteSpace(config.MailPassword))
                     {
+                        // không nhập → giữ mật khẩu cũ
+                        config.MailPassword = oldPassword;
+                    }
+                    else
+                    {
+                        // có nhập → hash mật khẩu mới
                         config.MailPassword = Cipher.GenerateMD5(config.MailPassword);
                     }
                     _context.Update(config);

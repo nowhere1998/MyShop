@@ -22,10 +22,28 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/ProductSpecs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
         {
-            var dbMyShopContext = _context.ProductSpecs.Include(p => p.Product);
-            return View(await dbMyShopContext.ToListAsync());
+            var query = _context.ProductSpecs.Include(x=>x.Product).OrderByDescending(x => x.Id).AsNoTracking();
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(x => x.SpecName.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.Id);
+            }
+            // Tổng số bản ghi sau khi lọc
+            var totalCount = await query.CountAsync();
+
+            // Lấy dữ liệu từng trang
+            var data = await query
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            // Gửi biến qua View
+            ViewData["SearchName"] = name;
+            ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+            return View(data);
         }
 
         // GET: Admin/ProductSpecs/Details/5
@@ -50,7 +68,7 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/ProductSpecs/Create
         public IActionResult Create()
         {
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id");
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name");
             return View();
         }
 
@@ -67,7 +85,7 @@ namespace MyShop.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productSpec.ProductId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", productSpec.ProductId);
             return View(productSpec);
         }
 
@@ -84,7 +102,7 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productSpec.ProductId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", productSpec.ProductId);
             return View(productSpec);
         }
 
@@ -120,42 +138,18 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Id", productSpec.ProductId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "Id", "Name", productSpec.ProductId);
             return View(productSpec);
         }
 
         // GET: Admin/ProductSpecs/Delete/5
-        public async Task<IActionResult> Delete(long? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var productSpec = await _context.ProductSpecs
-                .Include(p => p.Product)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (productSpec == null)
-            {
-                return NotFound();
-            }
-
-            return View(productSpec);
-        }
-
-        // POST: Admin/ProductSpecs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            var productSpec = await _context.ProductSpecs.FindAsync(id);
-            if (productSpec != null)
-            {
-                _context.ProductSpecs.Remove(productSpec);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ProductSpec model = _context.ProductSpecs.FirstOrDefault(a => a.Id == id);
+            // Xoá bản ghi
+            _context.ProductSpecs.Remove(model);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         private bool ProductSpecExists(long id)
