@@ -73,6 +73,7 @@ namespace MyShop.Controllers.Components
 
             var config = _context.Configs.FirstOrDefault();
 			var logo = _context.Advertises
+				.OrderByDescending(x => x.Id)
 				.Where(x => x.Position == 6)
 				.FirstOrDefault() ?? new Advertise();
 
