@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Text.RegularExpressions
+@{
     ViewData["Title"] = "Trang chủ";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -1272,7 +1273,7 @@
 			
 	<div id="text-3318067585" class="text hide-for-small">
 		
-<p><a href="tin-tuc/index.html">Xem thêm <i class="fas fa-angle-right"></i></a></p>
+<p><a href="/tin-tuc">Xem thêm <i class="fa fa-angle-right"></i></a></p>
 		
 <style>
 #text-3318067585 {
@@ -1301,14 +1302,14 @@
 
   
     <div class="row blog-tintuc-homenew large-columns-5 medium-columns-1 small-columns-1 row-small slider row-slider slider-nav-simple slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}' >
-
-  <div class="col post-item" >
+	@foreach(News n in ViewBag.News){
+		<div class="col post-item" >
 			<div class="col-inner">
 				<div class="box box-normal box-text-bottom box-blog-post has-hover">
             					<div class="box-image" >
   						<div class="image-cover" style="padding-top:75%;">
-							<a href="inno-viet-nam-tham-du-hoi-nghi-chuyen-doi-so-trong-giao-duc-va-dao-tao-2025-cua-bo-gddt/index.html" class="plain" aria-label="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT">
-								<img loading="lazy" decoding="async" width="600" height="400" src="/user/assets/wp-content/uploads/2025/12/ZAN_6058-600x400.webp" class="attachment-medium size-medium wp-post-image" alt="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&amp;ĐT" srcset="https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058-600x400.webp 600w, https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058-768x512.webp 768w, https://inno.com.vn/wp-content/uploads/2025/12/ZAN_6058.webp 900w" sizes="auto, (max-width: 600px) 100vw, 600px" title="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&amp;ĐT 1">							</a>
+							<a href="/chi-tiet-tin-tuc/@n.Slug" class="plain" aria-label="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT">
+								<img loading="lazy" decoding="async" width="600" height="400" src="@n.Hinhanh" class="attachment-medium size-medium wp-post-image" alt="@n.Title"/>							</a>
   							  							  						</div>
   						  					</div>
           					<div class="box-text text-left" >
@@ -1316,60 +1317,35 @@
 
 					
 										<h5 class="post-title is-large ">
-						<a href="inno-viet-nam-tham-du-hoi-nghi-chuyen-doi-so-trong-giao-duc-va-dao-tao-2025-cua-bo-gddt/index.html" class="plain">INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT</a>
+						<a href="/chi-tiet-tin-tuc/@n.Slug" class="plain">
+							@n.Title
+						</a>
 					</h5>
 										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo năm 2025 do Bộ...					</p>
-					                    
-					
-					
-					</div>
-					</div>
-									</div>
-			</div>
-		</div><div class="col post-item" >
-			<div class="col-inner">
-				<div class="box box-normal box-text-bottom box-blog-post has-hover">
-            					<div class="box-image" >
-  						<div class="image-cover" style="padding-top:75%;">
-							<a href="quan-ly-thu-vien-truong-thpt-hieu-qua/index.html" class="plain" aria-label="Quản lý thư viện trường THPT hiệu quả với phần mềm quản lý thư viện hiện đại">
-								<img loading="lazy" decoding="async" width="533" height="400" src="/user/assets/wp-content/uploads/2025/11/POST-Quan-ly-thu-vien-truong-THPT-hieu-qua-voi-phan-mem-quan-ly-thu-vien-hien-dai-533x400.webp" class="attachment-medium size-medium wp-post-image" alt="Quản lý thư viện trường THPT hiệu quả với phần mềm quản lý thư viện hiện đại" srcset="https://inno.com.vn/wp-content/uploads/2025/11/POST-Quan-ly-thu-vien-truong-THPT-hieu-qua-voi-phan-mem-quan-ly-thu-vien-hien-dai-533x400.webp 533w, https://inno.com.vn/wp-content/uploads/2025/11/POST-Quan-ly-thu-vien-truong-THPT-hieu-qua-voi-phan-mem-quan-ly-thu-vien-hien-dai-768x576.webp 768w, https://inno.com.vn/wp-content/uploads/2025/11/POST-Quan-ly-thu-vien-truong-THPT-hieu-qua-voi-phan-mem-quan-ly-thu-vien-hien-dai-600x450.webp 600w, https://inno.com.vn/wp-content/uploads/2025/11/POST-Quan-ly-thu-vien-truong-THPT-hieu-qua-voi-phan-mem-quan-ly-thu-vien-hien-dai.webp 900w" sizes="auto, (max-width: 533px) 100vw, 533px" title="Quản lý thư viện trường THPT hiệu quả với phần mềm quản lý thư viện hiện đại 7">							</a>
-  							  							  						</div>
-  						  					</div>
-          					<div class="box-text text-left" >
-					<div class="box-text-inner blog-post-inner">
+										<p class="from_the_blog_excerpt " style="white-space:normal; word-break: break-word">
+											@{
+												
+												var html = n.Content ?? "";
+												var text = Regex.Replace(html, "<.*?>", "").Trim();
 
-					
-										<h5 class="post-title is-large ">
-						<a href="quan-ly-thu-vien-truong-thpt-hieu-qua/index.html" class="plain">Quản lý thư viện trường THPT hiệu quả với phần mềm quản lý thư viện hiện đại</a>
-					</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Thư viện là trái tim tri thức của mỗi trường học, đặc biệt trong bậc...					</p>
-					                    
-					
-					
-					</div>
-					</div>
-									</div>
-			</div>
-		</div><div class="col post-item" >
-			<div class="col-inner">
-				<div class="box box-normal box-text-bottom box-blog-post has-hover">
-            					<div class="box-image" >
-  						<div class="image-cover" style="padding-top:75%;">
-							<a href="phong-hoc-ngoai-ngu-trong-lo-trinh-tieng-anh-bat-buoc-tu-lop-1/index.html" class="plain" aria-label="Phòng học ngoại ngữ trong lộ trình Tiếng Anh bắt buộc từ lớp 1">
-								<img loading="lazy" decoding="async" width="533" height="400" src="/user/assets/wp-content/uploads/2025/11/Post-Phong-hoc-ngoai-ngu-trong-lo-trinh-tieng-Anh-bat-buoc-tu-lop-1-533x400.webp" class="attachment-medium size-medium wp-post-image" alt="Phòng học ngoại ngữ trong lộ trình Tiếng Anh bắt buộc từ lớp 1" srcset="https://inno.com.vn/wp-content/uploads/2025/11/Post-Phong-hoc-ngoai-ngu-trong-lo-trinh-tieng-Anh-bat-buoc-tu-lop-1-533x400.webp 533w, https://inno.com.vn/wp-content/uploads/2025/11/Post-Phong-hoc-ngoai-ngu-trong-lo-trinh-tieng-Anh-bat-buoc-tu-lop-1-768x576.webp 768w, https://inno.com.vn/wp-content/uploads/2025/11/Post-Phong-hoc-ngoai-ngu-trong-lo-trinh-tieng-Anh-bat-buoc-tu-lop-1-600x450.webp 600w, https://inno.com.vn/wp-content/uploads/2025/11/Post-Phong-hoc-ngoai-ngu-trong-lo-trinh-tieng-Anh-bat-buoc-tu-lop-1.webp 900w" sizes="auto, (max-width: 533px) 100vw, 533px" title="Phòng học ngoại ngữ trong lộ trình Tiếng Anh bắt buộc từ lớp 1 12">							</a>
-  							  							  						</div>
-  						  					</div>
-          					<div class="box-text text-left" >
-					<div class="box-text-inner blog-post-inner">
+												var maxLength = 50;
+												if (text.Length > maxLength)
+												{
+													var cut = text.Substring(0, maxLength);
+													var lastSpace = cut.LastIndexOf(" ");
 
-					
-										<h5 class="post-title is-large ">
-						<a href="phong-hoc-ngoai-ngu-trong-lo-trinh-tieng-anh-bat-buoc-tu-lop-1/index.html" class="plain">Phòng học ngoại ngữ trong lộ trình Tiếng Anh bắt buộc từ lớp 1</a>
-					</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Tiếng Anh &#8211; từ môn học tùy chọn đến nền tảng bắt buộc của giáo...					</p>
+													if (lastSpace > 0)
+													{
+														text = cut.Substring(0, lastSpace) + "...";
+													}
+													else
+													{
+														text = cut + "...";
+													}
+													}
+											}
+											@text
+										</p>
 					                    
 					
 					
@@ -1377,132 +1353,10 @@
 					</div>
 									</div>
 			</div>
-		</div><div class="col post-item" >
-			<div class="col-inner">
-				<div class="box box-normal box-text-bottom box-blog-post has-hover">
-            					<div class="box-image" >
-  						<div class="image-cover" style="padding-top:75%;">
-							<a href="xu-huong-man-hinh-tuong-tac-tich-hop-ai/index.html" class="plain" aria-label="Xu hướng màn hình tương tác tích hợp AI">
-								<img loading="lazy" decoding="async" width="533" height="400" src="/user/assets/wp-content/uploads/2025/11/post-Xu-huong-man-hinh-tuong-tac-tich-hop-AI-533x400.webp" class="attachment-medium size-medium wp-post-image" alt="Xu hướng màn hình tương tác tích hợp AI" srcset="https://inno.com.vn/wp-content/uploads/2025/11/post-Xu-huong-man-hinh-tuong-tac-tich-hop-AI-533x400.webp 533w, https://inno.com.vn/wp-content/uploads/2025/11/post-Xu-huong-man-hinh-tuong-tac-tich-hop-AI-768x576.webp 768w, https://inno.com.vn/wp-content/uploads/2025/11/post-Xu-huong-man-hinh-tuong-tac-tich-hop-AI-600x450.webp 600w, https://inno.com.vn/wp-content/uploads/2025/11/post-Xu-huong-man-hinh-tuong-tac-tich-hop-AI.webp 900w" sizes="auto, (max-width: 533px) 100vw, 533px" title="Xu hướng màn hình tương tác tích hợp AI 17">							</a>
-  							  							  						</div>
-  						  					</div>
-          					<div class="box-text text-left" >
-					<div class="box-text-inner blog-post-inner">
-
-					
-										<h5 class="post-title is-large ">
-						<a href="xu-huong-man-hinh-tuong-tac-tich-hop-ai/index.html" class="plain">Xu hướng màn hình tương tác tích hợp AI</a>
-					</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Màn hình tương tác &#8211; từ công cụ hiển thị đến trung tâm kết nối...					</p>
-					                    
-					
-					
-					</div>
-					</div>
-									</div>
-			</div>
-		</div><div class="col post-item" >
-			<div class="col-inner">
-				<div class="box box-normal box-text-bottom box-blog-post has-hover">
-            					<div class="box-image" >
-  						<div class="image-cover" style="padding-top:75%;">
-							<a href="tram-sac-dien-thoai-thong-minh-innosmart-giai-phap-sac-tien-loi-an-toan-va-tham-my-cho-khong-gian-hien-dai/index.html" class="plain" aria-label="Trạm sạc điện thoại thông minh INNOSMART &#8211; Giải pháp sạc tiện lợi, an toàn và thẩm mỹ cho không gian hiện đại">
-								<img loading="lazy" decoding="async" width="533" height="400" src="/user/assets/wp-content/uploads/2025/10/post-Tram-sac-dien-thoai-thong-minh-INNOSMART-533x400.webp" class="attachment-medium size-medium wp-post-image" alt="post Tram sac dien thoai thong minh INNOSMART" srcset="https://inno.com.vn/wp-content/uploads/2025/10/post-Tram-sac-dien-thoai-thong-minh-INNOSMART-533x400.webp 533w, https://inno.com.vn/wp-content/uploads/2025/10/post-Tram-sac-dien-thoai-thong-minh-INNOSMART-768x576.webp 768w, https://inno.com.vn/wp-content/uploads/2025/10/post-Tram-sac-dien-thoai-thong-minh-INNOSMART-600x450.webp 600w, https://inno.com.vn/wp-content/uploads/2025/10/post-Tram-sac-dien-thoai-thong-minh-INNOSMART.webp 900w" sizes="auto, (max-width: 533px) 100vw, 533px" title="Trạm sạc điện thoại thông minh INNOSMART - Giải pháp sạc tiện lợi, an toàn và thẩm mỹ cho không gian hiện đại 21">							</a>
-  							  							  						</div>
-  						  					</div>
-          					<div class="box-text text-left" >
-					<div class="box-text-inner blog-post-inner">
-
-					
-										<h5 class="post-title is-large ">
-						<a href="tram-sac-dien-thoai-thong-minh-innosmart-giai-phap-sac-tien-loi-an-toan-va-tham-my-cho-khong-gian-hien-dai/index.html" class="plain">Trạm sạc điện thoại thông minh INNOSMART &#8211; Giải pháp sạc tiện lợi, an toàn và thẩm mỹ cho không gian hiện đại</a>
-					</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Nhu cầu sạc điện thoại thông minh trong thời đại số Trong cuộc sống hiện...					</p>
-					                    
-					
-					
-					</div>
-					</div>
-									</div>
-			</div>
-		</div><div class="col post-item" >
-			<div class="col-inner">
-				<div class="box box-normal box-text-bottom box-blog-post has-hover">
-            					<div class="box-image" >
-  						<div class="image-cover" style="padding-top:75%;">
-							<a href="6-tieu-chi-khi-chon-mua-tu-quan-ly-chia-khoa-thong-minh/index.html" class="plain" aria-label="6 TIÊU CHÍ KHI CHỌN MUA TỦ QUẢN LÝ CHÌA KHÓA THÔNG MINH">
-								<img loading="lazy" decoding="async" width="533" height="400" src="/user/assets/wp-content/uploads/2025/10/Noi-that-phong-hoc-hien-dai-Nen-tang-cho-khong-gian-giao-duc-tuong-lai-2-533x400.webp" class="attachment-medium size-medium wp-post-image" alt="6 TIÊU CHÍ KHI CHỌN MUA TỦ QUẢN LÝ CHÌA KHÓA THÔNG MINH" srcset="https://inno.com.vn/wp-content/uploads/2025/10/Noi-that-phong-hoc-hien-dai-Nen-tang-cho-khong-gian-giao-duc-tuong-lai-2-533x400.webp 533w, https://inno.com.vn/wp-content/uploads/2025/10/Noi-that-phong-hoc-hien-dai-Nen-tang-cho-khong-gian-giao-duc-tuong-lai-2-768x576.webp 768w, https://inno.com.vn/wp-content/uploads/2025/10/Noi-that-phong-hoc-hien-dai-Nen-tang-cho-khong-gian-giao-duc-tuong-lai-2-600x450.webp 600w, https://inno.com.vn/wp-content/uploads/2025/10/Noi-that-phong-hoc-hien-dai-Nen-tang-cho-khong-gian-giao-duc-tuong-lai-2.webp 900w" sizes="auto, (max-width: 533px) 100vw, 533px" title="6 TIÊU CHÍ KHI CHỌN MUA TỦ QUẢN LÝ CHÌA KHÓA THÔNG MINH 25">							</a>
-  							  							  						</div>
-  						  					</div>
-          					<div class="box-text text-left" >
-					<div class="box-text-inner blog-post-inner">
-
-					
-										<h5 class="post-title is-large ">
-						<a href="6-tieu-chi-khi-chon-mua-tu-quan-ly-chia-khoa-thong-minh/index.html" class="plain">6 TIÊU CHÍ KHI CHỌN MUA TỦ QUẢN LÝ CHÌA KHÓA THÔNG MINH</a>
-					</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Vì sao cần được tư vấn khi chọn tủ quản lý chìa khóa thông minh?...					</p>
-					                    
-					
-					
-					</div>
-					</div>
-									</div>
-			</div>
-		</div><div class="col post-item" >
-			<div class="col-inner">
-				<div class="box box-normal box-text-bottom box-blog-post has-hover">
-            					<div class="box-image" >
-  						<div class="image-cover" style="padding-top:75%;">
-							<a href="hoi-truong-thong-minh-kien-tao-khong-gian-ket-noi-va-truyen-cam-hung-cung-inno-viet-nam/index.html" class="plain" aria-label="Hội trường thông minh &#8211; Kiến tạo không gian kết nối và truyền cảm hứng cùng INNO Việt Nam">
-								<img loading="lazy" decoding="async" width="533" height="400" src="/user/assets/wp-content/uploads/2025/10/post-Hoi-truong-thong-minh-INNO-1-1-533x400.webp" class="attachment-medium size-medium wp-post-image" alt="Hội trường thông minh - Kiến tạo không gian kết nối và truyền cảm hứng cùng INNO Việt Nam" srcset="https://inno.com.vn/wp-content/uploads/2025/10/post-Hoi-truong-thong-minh-INNO-1-1-533x400.webp 533w, https://inno.com.vn/wp-content/uploads/2025/10/post-Hoi-truong-thong-minh-INNO-1-1-768x576.webp 768w, https://inno.com.vn/wp-content/uploads/2025/10/post-Hoi-truong-thong-minh-INNO-1-1-600x450.webp 600w, https://inno.com.vn/wp-content/uploads/2025/10/post-Hoi-truong-thong-minh-INNO-1-1.webp 900w" sizes="auto, (max-width: 533px) 100vw, 533px" title="Hội trường thông minh - Kiến tạo không gian kết nối và truyền cảm hứng cùng INNO Việt Nam 29">							</a>
-  							  							  						</div>
-  						  					</div>
-          					<div class="box-text text-left" >
-					<div class="box-text-inner blog-post-inner">
-
-					
-										<h5 class="post-title is-large ">
-						<a href="hoi-truong-thong-minh-kien-tao-khong-gian-ket-noi-va-truyen-cam-hung-cung-inno-viet-nam/index.html" class="plain">Hội trường thông minh &#8211; Kiến tạo không gian kết nối và truyền cảm hứng cùng INNO Việt Nam</a>
-					</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Trong bối cảnh giáo dục chuyển mình mạnh mẽ cùng xu hướng chuyển đổi số,...					</p>
-					                    
-					
-					
-					</div>
-					</div>
-									</div>
-			</div>
-		</div><div class="col post-item" >
-			<div class="col-inner">
-				<div class="box box-normal box-text-bottom box-blog-post has-hover">
-            					<div class="box-image" >
-  						<div class="image-cover" style="padding-top:75%;">
-							<a href="inno-viet-nam-tuyen-dung-dai-ly-uy-quyen-kinh-doanh-khu-vuc-giai-phap-giao-duc-thu-vien/index.html" class="plain" aria-label="INNO VIỆT NAM TUYỂN DỤNG ĐẠI LÝ UỶ QUYỀN KINH DOANH KHU VỰC &#8211; GIẢI PHÁP GIÁO DỤC &#038; THƯ VIỆN">
-								<img loading="lazy" decoding="async" width="533" height="400" src="/user/assets/wp-content/uploads/2025/10/Post-TUYEN-DUNG-DAI-LY-UY-QUYEN-KINH-DOANH-KHU-VUC-533x400.webp" class="attachment-medium size-medium wp-post-image" alt="INNO VIỆT NAM TUYỂN DỤNG ĐẠI LÝ UỶ QUYỀN KINH DOANH KHU VỰC - GIẢI PHÁP GIÁO DỤC &amp; THƯ VIỆN" srcset="https://inno.com.vn/wp-content/uploads/2025/10/Post-TUYEN-DUNG-DAI-LY-UY-QUYEN-KINH-DOANH-KHU-VUC-533x400.webp 533w, https://inno.com.vn/wp-content/uploads/2025/10/Post-TUYEN-DUNG-DAI-LY-UY-QUYEN-KINH-DOANH-KHU-VUC-768x576.webp 768w, https://inno.com.vn/wp-content/uploads/2025/10/Post-TUYEN-DUNG-DAI-LY-UY-QUYEN-KINH-DOANH-KHU-VUC-600x450.webp 600w, https://inno.com.vn/wp-content/uploads/2025/10/Post-TUYEN-DUNG-DAI-LY-UY-QUYEN-KINH-DOANH-KHU-VUC.webp 900w" sizes="auto, (max-width: 533px) 100vw, 533px" title="INNO VIỆT NAM TUYỂN DỤNG ĐẠI LÝ UỶ QUYỀN KINH DOANH KHU VỰC - GIẢI PHÁP GIÁO DỤC &amp; THƯ VIỆN 33">							</a>
-  							  							  						</div>
-  						  					</div>
-          					<div class="box-text text-left" >
-					<div class="box-text-inner blog-post-inner">
-
-					
-										<h5 class="post-title is-large ">
-						<a href="inno-viet-nam-tuyen-dung-dai-ly-uy-quyen-kinh-doanh-khu-vuc-giai-phap-giao-duc-thu-vien/index.html" class="plain">INNO VIỆT NAM TUYỂN DỤNG ĐẠI LÝ UỶ QUYỀN KINH DOANH KHU VỰC &#8211; GIẢI PHÁP GIÁO DỤC &#038; THƯ VIỆN</a>
-					</h5>
-										<div class="is-divider"></div>
-										<p class="from_the_blog_excerpt ">Cơ hội hợp tác cùng thương hiệu công nghệ giáo dục hàng đầu Việt Nam...					</p>
-					                    
-					
-					
-					</div>
-					</div>
-									</div>
-			</div>
-		</div></div>
+		</div>
+	}
+  
+</div>
 		</div>
 				
 <style>

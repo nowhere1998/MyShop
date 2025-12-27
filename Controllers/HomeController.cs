@@ -34,7 +34,12 @@ namespace MyShop.Controllers
                 .Where(x => x.Position == 1)
                 .OrderBy(x => x.Ord)
                 .ToList();
+            var news = _context.News
+                .OrderByDescending (x => x.Id)
+                .Where(x => x.Status == 1)
+                .ToList();
             
+            ViewBag.News = news;
 			ViewBag.Categories = categories;
             ViewBag.Products = products;
             ViewBag.Banners = banners;  
