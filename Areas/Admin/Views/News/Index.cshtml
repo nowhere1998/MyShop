@@ -36,9 +36,7 @@
         <thead class="table-primary">
             <tr>
                 <th>Tiêu đề</th>
-                <th>Slug</th>
                 <th>Nhóm</th>
-                <th>Tác giả</th>
                 <th>Hình ảnh</th>
                 <th>Trạng thái</th>
                 <th class="text-center">Hành động</th>
@@ -56,11 +54,6 @@
                     <td>
                         @item.Group?.Name
                     </td>
-
-                    <td>
-                        @item.AuthorName
-                    </td>
-
                     <td>
                         @if (!string.IsNullOrEmpty(item.Hinhanh))
                         {
