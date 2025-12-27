@@ -18,25 +18,37 @@
           asp-controller="News"
           asp-action="Index"
           class="mb-3">
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <!-- nút submit là icon search -->
-                <button type="submit" class="btn btn-primary" title="Tìm kiếm">
-                    <i class="fa fa-search"></i>
-                </button>
+
+        <div class="row g-2">
+            <!-- Tìm theo tên -->
+            <div class="col-md-8">
+                <div class="input-group">
+                    <button type="submit" class="btn btn-primary" title="Tìm kiếm">
+                        <i class="fa fa-search"></i>
+                    </button>
+                    <input type="text"
+                           name="name"
+                           value="@ViewBag.searchName"
+                           class="form-control"
+                           placeholder="Tìm theo tên..." />
+                </div>
             </div>
-            <input type="text"
-                   name="name"
-                   value="@ViewBag.searchName"
-                   class="form-control"
-                   placeholder="Tìm theo tên..." />
+
+            <!-- Lọc theo danh mục -->
+            <div class="col-md-4">
+                <select name="groupId"
+                        class="form-select"
+                        onchange="this.form.submit()"
+                        asp-items="ViewBag.groupNews">
+                    <option value="">-- Tất cả danh mục --</option>
+                </select>
+            </div>
         </div>
     </form>
     <table class="table table-hover align-middle">
         <thead class="table-primary">
             <tr>
                 <th>Tiêu đề</th>
-                <th>Nhóm</th>
                 <th>Hình ảnh</th>
                 <th>Trạng thái</th>
                 <th class="text-center">Hành động</th>
@@ -48,12 +60,6 @@
             {
                 <tr>
                     <td>@item.Title</td>
-
-                    <td>@item.Slug</td>
-
-                    <td>
-                        @item.Group?.Name
-                    </td>
                     <td>
                         @if (!string.IsNullOrEmpty(item.Hinhanh))
                         {

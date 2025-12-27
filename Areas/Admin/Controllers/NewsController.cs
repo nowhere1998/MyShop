@@ -22,27 +22,80 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/News
-        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
+        public async Task<IActionResult> Index(string? name, int? groupId, int page = 1, int pageSize = 30)
         {
-            var query = _context.News.OrderByDescending(x => x.Id).Include(x => x.Group).Include(x=> x.PostedBy).AsNoTracking();
+            // ======================
+            // 1. Load GroupNews
+            // ======================
+            var groupNews = await _context.GroupNews
+                .AsNoTracking()
+                .OrderBy(x => x.Level)
+                .ThenBy(x => x.Ord)
+                .ToListAsync();
+
+            // Build SelectListItem
+            List<SelectListItem> groupNewsItems = new();
+
+            foreach (var item in groupNews)
+            {
+                groupNewsItems.Add(new SelectListItem
+                {
+                    Value = item.Id.ToString(),
+                    Text = StringHelper.ShowNameLevel(item.Name, item.Level),
+                    Selected = (groupId == item.Id)
+                });
+            }
+
+            ViewBag.GroupNews = groupNewsItems;
+
+            // ======================
+            // 2. Query News
+            // ======================
+            var query = _context.News
+                .Include(x => x.Group)
+                .Include(x => x.PostedBy)
+                .AsNoTracking()
+                .OrderByDescending(x => x.Id)
+                .AsQueryable();
+
+            // 🔍 Lọc theo tiêu đề
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Title.ToLower().Contains(name.ToLower().Trim())).OrderByDescending(x => x.Id);
+                query = query.Where(x => x.Title.Contains(name));
             }
-            // Tổng số bản ghi sau khi lọc
+
+            // 🔍 Lọc theo GroupNews (cha → lấy cả con)
+            if (groupId.HasValue)
+            {
+                var group = groupNews.FirstOrDefault(x => x.Id == groupId);
+
+                if (group != null && !string.IsNullOrEmpty(group.Level))
+                {
+                    query = query.Where(x =>
+                        x.Group != null &&
+                        x.Group.Level.StartsWith(group.Level));
+                }
+            }
+
+            // ======================
+            // 3. Phân trang
+            // ======================
             var totalCount = await query.CountAsync();
 
-            // Lấy dữ liệu từng trang
             var data = await query
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            // Gửi biến qua View
+            // ======================
+            // 4. Gửi dữ liệu qua View
+            // ======================
             ViewData["SearchName"] = name;
+            ViewBag.GroupId = groupId;
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
             return View(data);
         }
 
@@ -67,10 +120,11 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/News/Create
+
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name");
+            ViewBag.GroupId = GetGroupNewsDropdown();
+
             return View();
         }
 
@@ -86,6 +140,7 @@ namespace MyShop.Areas.Admin.Controllers
             var exists = await _context.News.AnyAsync(p => p.Slug == news.Slug);
             if (exists)
             {
+                ViewBag.GroupId = GetGroupNewsDropdown();
                 ModelState.AddModelError("Title", "Tên đã tồn tại, vui lòng đổi tên khác.");
             }
             if (ModelState.IsValid)
@@ -120,8 +175,7 @@ namespace MyShop.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name", news.GroupId);
+            ViewBag.GroupId = GetGroupNewsDropdown();
             return View(news);
         }
 
@@ -139,7 +193,7 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name", news.GroupId);
+            ViewBag.GroupId = GetGroupNewsDropdown(news.GroupId);
             return View(news);
         }
 
@@ -173,6 +227,7 @@ namespace MyShop.Areas.Admin.Controllers
             var exists = await _context.News.AnyAsync(p => p.Slug == news.Slug && p.Id != news.Id);
             if (exists)
             {
+                ViewBag.GroupId = GetGroupNewsDropdown(news.GroupId);
                 ModelState.AddModelError("Title", "Tên đã tồn tại, vui lòng đổi tên khác.");
             }
             if (ModelState.IsValid)
@@ -195,7 +250,7 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["GroupId"] = new SelectList(_context.GroupNews, "Id", "Name", news.GroupId);
+            ViewBag.GroupId = GetGroupNewsDropdown(news.GroupId);
             return View(news);
         }
 
@@ -216,5 +271,29 @@ namespace MyShop.Areas.Admin.Controllers
         {
             return _context.News.Any(e => e.Id == id);
         }
+
+        private List<SelectListItem> GetGroupNewsDropdown(int? selectedId = null)
+        {
+            var groupNews = _context.GroupNews
+                .AsNoTracking()
+                .OrderBy(x => x.Level)
+                .ThenBy(x => x.Ord)
+                .ToList();
+
+            List<SelectListItem> items = new();
+
+            foreach (var item in groupNews)
+            {
+                items.Add(new SelectListItem
+                {
+                    Value = item.Id.ToString(),
+                    Text = StringHelper.ShowNameLevel(item.Name, item.Level),
+                    Selected = selectedId == item.Id
+                });
+            }
+
+            return items;
+        }
+
     }
 }

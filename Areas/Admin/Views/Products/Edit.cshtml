@@ -17,7 +17,11 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label asp-for="CategoryId" class="form-label">Danh mục</label>
-                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <select asp-for="CategoryId"
+                        class="form-control"
+                        asp-items="ViewBag.Categories">
+                    <option value="">-- Chọn danh mục --</option>
+                </select>
             </div>
 
             <div class="col-md-6">
