@@ -110,7 +110,7 @@ namespace MyShop.Areas.Admin.Controllers
             }
             // --- Lưu bản ghi ---
             model.Ord = newOrd;
-            model.Active = true;
+            //model.Active = true;
             _context.Advertises.Add(model);
             await _context.SaveChangesAsync();
 

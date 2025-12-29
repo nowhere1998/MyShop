@@ -42,7 +42,7 @@ namespace MyShop.Models
         [Display(Name = "Thứ tự")]
         public int? Ord { get; set; }
 
-        [Display(Name = "Hoạt động")]
+        [Display(Name = "Trạng thái")]
         public bool? Active { get; set; }
 
         [Display(Name = "Ngôn ngữ")]

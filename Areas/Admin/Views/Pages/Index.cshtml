@@ -38,10 +38,7 @@
         <thead class="table-primary">
             <tr>
                 <th>Tên trang</th>
-                <th>Kiểu trang</th>
-                <th>Liên kết</th>
-                <th>Kiểu liên kết</th>
-                <th>Vị trí</th>
+                <th>Loại trang</th>
                 <th>Thứ tự</th>
                 <th>Trạng thái</th>
                 <th class="text-center">Hành động</th>
@@ -58,7 +55,7 @@
                         <td>
                             @(item.Type == 0 ? "Trang liên kết" : "Trang nội dung")
                         </td>
-                        <td>@item.Link</td>
+                        @* <td>@item.Link</td>
                         <td>
                             @if (item.Target == "_blank")
                             {
@@ -75,7 +72,7 @@
                               item.Position == 2 ? "Menu giữa" :
                               item.Position == 3 ? "Menu dưới" :
                               item.Position == 4 ? "Giữa dưới" : "---")
-                        </td>
+                        </td> *@
 
                         <td>@item.Ord</td>
                         <td>
