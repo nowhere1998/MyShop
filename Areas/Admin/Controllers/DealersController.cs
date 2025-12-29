@@ -141,12 +141,29 @@ namespace MyShop.Areas.Admin.Controllers
         // GET: Admin/Dealers/Delete/5
         public IActionResult Delete(int id)
         {
-            Dealer model = _context.Dealers.FirstOrDefault(a => a.Id == id);
-            // Xoá bản ghi
-            _context.Dealers.Remove(model);
+            // Kiểm tra dealer có tồn tại không
+            var dealer = _context.Dealers.FirstOrDefault(d => d.Id == id);
+            if (dealer == null)
+            {
+                return NotFound();
+            }
+
+            // Kiểm tra dealer có sản phẩm không
+            bool hasProduct = _context.Products.Any(p => p.DealerId == id);
+            if (hasProduct)
+            {
+                TempData["Error"] = "Không thể xóa nhà cung cấp vì đang có sản phẩm.";
+                return RedirectToAction("Index");
+            }
+
+            // Không có sản phẩm -> cho xóa
+            _context.Dealers.Remove(dealer);
             _context.SaveChanges();
+
+            TempData["Success"] = "Xóa nhà cung cấp thành công.";
             return RedirectToAction("Index");
         }
+
 
         private bool DealerExists(int id)
         {

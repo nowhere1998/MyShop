@@ -32,6 +32,14 @@
                    placeholder="Tìm theo tên..." />
         </div>
     </form>
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["Error"]
+        </div>
+    }
+
     <table class="table table-hover align-middle">
         <thead class="table-primary">
             <tr>

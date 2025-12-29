@@ -22,13 +22,31 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Pages
-        public async Task<IActionResult> Index(string? name, int page = 1, int pageSize = 30)
+        public async Task<IActionResult> Index(
+     string? name,
+     int? position,          // 👈 thêm
+     int page = 1,
+     int pageSize = 30)
         {
-            var query = _context.Pages.OrderBy(x => x.Level).AsNoTracking();
+            var query = _context.Pages
+                .OrderBy(x => x.Level)
+                .AsNoTracking();
+
             if (!string.IsNullOrWhiteSpace(name))
             {
-                query = query.Where(x => x.Name.ToLower().Contains(name.ToLower().Trim())).OrderBy(x => x.Level);
+                query = query
+                    .Where(x => x.Name.ToLower().Contains(name.ToLower().Trim()))
+                    .OrderBy(x => x.Level);
             }
+
+            // ✅ LỌC THEO VỊ TRÍ
+            if (position.HasValue)
+            {
+                query = query
+                    .Where(x => x.Position == position.Value)
+                    .OrderBy(x => x.Level);
+            }
+
             // Tổng số bản ghi sau khi lọc
             var totalCount = await query.CountAsync();
 
@@ -40,9 +58,11 @@ namespace MyShop.Areas.Admin.Controllers
 
             // Gửi biến qua View
             ViewData["SearchName"] = name;
+            ViewBag.Position = position;   // 👈 để giữ selected
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
             return View(data);
         }
 
