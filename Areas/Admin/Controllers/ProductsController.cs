@@ -130,12 +130,14 @@ namespace MyShop.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories.Where(c => c.ParentId != null),"Id","Name");
+
             ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name");
+            await LoadCreateDropdowns();
             return View();
         }
+
 
         // POST: Admin/Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -182,6 +184,7 @@ namespace MyShop.Areas.Admin.Controllers
             var exists = await _context.Products.AnyAsync(p => p.Slug == model.Slug);
             if (exists)
             {
+                await LoadCreateDropdowns();
                 ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
             }
             if (ModelState.IsValid)
@@ -191,7 +194,7 @@ namespace MyShop.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", model.CategoryId);
+            await LoadCreateDropdowns();
             ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name", model.DealerId);
             return View(model);
         }
@@ -211,7 +214,7 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            await LoadCreateDropdowns(product.CategoryId);
             ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name", product.DealerId);
             return View(product);
         }
@@ -231,6 +234,7 @@ namespace MyShop.Areas.Admin.Controllers
 
             if (exists)
             {
+                await LoadCreateDropdowns();
                 ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng nhập tên khác.");
             }
 
@@ -293,7 +297,7 @@ namespace MyShop.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            await LoadCreateDropdowns();
             ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name", product.DealerId);
             return View(product);
         }
@@ -334,5 +338,41 @@ namespace MyShop.Areas.Admin.Controllers
         {
             return _context.Products.Any(e => e.Id == id);
         }
+
+        private async Task LoadCreateDropdowns(int? selectedCategoryId = null)
+        {
+
+            // Categories cha - con
+            var allCategories = await _context.Categories
+                .AsNoTracking()
+                .ToListAsync();
+
+            List<SelectListItem> categoryItems = new();
+
+            void BuildCategory(int? parentId, string prefix)
+            {
+                var childs = allCategories
+                    .Where(c => c.ParentId == parentId)
+                    .OrderBy(c => c.Name)
+                    .ToList();
+
+                foreach (var c in childs)
+                {
+                    categoryItems.Add(new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = prefix + c.Name,
+                        Selected = selectedCategoryId == c.Id
+                    });
+
+                    BuildCategory(c.Id, prefix + "— ");
+                }
+            }
+
+            BuildCategory(null, "");
+
+            ViewBag.Categories = categoryItems;
+        }
+
     }
 }
