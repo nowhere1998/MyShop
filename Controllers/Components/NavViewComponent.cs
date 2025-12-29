@@ -65,12 +65,12 @@ namespace MyShop.Controllers.Components
 				.Where(x => x.Level != null 
 					&& x.Level.Length == 15 
 					&& x.Active == 1
-					&& x.Position == 1)
+                    && x.Position == 1)
 				.ToList();
 
 			var pagesTop = _context.Pages
 				.OrderBy(x => x.Ord)
-				.Where(x => x.Position == 5)
+				.Where(x => x.Position == 5 && x.Active == 1)
 				.ToList();
 
 			var pageSanPham = _context.Pages

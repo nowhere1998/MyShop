@@ -46,6 +46,7 @@ namespace MyShop.Controllers.Components
                     //)
                 })
                 .ToList();
+
             var pagesL2 = _context.Pages
                 .OrderBy(x => x.Ord)
                 .Where(x => x.Level != null

@@ -152,23 +152,73 @@
 </div>
 
 @section Scripts {
+
     <script>
         const pageType = document.getElementById("pageType");
         const detailBox = document.getElementById("detailBox");
+        const tagInput = document.getElementById("Tag");
 
-        function togglePageType() {
-            if (pageType.value == 1) {
-                // Trang nội dung → hiện textarea
+        const customLink = document.getElementById("customLink"); // input hiển thị
+        const finalLink = document.getElementById("finalLink");   // input submit
+
+        function handlePageTypeChange() {
+
+            if (pageType.value === "1") {
+                // ===== Trang nội dung =====
+
+                // Hiện textarea
                 detailBox.classList.remove("d-none");
+
+                // Auto link
+                const autoLink = tagInput.value
+                    ? "/noi-dung/" + tagInput.value
+                    : "/noi-dung";
+
+                // Set link
+                customLink.value = autoLink;
+                finalLink.value = autoLink;
+
+                // 🔒 KHÓA HOÀN TOÀN
+                customLink.setAttribute("disabled", true);
+
             } else {
-                // Trang liên kết → ẩn textarea
+                // ===== Trang liên kết =====
+
+                // Ẩn textarea
                 detailBox.classList.add("d-none");
+
+                // 🔓 MỞ KHÓA
+                customLink.removeAttribute("disabled");
+
+                // Sync lại link
+                finalLink.value = customLink.value;
             }
         }
 
-        pageType.addEventListener("change", togglePageType);
-        togglePageType(); // chạy lần đầu khi load form
+        // Đổi loại trang
+        pageType.addEventListener("change", handlePageTypeChange);
+
+        // Đổi tag → đổi link nếu là trang nội dung
+        tagInput.addEventListener("input", function () {
+            if (pageType.value === "1") {
+                const autoLink = "/noi-dung/" + tagInput.value;
+                customLink.value = autoLink;
+                finalLink.value = autoLink;
+            }
+        });
+
+        // Nhập link tay → cập nhật finalLink (chỉ khi là trang liên kết)
+        customLink.addEventListener("input", function () {
+            if (pageType.value !== "1") {
+                finalLink.value = this.value;
+            }
+        });
+
+        // Load form
+        handlePageTypeChange();
     </script>
+
+
     >
     <script>
     const linkType = document.getElementById("linkType");
