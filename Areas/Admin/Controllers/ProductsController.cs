@@ -307,31 +307,42 @@ namespace MyShop.Areas.Admin.Controllers
         public IActionResult Delete(int id)
         {
             var product = _context.Products
-                                  .Include(p => p.ProductImages) // nếu có bảng ProductImages
-                                  .FirstOrDefault(a => a.Id == id);
+                .Include(p => p.ProductImages)
+                .Include(p => p.ProductSpecs)
+                .FirstOrDefault(p => p.Id == id);
 
             if (product == null)
             {
                 return NotFound();
             }
 
-            // Kiểm tra xem có ràng buộc khóa ngoại nào không
-            if ((product.ProductImages != null && product.ProductImages.Any()) ||
-                _context.OrderDetails.Any(od => od.ProductId == id)) // ví dụ bảng OrderDetails
+            // ✅ CHỈ kiểm tra OrderDetails
+            bool hasOrder = _context.OrderDetails.Any(od => od.ProductId == id);
+            if (hasOrder)
             {
-                TempData["Error"] = "Sản phẩm đang được sử dụng ở nơi khác, không thể xóa!";
+                TempData["Error"] = "Sản phẩm đã có đơn hàng, không thể xóa!";
                 return RedirectToAction("Index");
             }
 
-            // Xoá bản ghi
-            _context.Products.Remove(product);
+            // ✅ Xóa con trước (tránh FK)
+            if (product.ProductImages != null && product.ProductImages.Any())
+            {
+                _context.ProductImages.RemoveRange(product.ProductImages);
+            }
 
-            // Nếu có trường Ord cần giảm, xử lý ở đây
+            if (product.ProductSpecs != null && product.ProductSpecs.Any())
+            {
+                _context.ProductSpecs.RemoveRange(product.ProductSpecs);
+            }
+
+            // ✅ Xóa sản phẩm
+            _context.Products.Remove(product);
             _context.SaveChanges();
 
             TempData["Success"] = "Xóa sản phẩm thành công!";
             return RedirectToAction("Index");
         }
+
 
 
         private bool ProductExists(long id)
