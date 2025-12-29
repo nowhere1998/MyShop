@@ -1,6 +1,6 @@
 ﻿<div class="top-banner">
     <a href="@ViewBag.TopBanner.Link">
-        <img src="@ViewBag.TopBanner.Image" alt="@ViewBag.TopBanner.Name" border="0" height="@(ViewBag.TopBanner.Height+"px")"/>
+        <img src="@ViewBag.TopBanner.Image" alt="@ViewBag.TopBanner.Name" border="0" height="@ViewBag.TopBanner.Height"/>
     </a>
 </div>
 
@@ -20,14 +20,11 @@
 
                 <div class="flex-col hide-for-medium flex-right">
                     <ul class="nav top-bar-nav nav-right nav-small  nav-divided">
-                        @foreach(var pl1 in ViewBag.PagesL1)
+                        @foreach(var pt in ViewBag.PagesTop)
                         {
-                            @if(pl1.Page.Name == "tin tức" || pl1.Page.Name == "liên hệ")
-                            {
-                                <li id="menu-item-13189" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13189 menu-item-design-default">
-                                    <a href="@pl1.Page.Link" class="nav-top-link" style="text-transform:capitalize">@pl1.Page.Name</a>
-                                </li>
-                            }
+                            <li id="menu-item-13189" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-13189 menu-item-design-default">
+                                <a href="@pt.Link" class="nav-top-link" style="text-transform:capitalize">@pt.Name</a>
+                            </li>
                         }
                         
                         @* <li id="menu-item-13191" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-13191 menu-item-design-default menu-item-has-block has-dropdown">
@@ -178,7 +175,7 @@
                         @* list pages *@
                         @foreach(var pl1 in ViewBag.PagesL1)
                         {
-                            @if (pl1.HasChild && pl1.HasChildL3 && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
+                            @if (pl1.HasChild && pl1.HasChildL3)
                             {
                                 <li id="menu-item-12350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12350 menu-item-design-container-width menu-item-has-block has-dropdown">
                                     <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">
@@ -235,7 +232,7 @@
                                     </div>
                                 </li>
                             }
-                            else if (!pl1.HasChild && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
+                            else if (!pl1.HasChild)
                             {
                                 <li id="menu-item-12350" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12350 menu-item-design-container-width menu-item-has-block has-dropdown">
                                     <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">
@@ -243,7 +240,7 @@
                                     </a>
                                 </li>
                             }
-                            else if (pl1.HasChild && !pl1.HasChildL3 && !string.Equals(pl1.Page.Name?.Trim(), "tin tức", StringComparison.OrdinalIgnoreCase) && !string.Equals(pl1.Page.Name?.Trim(), "liên hệ", StringComparison.OrdinalIgnoreCase))
+                            else if (pl1.HasChild && !pl1.HasChildL3)
                             {
                                 <li id="menu-item-13196" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-13196 menu-item-design-default has-dropdown">
                                     <a href="@pl1.Page.Link" class="nav-top-link" aria-expanded="false" aria-haspopup="menu">@pl1.Page.Name<i class="icon-angle-down"></i></a>

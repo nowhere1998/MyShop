@@ -14,17 +14,6 @@ namespace MyShop.Controllers.Components
 
         public IViewComponentResult Invoke()
 		{
-			var pageLienket = _context.Pages
-				.Where(x => x.Position == 3
-				&& !x.Name.StartsWith("chính")
-				&& x.Active == 1)
-				.ToList();
-			var pageChinhsach = _context.Pages
-				.Where(x => x.Position == 3
-					&& x.Name.StartsWith("chính")
-					&& x.Active == 1)
-				.ToList();
-
             var config = _context.Configs.FirstOrDefault() ?? new Config();
 
             var pagesL1 = _context.Pages
@@ -32,7 +21,7 @@ namespace MyShop.Controllers.Components
                     l1.Level != null &&
                     l1.Level.Length == 5 &&
                     l1.Active == 1 &&
-                    l1.Position == 1)
+                    (l1.Position == 3 || l1.Position == 6))
                 .OrderBy(l1 => l1.Ord)
                 .Select(l1 => new PageL1
                 {
@@ -44,17 +33,17 @@ namespace MyShop.Controllers.Components
                         l2.Level.Length == 10 &&
                         l2.Level.StartsWith(l1.Level) &&
                         l2.Active == 1 &&
-                        l2.Position == 1
+                        (l2.Position == 3 || l2.Position == 6)
                     ),
 
                     // Có cấp 3
-                    HasChildL3 = _context.Pages.Any(l3 =>
-                        l3.Level != null &&
-                        l3.Level.Length == 15 &&
-                        l3.Level.StartsWith(l1.Level) &&
-                        l3.Active == 1 &&
-                        l3.Position == 1
-                    )
+                    //HasChildL3 = _context.Pages.Any(l3 =>
+                    //    l3.Level != null &&
+                    //    l3.Level.Length == 15 &&
+                    //    l3.Level.StartsWith(l1.Level) &&
+                    //    l3.Active == 1 &&
+                    //    l3.Position == 1
+                    //)
                 })
                 .ToList();
 
@@ -63,12 +52,12 @@ namespace MyShop.Controllers.Components
                 .Where(x => x.Level != null
                     && x.Level.Length == 10
                     && x.Active == 1
-                    && x.Position == 1)
+                    && (x.Position == 3 || x.Position == 6))
                 .ToList();
 
+            ViewBag.PagesL1 = pagesL1;
+            ViewBag.PagesL2 = pagesL2;
             ViewBag.Config = config;
-			ViewBag.PageLienket = pageLienket;
-			ViewBag.PageChinhsach = pageChinhsach;
 			return View("Default");
 		}
 	}

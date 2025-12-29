@@ -130,46 +130,33 @@
 
             </div>
 
-            <div id="block_widget-4" class="col pb-0 widget block_widget">
+            @foreach(var pl1 in ViewBag.PagesL1)
+            {
+                <div id="block_widget-4" class="col pb-0 widget block_widget">
 
-                <p><H3>LIÊN KẾT</H3></p>
-                <div class="ux-menu stack stack-col justify-start">
+                    <p><H3 style="text-transform:uppercase">@pl1.Page.Name</H3></p>
+                    <div class="ux-menu stack stack-col justify-start">
 
-                    @foreach(var p in ViewBag.PageLienket)
-                    {
-                        <div class="ux-menu-link flex menu-item">
-                            <a class="ux-menu-link__link flex" href="@p.Link">
-                                <span class="ux-menu-link__text" style="text-transform:capitalize">
-                                    @p.Name
-                                </span>
-                            </a>
-                        </div>
-                    }
-                    
+                        @foreach (var pl2 in ViewBag.PagesL2)
+                        {
+                            @if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
+                            {
+                                <div class="ux-menu-link flex menu-item">
+                                    <a class="ux-menu-link__link flex" href="@pl2.Link">
+                                        <span class="ux-menu-link__text" style="text-transform:capitalize">
+                                            @pl2.Name
+                                        </span>
+                                    </a>
+                                </div>
+                            }
+                        }
 
-                </div>
 
-            </div>
-
-            <div id="block_widget-5" class="col pb-0 widget block_widget">
-
-                <h3>CHÍNH SÁCH</h3>
-                <div class="ux-menu stack stack-col justify-start">
-
-                    @foreach(var p in ViewBag.PageChinhsach)
-                    {
-                        <div class="ux-menu-link flex menu-item">
-                            <a class="ux-menu-link__link flex" href="@p.Link">
-                                <span class="ux-menu-link__text" style="text-transform:capitalize">
-                                    @p.Name
-                                </span>
-                            </a>
-                        </div>
-                    }
+                    </div>
 
                 </div>
-
-            </div>
+            }
+            
 
             <div id="block_widget-3" class="col pb-0 widget block_widget">
 

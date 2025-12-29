@@ -20,13 +20,13 @@ namespace MyShop.Controllers.Components
 				.OrderByDescending(c => c.Id)
 				.Where(c => c.ParentId != null)
 				.ToList();
-			var listPosition = new List<int> {1};
+
 			var pagesL1 = _context.Pages
 				.Where(l1 =>
 					l1.Level != null &&
 					l1.Level.Length == 5 &&
 					l1.Active == 1 &&
-					l1.Position == 1)
+					(l1.Position == 1 || l1.Position == 6))
 				.OrderBy(l1 => l1.Ord)
 				.Select(l1 => new PageL1
 				{
@@ -38,8 +38,8 @@ namespace MyShop.Controllers.Components
 						l2.Level.Length == 10 &&
 						l2.Level.StartsWith(l1.Level) &&
 						l2.Active == 1 &&
-						l2.Position == 1
-					),
+                        (l2.Position == 1 || l2.Position == 6)
+                    ),
 
 					// Có cấp 3
 					HasChildL3 = _context.Pages.Any(l3 =>
@@ -57,7 +57,7 @@ namespace MyShop.Controllers.Components
 				.Where(x => x.Level != null 
 					&& x.Level.Length == 10 
 					&& x.Active == 1
-					&& x.Position == 1)
+					&& (x.Position == 1 || x.Position == 6))
 				.ToList();
 
 			var pagesL3 = _context.Pages
@@ -66,6 +66,11 @@ namespace MyShop.Controllers.Components
 					&& x.Level.Length == 15 
 					&& x.Active == 1
 					&& x.Position == 1)
+				.ToList();
+
+			var pagesTop = _context.Pages
+				.OrderBy(x => x.Ord)
+				.Where(x => x.Position == 5)
 				.ToList();
 
 			var pageSanPham = _context.Pages
@@ -83,6 +88,7 @@ namespace MyShop.Controllers.Components
                 .Where(x => x.Position == 7 && x.Active == true)
                 .FirstOrDefault() ?? new Advertise();
 
+			ViewBag.PagesTop = pagesTop;
 			ViewBag.TopBanner = topBanner;
             ViewBag.Logo = logo;
 			ViewBag.Config = config;
