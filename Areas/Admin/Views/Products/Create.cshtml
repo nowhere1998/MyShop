@@ -120,7 +120,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             if ($('#btnBrowse') != undefined) {
-                $('#btnBrowse').click(function () {
+                $('#btnBrowse').off('click').on('click' , function () {
                     var fm = $('<div id="elfinder" />').dialogelfinder({
                         url: '/quan-ly-tep-tin/connector',
                         baseUrl: "/elfinder/",
