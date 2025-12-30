@@ -1,6 +1,6 @@
 ﻿<div class="top-banner">
     <a href="@ViewBag.TopBanner.Link">
-        <img src="@ViewBag.TopBanner.Image" alt="@ViewBag.TopBanner.Name" border="0" height="@ViewBag.TopBanner.Height"/>
+        <img src="@ViewBag.TopBanner.Image" alt="@ViewBag.TopBanner.Name" border="0" style="height:@(ViewBag.TopBanner.Height+"px")" />
     </a>
 </div>
 
@@ -152,7 +152,7 @@
 
                     <!-- Header logo -->
                     <a href="@ViewBag.Logo.Link" title="" rel="home">
-                        <img width="@ViewBag.Logo.Width" height="@ViewBag.Logo.Height" src="@ViewBag.Logo.Image" class="header_logo header-logo" alt="@ViewBag.Logo.Name "/>
+                        <img src="@ViewBag.Logo.Image" class="header_logo header-logo" alt="@ViewBag.Logo.Name" style="width:@(ViewBag.Logo.Width+"px"); height:@(ViewBag.Logo.Height+"px")" />
                     </a>
                 </div>
 
