@@ -57,7 +57,7 @@
                         <td>
                             @if (!string.IsNullOrEmpty(item.Image))
                             {
-                                <img src="@item.Image" style="height:50px;border-radius:6px;" />
+                                <img src="@item.Image" style="border-radius:6px; max-width:200px; max-height: 50px" />
                             }
                         </td>
 
@@ -81,6 +81,14 @@
                             else if (item.Position == 5)
                             {
                                 <span>Đối tác</span>
+                            }
+                            else if (item.Position == 6)
+                            {
+                                <span>Logo</span>
+                            }
+                            else if (item.Position == 7)
+                            {
+                                <span>Banner trên cùng</span>
                             }
                             else
                             {
