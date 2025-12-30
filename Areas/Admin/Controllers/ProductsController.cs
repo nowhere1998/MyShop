@@ -203,19 +203,38 @@ namespace MyShop.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var product = await _context.Products
-                               .Include(p => p.ProductImages)
-                               .FirstOrDefaultAsync(p => p.Id == id);
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (product == null)
-            {
                 return NotFound();
+
+            // 🔥 QUAN TRỌNG: Convert ảnh phụ → GalleryImages (JSON)
+            if (product.ProductImages != null && product.ProductImages.Any())
+            {
+                product.GalleryImages = System.Text.Json.JsonSerializer.Serialize(
+                    product.ProductImages
+                        .Select(x => x.ImageUrl)
+                        .ToList()
+                );
             }
+            else
+            {
+                product.GalleryImages = "[]";
+            }
+
             await LoadCreateDropdowns(product.CategoryId);
-            ViewData["DealerId"] = new SelectList(_context.Dealers, "Id", "Name", product.DealerId);
+
+            ViewData["DealerId"] = new SelectList(
+                _context.Dealers,
+                "Id",
+                "Name",
+                product.DealerId
+            );
+
             return View(product);
         }
 
