@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using elFinder.NetCore.Models.Commands;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -71,7 +72,10 @@ namespace MyShop.Areas.Admin.Controllers
         {
             List<Page> pages = _context.Pages.ToList();
             ViewBag.Page = pages;
-            return View();
+            return View(new Advertise
+            {
+                Active = true   // 👈 luôn checked
+            });
         }
 
         // POST: Admin/Advertises/Create
