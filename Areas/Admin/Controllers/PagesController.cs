@@ -101,11 +101,11 @@ namespace MyShop.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Page model)
         {
-            var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag);
-            if (exists)
-            {
-                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
-            }
+            //var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag);
+            //if (exists)
+            //{
+            //    ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            //}
             if (!ModelState.IsValid)
             {
                 LoadCategories(); // ← BẮT BUỘC
@@ -157,12 +157,12 @@ namespace MyShop.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag && p.Id != model.Id);
-            if (exists)
-            {
-                LoadCategories();
-                ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
-            }
+            //var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag && p.Id != model.Id);
+            //if (exists)
+            //{
+            //    LoadCategories();
+            //    ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
+            //}
 
             if (ModelState.IsValid)
             {
