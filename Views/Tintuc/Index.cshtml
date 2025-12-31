@@ -1,4 +1,7 @@
-﻿@model IEnumerable<MyShop.Models.News>
+﻿@using System.Text.RegularExpressions
+@using System.Globalization
+@using System.Net
+@model IEnumerable<MyShop.Models.News>
 @using System.Text.RegularExpressions
 @{
 	ViewData["Title"] = "Tin tức";
@@ -41,23 +44,21 @@
 												<div class="is-divider"></div>
 												<p class="from_the_blog_excerpt" style="white-space:normal; word-break: break-word">
 													@{
-														var html = n.Content ?? "";
+														var html = n.Content ?? string.Empty;
+
+														// 1️⃣ Bỏ thẻ HTML
 														var text = Regex.Replace(html, "<.*?>", "").Trim();
 
-														var maxLength = 150;
-														if (text.Length > maxLength)
-														{
-															var cut = text.Substring(0, maxLength);
-															var lastSpace = cut.LastIndexOf(" ");
+														// 2️⃣ Giải mã HTML entity (&aacute; → á)
+														text = WebUtility.HtmlDecode(text);
 
-															if (lastSpace > 0)
-															{
-																text = cut.Substring(0, lastSpace) + "...";
-															}
-															else
-															{
-																text = cut + "...";
-															}
+														var maxLength = 50;
+
+														// 3️⃣ Cắt chuỗi chuẩn Unicode
+														var si = new StringInfo(text);
+														if (si.LengthInTextElements > maxLength)
+														{
+															text = si.SubstringByTextElements(0, maxLength) + "...";
 														}
 													}
 													@text

@@ -1,4 +1,6 @@
 ﻿@using System.Text.RegularExpressions
+@using System.Globalization
+@using System.Net
 @{
     ViewData["Title"] = "Trang chủ";
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -604,7 +606,8 @@
 		<div class="box-image">
 			<div class="image-zoom">
 				<a href="/chi-tiet/@p.Slug" aria-label="@p.Name">
-					<img loading="lazy" decoding="async" width="300" height="300" src="@p.Image">				</a>
+					<img loading="lazy" decoding="async" src="@p.Image" style="width:300px; height:300px">			
+				</a>
 			</div>
 			<div class="image-tools is-small top right show-on-hover">
 							</div>
@@ -1324,25 +1327,22 @@
 										<div class="is-divider"></div>
 										<p class="from_the_blog_excerpt " style="white-space:normal; word-break: break-word">
 											@{
-												
-												var html = n.Content ?? "";
+												var html = n.Content ?? string.Empty;
+
+												// 1️⃣ Bỏ thẻ HTML
 												var text = Regex.Replace(html, "<.*?>", "").Trim();
 
-												var maxLength = 50;
-												if (text.Length > maxLength)
-												{
-													var cut = text.Substring(0, maxLength);
-													var lastSpace = cut.LastIndexOf(" ");
+												// 2️⃣ Giải mã HTML entity (&aacute; → á)
+												text = WebUtility.HtmlDecode(text);
 
-													if (lastSpace > 0)
-													{
-														text = cut.Substring(0, lastSpace) + "...";
-													}
-													else
-													{
-														text = cut + "...";
-													}
-													}
+												var maxLength = 50;
+
+												// 3️⃣ Cắt chuỗi chuẩn Unicode
+												var si = new StringInfo(text);
+												if (si.LengthInTextElements > maxLength)
+												{
+													text = si.SubstringByTextElements(0, maxLength) + "...";
+												}
 											}
 											@text
 										</p>
