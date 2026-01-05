@@ -154,147 +154,109 @@
 @section Scripts {
 
     <script>
-        const pageType = document.getElementById("pageType");
-        const detailBox = document.getElementById("detailBox");
-        const tagInput = document.getElementById("Tag");
+        document.addEventListener("DOMContentLoaded", function () {
 
-        const customLink = document.getElementById("customLink"); // input hiển thị
-        const finalLink = document.getElementById("finalLink");   // input submit
+            /* ====== DOM ====== */
+            const pageType    = document.getElementById("pageType");
+            const detailBox   = document.getElementById("detailBox");
+            const tagInput    = document.getElementById("Tag");
 
-        function handlePageTypeChange() {
+            const linkType    = document.getElementById("linkType");
+            const customBox   = document.getElementById("customLinkBox");
+            const moduleBox   = document.getElementById("moduleLinkBox");
 
-            if (pageType.value === "1") {
-                // ===== Trang nội dung =====
+            const customInput = document.getElementById("customLink");
+            const moduleSelect= document.getElementById("moduleLink");
+            const finalLink   = document.getElementById("finalLink");
 
-                // Hiện textarea
-                detailBox.classList.remove("d-none");
+            /* ====== PAGE TYPE ====== */
+            function handlePageTypeChange() {
 
-                // Auto link
-                const autoLink = tagInput.value
-                    ? "/noi-dung/" + tagInput.value
-                    : "/noi-dung";
+                if (pageType.value === "1") {
+                    // Trang nội dung
+                    detailBox.classList.remove("d-none");
 
-                // Set link
-                customLink.value = autoLink;
-                finalLink.value = autoLink;
+                    const autoLink = tagInput.value
+                        ? "/noi-dung/" + tagInput.value
+                        : "/noi-dung";
 
-                // 🔒 KHÓA HOÀN TOÀN
-                customLink.setAttribute("disabled", true);
+                    customInput.value = autoLink;
+                    finalLink.value  = autoLink;
 
-            } else {
-                // ===== Trang liên kết =====
+                    customInput.disabled = true;
+                    linkType.value = "custom";
+                    linkType.disabled = true;
 
-                // Ẩn textarea
-                detailBox.classList.add("d-none");
+                } else {
+                    // Trang liên kết
+                    detailBox.classList.add("d-none");
 
-                // 🔓 MỞ KHÓA
-                customLink.removeAttribute("disabled");
+                    customInput.disabled = false;
+                    linkType.disabled = false;
 
-                // Sync lại link
-                finalLink.value = customLink.value;
+                    finalLink.value = customInput.value;
+                }
             }
-        }
 
-        // Đổi loại trang
-        pageType.addEventListener("change", handlePageTypeChange);
+            /* ====== LINK TYPE ====== */
+            function updateLinkUI() {
 
-        // Đổi tag → đổi link nếu là trang nội dung
-        tagInput.addEventListener("input", function () {
-            if (pageType.value === "1") {
-                const autoLink = "/noi-dung/" + tagInput.value;
-                customLink.value = autoLink;
-                finalLink.value = autoLink;
+                if (linkType.value === "module") {
+                    customBox.classList.add("d-none");
+                    moduleBox.classList.remove("d-none");
+                    finalLink.value = moduleSelect.value;
+                } else {
+                    customBox.classList.remove("d-none");
+                    moduleBox.classList.add("d-none");
+                    finalLink.value = customInput.value;
+                }
             }
+
+            /* ====== SLUG ====== */
+            function toSlug(str) {
+                return str
+                    .toLowerCase()
+                    .replace(/đ/g, "d")
+                    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                    .replace(/[^a-z0-9\s-]/g, "")
+                    .trim()
+                    .replace(/\s+/g, "-")
+                    .replace(/-+/g, "-");
+            }
+
+            /* ====== EVENTS ====== */
+            pageType.addEventListener("change", handlePageTypeChange);
+
+            linkType.addEventListener("change", updateLinkUI);
+            customInput.addEventListener("input", updateLinkUI);
+            moduleSelect.addEventListener("change", updateLinkUI);
+
+            document.getElementById("Name").addEventListener("input", function () {
+                tagInput.value = toSlug(this.value);
+
+                if (pageType.value === "1") {
+                    const autoLink = "/noi-dung/" + tagInput.value;
+                    customInput.value = autoLink;
+                    finalLink.value = autoLink;
+                }
+            });
+
+            /* ====== INIT ====== */
+            handlePageTypeChange();
+            updateLinkUI();
         });
-
-        // Nhập link tay → cập nhật finalLink (chỉ khi là trang liên kết)
-        customLink.addEventListener("input", function () {
-            if (pageType.value !== "1") {
-                finalLink.value = this.value;
-            }
-        });
-
-        // Load form
-        handlePageTypeChange();
     </script>
 
-
-    >
-    <script>
-    const linkType = document.getElementById("linkType");
-    const customBox = document.getElementById("customLinkBox");
-    const moduleBox = document.getElementById("moduleLinkBox");
-    const finalLink = document.getElementById("finalLink");
-
-    const customInput = document.getElementById("customLink");
-    const moduleSelect = document.getElementById("moduleLink");
-
-    function updateLinkUI() {
-        if (linkType.value === "module") {
-            customBox.classList.add("d-none");
-            moduleBox.classList.remove("d-none");
-            finalLink.value = moduleSelect.value;
-        } else {
-            customBox.classList.remove("d-none");
-            moduleBox.classList.add("d-none");
-            finalLink.value = customInput.value;
-        }
-    }
-
-    linkType.addEventListener("change", updateLinkUI);
-    customInput.addEventListener("input", updateLinkUI);
-    moduleSelect.addEventListener("change", updateLinkUI);
-
-    updateLinkUI();
-</script>
-    <script type="text/javascript" src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
     <script src="~/elfinder/js/elfinder.min.js"></script>
     <script src="~/ckeditor/ckeditor.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            if ($('#btnBrowse') != undefined) {
-                $('#btnBrowse').click(function () {
-                    var fm = $('<div id="elfinder" />').dialogelfinder({
-                        url: '/quan-ly-tep-tin/connector',
-                        baseUrl: "/elfinder/",
-                        width: 840,
-                        height: 450,
-                        destroyOnClose: true,
-                        title: 'Quản lý tệp tin',
-                        getFileCallback: function (files, fm) {
-                            $('#Image').val('/' + files[0].path);
-                            $('#PictureView').attr('src', '/' + files[0].path);
-                        },
-                        commandsOptions: {
-                            getfile: {
-                                multiple: true,
-                                oncomplete: 'close',
-                                folders: false
-                            }
-                        }
-                    }).dialogelfinder('instance');
-                })
-            }
-        });
-        CKEDITOR.replace('Detail');
-    </script>
 
     <script>
-        function toSlug(str) {
-            return str
-                .toLowerCase()
-                .replace(/đ/g, "d")
-                .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // bỏ dấu tiếng Việt
-                .replace(/[^a-z0-9\s-]/g, "")                     // bỏ ký tự đặc biệt
-                .trim()
-                .replace(/\s+/g, "-")                             // khoảng trắng → "-"
-                .replace(/-+/g, "-");                              // bỏ trùng dấu "-"
-        }
-
-        document.getElementById("Name").addEventListener("input", function () {
-            document.getElementById("Tag").value = toSlug(this.value);
+        $(function () {
+            CKEDITOR.replace('Detail');
         });
     </script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
