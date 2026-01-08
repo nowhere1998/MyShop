@@ -1,13 +1,13 @@
 ﻿@model MyShop.Models.ProductSpec
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Chỉnh sửa thông số sản phẩm";
 }
 
 <div class="container mt-4" style="max-width: 900px;">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="text-primary mb-0">Chỉnh sửa thông Số Sản Phẩm</h3>
+        <h3 class="text-primary mb-0">Chỉnh sửa Thông Số Sản Phẩm</h3>
     </div>
 
     <form asp-area="Admin"
@@ -17,9 +17,10 @@
 
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
         <input asp-for="Id" type="hidden" />
+
+        <!-- Chọn sản phẩm (FULL WIDTH) -->
         <div class="row">
-            <!-- Chọn sản phẩm -->
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
                 <label asp-for="ProductId" class="form-label fw-semibold"></label>
                 <select asp-for="ProductId"
                         class="form-select"
@@ -28,9 +29,11 @@
                 </select>
                 <span asp-validation-for="ProductId" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Tên thông số -->
-            <div class="col-md-6 mb-3">
+        <!-- Tên thông số -->
+        <div class="row">
+            <div class="col-md-12 mb-3">
                 <label asp-for="SpecName" class="form-label fw-semibold"></label>
                 <input asp-for="SpecName"
                        class="form-control"
@@ -39,8 +42,8 @@
             </div>
         </div>
 
+        <!-- Giá trị thông số -->
         <div class="row">
-            <!-- Giá trị thông số -->
             <div class="col-md-12 mb-3">
                 <label asp-for="SpecValue" class="form-label fw-semibold"></label>
                 <input asp-for="SpecValue"

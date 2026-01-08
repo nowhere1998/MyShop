@@ -17,9 +17,9 @@
 
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
+        <!-- Chọn sản phẩm (FULL WIDTH) -->
         <div class="row">
-            <!-- Chọn sản phẩm -->
-            <div class="col-md-6 mb-3">
+            <div class="col-md-12 mb-3">
                 <label asp-for="ProductId" class="form-label fw-semibold"></label>
                 <select asp-for="ProductId"
                         class="form-select"
@@ -28,9 +28,11 @@
                 </select>
                 <span asp-validation-for="ProductId" class="text-danger"></span>
             </div>
+        </div>
 
-            <!-- Tên thông số -->
-            <div class="col-md-6 mb-3">
+        <!-- Tên thông số (XUỐNG DÒNG) -->
+        <div class="row">
+            <div class="col-md-12 mb-3">
                 <label asp-for="SpecName" class="form-label fw-semibold"></label>
                 <input asp-for="SpecName"
                        class="form-control"
@@ -39,8 +41,8 @@
             </div>
         </div>
 
+        <!-- Giá trị thông số -->
         <div class="row">
-            <!-- Giá trị thông số -->
             <div class="col-md-12 mb-3">
                 <label asp-for="SpecValue" class="form-label fw-semibold"></label>
                 <input asp-for="SpecValue"
