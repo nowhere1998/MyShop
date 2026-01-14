@@ -626,7 +626,7 @@
 														.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
 												}
 											}
-											@if (p.SalePrice > 0)
+											@if (p.SalePrice > 0 && p.Price > 0)
 											{
 												<!-- Giá gốc -->
 												<span class="price old-price" style="display:block; text-decoration: line-through; color:white;">
@@ -638,13 +638,13 @@
 													@FormatPrice(p.SalePrice) ₫
 												</span>
 											}
-											else 
+											else if (p.Price > 0)
 											{
-												 <!-- Giá thường -->
+												<!-- Giá thường -->
 												<span class="price" style="display:block;">
 													@FormatPrice(p.Price) ₫
 												</span>
-											}	
+											}
 											<a href="/lien-he">
 												<span class="contact-price" style="display:block; margin-top:3px; color:white; font-weight:bold">
 													Liên hệ
