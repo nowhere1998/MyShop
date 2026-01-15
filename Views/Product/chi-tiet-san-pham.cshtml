@@ -403,7 +403,7 @@
 									.ToString("#,##0", System.Globalization.CultureInfo.GetCultureInfo("vi-VN"));
 							}
 						}
-						@if (p.SalePrice > 0)
+						@if (p.SalePrice > 0 && p.Price > 0)
 						{
 							<!-- Giá gốc -->
 							<span class="price old-price" style="display:block; text-decoration: line-through; color:#999;">
@@ -415,7 +415,7 @@
 								@FormatPrice(p.SalePrice) ₫
 							</span>
 						}
-						else 
+						else if(p.Price > 0)
 						{
 							<!-- Giá thường -->
 							<span class="price" style="display:block;">
