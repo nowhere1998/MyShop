@@ -185,24 +185,46 @@ namespace MyShop.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: Admin/GroupNews/Delete/5
         public IActionResult Delete(int id)
         {
-            var model = _context.Pages.FirstOrDefault(a => a.Id == id);
-            if (model == null) return NotFound();
+            // 1️⃣ Lấy group cha
+            var group = _context.GroupNews.FirstOrDefault(x => x.Id == id);
+            if (group == null)
+                return NotFound();
 
-            string levelPrefix = model.Level; // ví dụ "00001"
+            var levelPrefix = group.Level;
 
-            // Xóa cha + toàn bộ con cháu
-            var toDelete = _context.Pages
-                .Where(a => a.Level.StartsWith(levelPrefix))
+            // 2️⃣ Lấy toàn bộ group (cha + con cháu)
+            var groups = _context.GroupNews
+                .Where(x => x.Level.StartsWith(levelPrefix))
                 .ToList();
 
-            _context.Pages.RemoveRange(toDelete);
+            var groupIds = groups.Select(x => x.Id).ToList();
+
+            // 3️⃣ CHỈ kiểm tra News (giống Product kiểm OrderDetails)
+            bool hasNews = _context.News
+                .AsEnumerable() // ⭐ CHỐT – tránh lỗi WITH
+                .Any(n => n.GroupId.HasValue && groupIds.Contains(n.GroupId.Value));
+
+            if (hasNews)
+            {
+                TempData["Error"] = "Nhóm đang có bài viết, không thể xóa!";
+                return RedirectToAction("Index");
+            }
+
+            // 4️⃣ Xóa con trước – cha sau
+            var toDelete = groups
+                .OrderByDescending(x => x.Level.Length)
+                .ToList();
+
+            _context.GroupNews.RemoveRange(toDelete);
             _context.SaveChanges();
 
+            TempData["Success"] = "Xóa nhóm tin thành công!";
             return RedirectToAction("Index");
         }
+
+
 
 
         private bool GroupNewsExists(int id)
