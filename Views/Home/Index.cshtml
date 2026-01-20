@@ -815,31 +815,31 @@
 	
 	
 <div class="accordion accor-home-giaiphap">
-	<div id="accordion-3567141214" class="accordion-item title-accor-home-giaiphap">
-		<a id="accordion-3567141214-label" class="accordion-title plain" href="@pl1.Page.Link">
-			<button class="toggle" aria-label="Toggle"><i class="icon-angle-down"></i></button>
+	<div id="accordion-3567141214" class="accordion-item title-accor-home-giaiphap" style="text-align:center">
+		<a id="accordion-3567141214-label" class="plain" href="@pl1.Page.Link">
+@* 			<button class="toggle" aria-label="Toggle"><i class="icon-angle-down"></i></button> *@
 			<span>@pl1.Page.Name</span>
 		</a>
-		<div id="accordion-3567141214-content" class="accordion-inner" aria-labelledby="accordion-3567141214-label" >
+		@* <div id="accordion-3567141214-content" class="accordion-inner" aria-labelledby="accordion-3567141214-label" >
 			
 	<div class="ux-menu stack stack-col justify-start ux-menu--divider-solid">
 	@foreach(Page pl2 in ViewBag.PagesL2){
-		@if (pl2.Level.Substring(0, 5) == pl1.Page.Level){
-				<div class="ux-menu-link flex menu-item">
-	<a class="ux-menu-link__link flex" href="@pl2.Link" >
-		<i class="ux-menu-link__icon text-center icon-angle-right" ></i>		
-		<span class="ux-menu-link__text">
-			@pl2.Name		
-		</span>
-	</a>
-</div>
-	
+		@if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
+		{
+			<div class="ux-menu-link flex menu-item">
+				<a class="ux-menu-link__link flex" href="@pl2.Link" >
+					<i class="ux-menu-link__icon text-center icon-angle-right" ></i>		
+					<span class="ux-menu-link__text">
+						@pl2.Name		
+					</span>
+				</a>
+			</div>
 		}
 	}	
 	
 	</div>
 	
-		</div>
+		</div> *@
 	</div>
 	
 </div>
