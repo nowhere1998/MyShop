@@ -123,6 +123,7 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            Level = groupNews.Level.Substring(0, groupNews.Level.Length - 5);
             return View(groupNews);
         }
 
