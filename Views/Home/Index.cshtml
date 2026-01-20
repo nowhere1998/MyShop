@@ -63,7 +63,6 @@
 	   <div id="text-box-1440129412" class="text-box banner-layer x50 md-x85 lg-x85 y50 md-y85 lg-y85 res-text">
 		   <div class="hover-bounce">              <div data-animate="fadeInUp">           <div class="text-box-content text dark text-shadow-2">
               
-				  <div class="text-inner text-center">
                   
 		<div id="text-2026530580" class="text">
 		
@@ -77,9 +76,8 @@
 	</style>
 		</div>
 	
-		<div id="text-897089529" class="text">
+		@* <div id="text-897089529" class="text">
 		
-	@* <h2 class="uppercase"><strong> @banner.Name</strong></h2> *@
 	@Html.Raw(banner.Content)	
 	<style>
 	#text-897089529 {
@@ -90,7 +88,7 @@
 	  color: rgb(255,255,255);
 	}
 	</style>
-		</div>
+		</div> *@
 	
 		<div id="text-2102520162" class="text hide-for-small">
 		
@@ -108,7 +106,7 @@
 	</style>
 		</div>
 	
-				  </div>
+			
 			   </div>
 		   </div>              </div>       
 
@@ -551,8 +549,30 @@
 
 									<div id="col-892465231" class="col medium-9 small-12 large-9"  >
 										<div class="col-inner"  >
-											<h2>@c.Parent.Name - @c.Name</h2>
-		
+										<h2 class="category-title">
+											@c.Parent.Name -
+											<a href="/san-pham/@c.Parent.Slug/@c.Slug" class="category-child">
+												@c.Name
+											</a>
+										</h2>
+										<style>
+											.category-title {
+												margin: 0;
+												line-height: 1.3;
+											}
+
+											.category-title .category-child {
+												font-size: 0.7em;      /* chữ nhỏ hơn h2 */
+												font-weight: bold;
+												text-decoration: none;
+												margin-left: 4px;
+											}
+
+											.category-title .category-child:hover {
+												color: #000;
+												text-decoration: underline;
+											}
+										</style>
 											
 		</div>
 					</div>

@@ -327,7 +327,7 @@ img.wp-smiley, img.emoji {
 }
 
 #logo img {
-    max-height: 70px
+    max-height: 700px
 }
 
 #logo {
@@ -359,7 +359,7 @@ img.wp-smiley, img.emoji {
 }
 
 .stuck #logo img {
-    max-height: 70px !important
+    max-height: 700px !important
 }
 
 .search-form {
