@@ -13,6 +13,7 @@ namespace MyShop.Models
         public string? Username { get; set; } = null!;
 
         [Display(Name = "Email")]
+        [Required(ErrorMessage = "Email không được để trống")]
         public string? Email { get; set; } = null!;
 
         [Display(Name = "Mật khẩu")]
