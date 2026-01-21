@@ -70,6 +70,9 @@ namespace MyShop.Controllers
                     && (x.Position == 2 || x.Position == 4))
                 .ToList();
 
+            var config = _context.Configs.FirstOrDefault() ?? new Config();
+
+            ViewBag.Config = config;
             ViewBag.PagesL1 = pagesL1;
             ViewBag.PagesL2 = pagesL2;
             ViewBag.News = news;
