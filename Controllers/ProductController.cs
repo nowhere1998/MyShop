@@ -63,7 +63,7 @@ namespace MyShop.Controllers
 
 						foreach (var p in _context.Products.ToList())
 						{
-							if (childIds.Contains(p.CategoryId))
+							if (childIds.Contains(p.CategoryId) || p.CategoryId == category.Id)
 							{
 								totalItems++;
 							}
