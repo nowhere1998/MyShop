@@ -808,14 +808,19 @@
 		</div>
 	</div>
 	
-	
+	@* list giải pháp *@
 <div class="accordion accor-home-giaiphap">
 	<div id="accordion-3567141214" class="accordion-item title-accor-home-giaiphap" style="text-align:center">
-		<a id="accordion-3567141214-label" class="plain" href="@pl1.Page.Link">
-@* 			<button class="toggle" aria-label="Toggle"><i class="icon-angle-down"></i></button> *@
-			<span>@pl1.Page.Name</span>
-		</a>
-		@* <div id="accordion-3567141214-content" class="accordion-inner" aria-labelledby="accordion-3567141214-label" >
+		<div class="accordion-title plain">
+			<button class="toggle">
+				<i class="icon-angle-down"></i>
+			</button>
+
+			<a href="@pl1.Page.Link" class="acc-title-link">
+				@pl1.Page.Name
+			</a>
+		</div>
+		<div id="accordion-3567141214-content" class="accordion-inner" aria-labelledby="accordion-3567141214-label" >
 			
 	<div class="ux-menu stack stack-col justify-start ux-menu--divider-solid">
 	@foreach(Page pl2 in ViewBag.PagesL2){
@@ -834,10 +839,12 @@
 	
 	</div>
 	
-		</div> *@
+		</div>
 	</div>
 	
 </div>
+
+	@* end list giải pháp *@
 		</div>
 					</div>
 	}
@@ -1029,3 +1036,29 @@
 
 
 </main>
+@section Scripts
+{
+	<script>
+jQuery(function ($) {
+
+    // Click link → đi link, không toggle
+    $('.acc-title-link').on('click', function (e) {
+        e.stopPropagation();
+    });
+
+    // Click icon → toggle accordion
+    $('.accordion-title .toggle').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        $(this)
+            .closest('.accordion-item')
+            .toggleClass('active')
+            .find('.accordion-inner')
+            .stop(true, true)
+            .slideToggle();
+    });
+
+});
+</script>
+}
