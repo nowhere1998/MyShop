@@ -164,7 +164,7 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  Page model , IFormFile? fileupload, string PictureOld)
+        public async Task<IActionResult> Edit(int id,  Page model , IFormFile? fileupload, string? PictureOld)
         {
             if (id != model.Id)
             {
@@ -215,6 +215,7 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            LoadCategories();
             return View(model);
         }
 
