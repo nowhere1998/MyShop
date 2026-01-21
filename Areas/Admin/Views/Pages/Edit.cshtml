@@ -132,6 +132,7 @@
             <label asp-for="Content" class="control-label">Ảnh</label>
             <input type="file" name="fileupload" class="form-control" accept="image/jpg,image/jpeg,image/png" />
             <img class="mt-2" src="@Model.Content" width="100" />
+            <input type="hidden" name="PictureOld" value="@Model.Content" />
         </div>
         <!-- Kích hoạt -->
         <label class="form-label fw-semibold">Kích hoạt</label>
