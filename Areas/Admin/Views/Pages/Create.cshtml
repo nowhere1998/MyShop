@@ -22,7 +22,7 @@
     </div>
 
     <!-- Form -->
-    <form asp-action="Create" method="post" id="pageForm">
+    <form asp-action="Create" method="post" id="pageForm" enctype="multipart/form-data">
 
         <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -129,7 +129,10 @@
             <input asp-for="Ord" type="number" min="1" class="form-control" placeholder="Ví dụ: 1, 2, 3..." />
             <span asp-validation-for="Ord" class="text-danger"></span>
         </div>
-
+        <div class="form-group">
+            <label asp-for="Content" class="control-label">Ảnh</label>
+            <input type="file" name="fileupload" class="form-control" accept="image/jpg,image/jpeg,image/png" />
+        </div>
         <!-- Kích hoạt -->
         <label class="form-label fw-semibold">Kích hoạt</label>
         <select asp-for="Active" class="form-select">

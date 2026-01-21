@@ -99,13 +99,28 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Page model)
+        public async Task<IActionResult> Create(Page model , IFormFile? fileupload)
         {
             //var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag);
             //if (exists)
             //{
             //    ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
             //}
+            if (fileupload != null && fileupload.Length > 0)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileupload.FileName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    fileupload.CopyTo(stream);
+                }
+                model.Content = "/images/" + fileupload.FileName;
+            }
+            else
+            {
+                // không upload ảnh → để trống
+                model.Content = null; // hoặc ""
+            }
+
             if (!ModelState.IsValid)
             {
                 LoadCategories(); // ← BẮT BUỘC
@@ -149,14 +164,27 @@ namespace MyShop.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  Page model)
+        public async Task<IActionResult> Edit(int id,  Page model , IFormFile? fileupload, string? PictureOld)
         {
             if (id != model.Id)
             {
                 LoadCategories();
                 return NotFound();
             }
-
+            //xử lý upload
+            if (fileupload != null && fileupload.Length > 0)
+            {
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", fileupload.FileName);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    fileupload.CopyTo(stream);
+                }
+                model.Content = "/images/" + fileupload.FileName;
+            }
+            else
+            {
+                model.Content = PictureOld;
+            }
             //var exists = await _context.Pages.AnyAsync(p => p.Tag == model.Tag && p.Id != model.Id);
             //if (exists)
             //{
@@ -187,6 +215,7 @@ namespace MyShop.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            LoadCategories();
             return View(model);
         }
 
