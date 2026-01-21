@@ -620,7 +620,11 @@
   
     <div class="row product-row-homenew equalize-box large-columns-5 medium-columns-3 small-columns-2 row-small has-shadow row-box-shadow-1-hover slider row-slider slider-nav-simple slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}' >
 		@foreach(var p in ViewBag.Products){
-			@if(p.Category.Parent.Id == c.Id){
+		if (
+        (p.Category != null && p.Category.Parent != null && p.Category.Parent.Id == c.Id) ||
+		(p.CategoryId == c.Id)
+		)
+		{
 				<div class="product-small col has-hover product type-product post-12931 status-publish first instock product_cat-ban-ghe-cho-lop-hoc-hien-dai product_cat-noi-that-thong-minh has-post-thumbnail shipping-taxable product-type-simple">
 	<div class="col-inner">
 	
