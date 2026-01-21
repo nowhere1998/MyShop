@@ -18,7 +18,11 @@ namespace MyShop.Controllers
 
         public IActionResult Index()
         {
-            var categories = _context.Categories
+			var categoriesParent = _context.Categories
+			   .OrderByDescending(c => c.Id)
+			   .Where(c => c.ParentId == null)
+			   .ToList();
+			var categories = _context.Categories
                 .Include(c => c.Parent)
                 .Include(c => c.Products)
                 .OrderByDescending(c => c.Id)
@@ -26,11 +30,13 @@ namespace MyShop.Controllers
                 .Where(c => c.Products.Any(p => p.Status == "active"))
                 .Skip(0)
                 .Take(10)
-                .ToList();
-            var products = _context.Products
-                .Where(p => p.Status == "active")
-                .ToList();
-            var banners = _context.Advertises
+                .ToList() ?? new List<Category>();
+			var products = _context.Products
+	            .Where(p => p.Status == "active")
+	            .Include(p => p.Category)              
+		            .ThenInclude(c => c.Parent)      
+	            .ToList();
+			var banners = _context.Advertises
                 .Where(x => x.Position == 1)
                 .OrderBy(x => x.Ord)
                 .ToList();
@@ -77,6 +83,7 @@ namespace MyShop.Controllers
             ViewBag.PagesL2 = pagesL2;
             ViewBag.News = news;
 			ViewBag.Categories = categories;
+			ViewBag.CategoriesParent = categoriesParent;
             ViewBag.Products = products;
             ViewBag.Banners = banners;  
             return View();
