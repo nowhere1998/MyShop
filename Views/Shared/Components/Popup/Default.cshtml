@@ -1,0 +1,31 @@
+﻿@model MyShop.Models.Advertise
+@if (!string.IsNullOrEmpty(Model.Image))
+{
+    <div id="custom-popup" style="display:none;">
+        <div class="popup-overlay"></div>
+        <div class="popup-content">
+            <span class="close-popup">&times;</span>
+            <a href="@Model.Link">
+                <img src="@Model.Image" alt="@Model.Name" style="width:@(Model.Width+"px"); height:@(Model.Height+"px")">
+            </a>
+        </div>
+    </div>
+
+}
+<script>
+    jQuery(function ($) {
+        if (document.cookie.split('; ').indexOf('popup_shown=1') !== -1) {
+            return;
+        }
+        setTimeout(function () {
+            $('#custom-popup').fadeIn();
+        }, 1000);
+        $('.close-popup, .popup-overlay').on('click', function () {
+            $('#custom-popup').fadeOut();
+            var minutes = 1440;
+            var expire = new Date();
+            expire.setTime(expire.getTime() + minutes * 60 * 1000);
+            document.cookie = "popup_shown=1; expires=" + expire.toUTCString() + "; path=/";
+        });
+    });
+</script>

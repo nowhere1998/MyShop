@@ -24,7 +24,7 @@
     </div>
 
     <script type="speculationrules">
-        {"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/flatsome-child/*","/wp-content/themes/flatsome/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+        {"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/flatsome-child/*","/wp-content/themes/flatsome","\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
     </script>
     @await Component.InvokeAsync("Zalo")
     <script>
@@ -130,33 +130,7 @@
 
         })(jQuery);
     </script>
-    <div id="custom-popup" style="display:none;">
-        <div class="popup-overlay"></div>
-        <div class="popup-content">
-            <span class="close-popup">&times;</span>
-            <a href="/chuong-trinh-khuyen-mai-innosmart/index.html">
-                <img src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%200%200'%3E%3C/svg%3E" alt="" data-lazy-src="/user/assets/wp-content/uploads/2025/07/Tivi-giang-day-thong-minh.webp"><noscript><img src="/user/assets/wp-content/uploads/2025/07/Tivi-giang-day-thong-minh.webp" alt=""></noscript>
-            </a>
-        </div>
-    </div>
-
-    <script>
-        jQuery(function ($) {
-            if (document.cookie.split('; ').indexOf('popup_shown=1') !== -1) {
-                return;
-            }
-            setTimeout(function () {
-                $('#custom-popup').fadeIn();
-            }, 3000);
-            $('.close-popup, .popup-overlay').on('click', function () {
-                $('#custom-popup').fadeOut();
-                var minutes = 1440;
-                var expire = new Date();
-                expire.setTime(expire.getTime() + minutes * 60 * 1000);
-                document.cookie = "popup_shown=1; expires=" + expire.toUTCString() + "; path=/";
-            });
-        });
-    </script>
+    @await Component.InvokeAsync("Popup")
     <script type="text/javascript">
         document.addEventListener("DOMContentLoaded", function () {
             var elements = document.querySelectorAll('.box-product-qua'); //Thay class mong muốn
@@ -287,10 +261,10 @@
     <script type="text/javascript" src="/user/assets/wp-includes/js/dist/hooks.minaf5f.js?ver=dd5603f07f9220ed27f1" id="wp-hooks-js" defer></script>
     <script type="text/javascript" src="/user/assets/wp-includes/js/dist/i18n.min1cde.js?ver=c26c3dc7bed366793375" id="wp-i18n-js" defer></script>
     <script type="text/javascript" id="wp-i18n-js-after">
-        /* <![CDATA[ */
+        /* <![CDATA[
                 wp.i18n.setLocaleData( {'text direction\u0004ltr': [ 'ltr' ] } );
         //# sourceURL=wp-i18n-js-after
-        /* ]]> */
+        /* ]]>
     </script>
     <script data-minify="1" type="text/javascript" src="/user/assets/wp-content/cache/min/1/wp-content/plugins/contact-form-7/includes/swv/js/index-9d4d66b315bc4b6efc7aff41d3992eac.js" id="swv-js" defer></script>
     <script type="text/javascript" id="contact-form-7-js-translations">

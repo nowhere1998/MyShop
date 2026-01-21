@@ -524,7 +524,7 @@
 	
 	
 	@* list sản phẩm theo category *@
-		@foreach(var c in ViewBag.Categories)
+		@foreach(var c in ViewBag.CategoriesParent)
 		{
 			<section class="section" id="section_204542905">
 				<div class="bg section-bg fill bg-fill  bg-loaded" >
@@ -550,10 +550,15 @@
 									<div id="col-892465231" class="col medium-9 small-12 large-9"  >
 										<div class="col-inner"  >
 										<h2 class="category-title">
-											@c.Parent.Name -
-											<a href="/san-pham/@c.Parent.Slug/@c.Slug" class="category-child">
-												@c.Name
-											</a>
+											@c.Name 
+											@foreach(Category child in ViewBag.Categories){
+												@if(child.ParentId == c.Id){
+													<a href="/san-pham/@c.Slug/@child.Slug" class="category-child" style="color:black">
+														-@child.Name
+													</a>
+												}
+											}
+											
 										</h2>
 										<style>
 											.category-title {
@@ -585,7 +590,7 @@
 			
 	<div id="text-3759061839" class="text hide-for-small">
 		
-<p><a href="/san-pham/@c.Parent.Slug/@c.Slug">Xem thêm <i class="fa fa-angle-right"></i></a></p>
+<p><a href="/san-pham/@c.Slug">Xem thêm <i class="fa fa-angle-right"></i></a></p>
 		
 <style>
 #text-3759061839 {
@@ -615,7 +620,7 @@
   
     <div class="row product-row-homenew equalize-box large-columns-5 medium-columns-3 small-columns-2 row-small has-shadow row-box-shadow-1-hover slider row-slider slider-nav-simple slider-nav-push"  data-flickity-options='{"imagesLoaded": true, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": true,"pageDots": false, "rightToLeft": false, "autoPlay" : false}' >
 		@foreach(var p in ViewBag.Products){
-			@if(p.CategoryId == c.Id){
+			@if(p.Category.Parent.Id == c.Id){
 				<div class="product-small col has-hover product type-product post-12931 status-publish first instock product_cat-ban-ghe-cho-lop-hoc-hien-dai product_cat-noi-that-thong-minh has-post-thumbnail shipping-taxable product-type-simple">
 	<div class="col-inner">
 	
@@ -626,7 +631,7 @@
 		<div class="box-image">
 			<div class="image-zoom">
 				<a href="/chi-tiet/@p.Slug" aria-label="@p.Name">
-					<img loading="lazy" decoding="async" src="@p.Image" style="width:300px; height:300px">			
+					<img loading="lazy" decoding="async" src="@p.Image" style="width:300px; height:300px; object-fit: cover">			
 				</a>
 			</div>
 			<div class="image-tools is-small top right show-on-hover">
@@ -732,27 +737,30 @@
 				<div class="col-inner"  >
 			
 			
-	<div id="text-2533802168" class="text">
-		
-<p><strong>Giải pháp thông minh</strong><br />
-<strong>Dành cho Giáo dục và thư viện</strong></p>
-		
-	</div>
+		<div class="contact-raw">
+			@Html.Raw(ViewBag.Config.Contact)
+			<style>
+				.contact-raw * {
+					max-width: 100%;
+					word-break: break-word;
+					overflow-wrap: break-word;
+				}
+			</style>
+		</div>
 	
-	<div id="text-4144097158" class="text">
+ @* 	<div id="text-4144097158" class="text">
 		
-<p>Bằng cách kết hợp công nghệ tiên tiến và sự đổi mới, giải pháp thông minh của INNO Việt Nam đã tạo ra môi trường giáo dục và thư viện hiện đại, linh hoạt và tiện nghi</p>
-		
-<style>
-#text-4144097158 {
-  font-size: 1.35rem;
-}
-</style>
-	</div>
+
+ <style>
+ #text-4144097158 {
+   font-size: 1.35rem;
+ }
+ </style>
+ 	</div> *@
 	
-<a href="tel:0926557757" target="_self" class="button primary lowercase"  style="border-radius:99px;">
+@* <a href="/lien-he" target="_self" class="button primary lowercase"  style="border-radius:99px;">
   <i class="icon-phone" aria-hidden="true" ></i>  <span>Liên hệ tư vấn</span>
-  </a>
+  </a> *@
 
 		</div>
 					</div>
@@ -947,7 +955,7 @@
             					<div class="box-image" >
   						<div class="image-cover" style="padding-top:75%;">
 							<a href="/chi-tiet-tin-tuc/@n.Slug" class="plain" aria-label="INNO Việt Nam tham dự Hội nghị Chuyển đổi số trong Giáo dục và Đào tạo 2025 của Bộ GD&#038;ĐT">
-								<img loading="lazy" decoding="async" width="600" height="400" src="@n.Hinhanh" class="attachment-medium size-medium wp-post-image" alt="@n.Title"/>							</a>
+								<img loading="lazy" decoding="async" src="@n.Hinhanh" class="attachment-medium size-medium wp-post-image" alt="@n.Title"/>							</a>
   							  							  						</div>
   						  					</div>
           					<div class="box-text text-left" >
