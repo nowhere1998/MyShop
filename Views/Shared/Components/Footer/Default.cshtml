@@ -1,4 +1,8 @@
-﻿<footer id="footer" class="footer-wrapper">
+﻿@{
+    string html = ViewBag.Config.Copyright?.ToString();
+    html = html.Replace("<p>", "").Replace("</p>", "");
+}
+<footer id="footer" class="footer-wrapper">
 
 
     <!-- FOOTER 1 -->
@@ -202,13 +206,13 @@
 
 
 
-    <div class="absolute-footer dark medium-text-center text-center">
+    <div class="absolute-footer dark medium-text-center text-center" style="margin:0!important; padding:0!important;">
         <div class="container clearfix">
 
 
             <div class="footer-primary pull-left">
-                <div class="copyright-footer">
-                    @Html.Raw(ViewBag.Config.Copyright)
+                <div class="copyright-footer" style="color:white">
+                    @html
                 </div>
             </div>
         </div>
