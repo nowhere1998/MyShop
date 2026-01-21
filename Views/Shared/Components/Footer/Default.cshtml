@@ -1,6 +1,5 @@
 ﻿@{
-    string html = ViewBag.Config.Copyright?.ToString();
-    html = html.Replace("<p>", "").Replace("</p>", "");
+
 }
 <footer id="footer" class="footer-wrapper">
 
@@ -211,8 +210,8 @@
 
 
             <div class="footer-primary pull-left">
-                <div class="copyright-footer" style="color:white">
-                    @html
+                <div class="copyright-footer">
+                    @Html.Raw(ViewBag.Config.Copyright)
                 </div>
             </div>
         </div>
