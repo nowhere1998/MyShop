@@ -598,16 +598,14 @@
 <div class="row row-collapse"  id="row-1600828024">
 
 	@* list menu giữa *@
-	@foreach(PageL1 pl1 in ViewBag.Pagesl1){
-		<div id="col-440280957" class="col column-accor-home-giaiphap medium-2 small-6 large-2"  >
-				<div class="col-inner box-shadow-1-hover" style="background-color:rgb(240, 240, 240);" >
+	@foreach(Page pl2 in ViewBag.Pagesl2){
+		<div id="col-440280957" class="col column-accor-home-giaiphap medium-2 small-6 large-2">
+				<div class="col-inner box-shadow-1-hover" style="background-color:rgb(240, 240, 240); padding:0!important" >
 			
 			
 
-		<div class="icon-box featured-box icon-box-center text-center"  >
-					<div class="icon-box-img" style="width: 100px">
-				<img src="@pl1.Page.Content" style="width:100px;height:100px;object-fit:cover"/>
-			</div>
+		<div class="icon-box featured-box icon-box-center text-center" style="height:150px">
+					<img src="@pl2.Content" style="width:100%;height:100%;object-fit:cover"/>
 				<div class="icon-box-text last-reset">
 									
 		</div>
@@ -621,21 +619,21 @@
 				<i class="icon-angle-down"></i>
 			</button>
 
-			<a href="@pl1.Page.Link" class="acc-title-link">
-				@pl1.Page.Name
+			<a href="@pl2.Link" class="acc-title-link">
+				@pl2.Name
 			</a>
 		</div>
 		<div id="accordion-3567141214-content" class="accordion-inner" aria-labelledby="accordion-3567141214-label" >
 			
 	<div class="ux-menu stack stack-col justify-start ux-menu--divider-solid">
-	@foreach(Page pl2 in ViewBag.PagesL2){
-		@if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
+	@foreach(Page pl3 in ViewBag.PagesL3){
+		@if (pl3.Level.Substring(0, 10) == pl2.Level)
 		{
 			<div class="ux-menu-link flex menu-item">
-				<a class="ux-menu-link__link flex" href="@pl2.Link" >
+				<a class="ux-menu-link__link flex" href="@pl3.Link" >
 					<i class="ux-menu-link__icon text-center icon-angle-right" ></i>		
 					<span class="ux-menu-link__text">
-						@pl2.Name		
+						@pl3.Name		
 					</span>
 				</a>
 			</div>

@@ -50,7 +50,7 @@ namespace MyShop.Controllers
                     l1.Level != null &&
                     l1.Level.Length == 5 &&
                     l1.Active == 1 &&
-                    (l1.Position == 2 || l1.Position == 4))
+                    (l1.Position == 2 || l1.Position == 4 || l1.Position == 7))
                 .OrderBy(l1 => l1.Ord)
                 .Select(l1 => new PageL1
                 {
@@ -62,7 +62,7 @@ namespace MyShop.Controllers
                         l2.Level.Length == 10 &&
                         l2.Level.StartsWith(l1.Level) &&
                         l2.Active == 1 &&
-                        (l2.Position == 2 || l2.Position == 4)
+                        (l2.Position == 2 || l2.Position == 4 || l1.Position == 7)
                     ),
 
                 })
@@ -73,7 +73,15 @@ namespace MyShop.Controllers
                 .Where(x => x.Level != null
                     && x.Level.Length == 10
                     && x.Active == 1
-                    && (x.Position == 2 || x.Position == 4))
+                    && (x.Position == 2 || x.Position == 4 || x.Position == 7))
+                .ToList();
+
+            var pagesL3 = _context.Pages
+                .OrderBy(x => x.Ord)
+                .Where(x => x.Level != null
+                    && x.Level.Length == 15
+                    && x.Active == 1
+                    && (x.Position == 2 || x.Position == 4 || x.Position == 7))
                 .ToList();
 
             var config = _context.Configs.FirstOrDefault() ?? new Config();
@@ -81,6 +89,7 @@ namespace MyShop.Controllers
             ViewBag.Config = config;
             ViewBag.PagesL1 = pagesL1;
             ViewBag.PagesL2 = pagesL2;
+            ViewBag.PagesL3 = pagesL3;
             ViewBag.News = news;
 			ViewBag.Categories = categories;
 			ViewBag.CategoriesParent = categoriesParent;

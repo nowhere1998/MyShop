@@ -26,7 +26,7 @@ namespace MyShop.Controllers.Components
 					l1.Level != null &&
 					l1.Level.Length == 5 &&
 					l1.Active == 1 &&
-					(l1.Position == 1 || l1.Position == 6))
+					(l1.Position == 1 || l1.Position == 6 || l1.Position == 7))
 				.OrderBy(l1 => l1.Ord)
 				.Select(l1 => new PageL1
 				{
@@ -38,7 +38,7 @@ namespace MyShop.Controllers.Components
 						l2.Level.Length == 10 &&
 						l2.Level.StartsWith(l1.Level) &&
 						l2.Active == 1 &&
-                        (l2.Position == 1 || l2.Position == 6)
+                        (l2.Position == 1 || l2.Position == 6 || l2.Position == 7)
                     ),
 
 					// Có cấp 3
@@ -47,7 +47,7 @@ namespace MyShop.Controllers.Components
 						l3.Level.Length == 15 &&
 						l3.Level.StartsWith(l1.Level) &&
 						l3.Active == 1 &&
-						l3.Position == 1
+						(l3.Position == 1 || l3.Position == 6 || l3.Position == 7)
 					)
 				})
 				.ToList();
@@ -57,7 +57,7 @@ namespace MyShop.Controllers.Components
 				.Where(x => x.Level != null 
 					&& x.Level.Length == 10 
 					&& x.Active == 1
-					&& (x.Position == 1 || x.Position == 6))
+					&& (x.Position == 1 || x.Position == 6 || x.Position == 7))
 				.ToList();
 
 			var pagesL3 = _context.Pages
@@ -65,7 +65,7 @@ namespace MyShop.Controllers.Components
 				.Where(x => x.Level != null 
 					&& x.Level.Length == 15 
 					&& x.Active == 1
-                    && x.Position == 1)
+                    && (x.Position == 1 || x.Position == 6 || x.Position == 7))
 				.ToList();
 
 			var pagesTop = _context.Pages
