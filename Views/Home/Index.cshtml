@@ -130,6 +130,7 @@
 
 	@* end banner *@
 
+
   @* <div class="banner has-hover" id="banner-538845971">
           <div class="banner-inner fill">
         <div class="banner-bg fill" >
@@ -521,7 +522,163 @@
 </style>
 	</section>
 	
+	@* section giải pháp thông minh *@
+	<section class="section" id="section_178857710">
+		<div class="bg section-bg fill bg-fill  " >
+
+			
+			
+			
+
+		</div>
+
+		
+
+		<div class="section-content relative">
+			
+<div class="row"  id="row-618780767">
+
+	<div id="col-877298786" class="col medium-7 small-12 large-7"  >
+				<div class="col-inner"  >
+			
+			
+		<div class="contact-raw">
+			@Html.Raw(ViewBag.Config.Contact)
+			<style>
+				.contact-raw * {
+					max-width: 100%;
+					word-break: break-word;
+					overflow-wrap: break-word;
+				}
+			</style>
+		</div>
 	
+ @* 	<div id="text-4144097158" class="text">
+		
+
+ <style>
+ #text-4144097158 {
+   font-size: 1.35rem;
+ }
+ </style>
+ 	</div> *@
+	
+@* <a href="/lien-he" target="_self" class="button primary lowercase"  style="border-radius:99px;">
+  <i class="icon-phone" aria-hidden="true" ></i>  <span>Liên hệ tư vấn</span>
+  </a> *@
+
+		</div>
+					</div>
+
+	
+
+	<div id="col-1879552989" class="col medium-4 small-12 large-4"  >
+				<div class="col-inner"  >
+			
+			
+	<div id="ux-lottie-3585534417" class="ux-lottie hide-for-small" >
+				<lottie-player class="ux-lottie__player" data-params="{&quot;src&quot;:&quot;https:\/\/lottie.host\/8d5fc756-6371-4b47-9805-03086f6a2b47\/FRgq7psdpj.json&quot;,&quot;loop&quot;:true,&quot;autoplay&quot;:true,&quot;controls&quot;:false,&quot;speed&quot;:&quot;1&quot;,&quot;direction&quot;:1,&quot;trigger&quot;:&quot;&quot;,&quot;mouseout&quot;:&quot;&quot;,&quot;start&quot;:0,&quot;end&quot;:100,&quot;visibilityStart&quot;:0,&quot;visibilityEnd&quot;:100,&quot;id&quot;:&quot;ux-lottie-3585534417&quot;}" ></lottie-player>
+				
+<style>
+#ux-lottie-3585534417 {
+  width: 100%;
+  height: 350px;
+}
+#ux-lottie-3585534417 .ux-lottie__player {
+  margin: 0px 0px 0px 200px;
+}
+</style>
+	</div>
+	
+		</div>
+					</div>
+
+	
+</div>
+<div class="row row-collapse"  id="row-1600828024">
+
+	@* list menu giữa *@
+	@foreach(PageL1 pl1 in ViewBag.Pagesl1){
+		<div id="col-440280957" class="col column-accor-home-giaiphap medium-2 small-6 large-2"  >
+				<div class="col-inner box-shadow-1-hover" style="background-color:rgb(240, 240, 240);" >
+			
+			
+
+		<div class="icon-box featured-box icon-box-center text-center"  >
+					<div class="icon-box-img" style="width: 100px">
+				<img src="@pl1.Page.Content" style="width:100px;height:100px;object-fit:cover"/>
+			</div>
+				<div class="icon-box-text last-reset">
+									
+		</div>
+	</div>
+	
+	@* list giải pháp *@
+<div class="accordion accor-home-giaiphap">
+	<div id="accordion-3567141214" class="accordion-item title-accor-home-giaiphap" style="text-align:center">
+		<div class="accordion-title plain">
+			<button class="toggle">
+				<i class="icon-angle-down"></i>
+			</button>
+
+			<a href="@pl1.Page.Link" class="acc-title-link">
+				@pl1.Page.Name
+			</a>
+		</div>
+		<div id="accordion-3567141214-content" class="accordion-inner" aria-labelledby="accordion-3567141214-label" >
+			
+	<div class="ux-menu stack stack-col justify-start ux-menu--divider-solid">
+	@foreach(Page pl2 in ViewBag.PagesL2){
+		@if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
+		{
+			<div class="ux-menu-link flex menu-item">
+				<a class="ux-menu-link__link flex" href="@pl2.Link" >
+					<i class="ux-menu-link__icon text-center icon-angle-right" ></i>		
+					<span class="ux-menu-link__text">
+						@pl2.Name		
+					</span>
+				</a>
+			</div>
+		}
+	}	
+	
+	</div>
+	
+		</div>
+	</div>
+	
+</div>
+
+	@* end list giải pháp *@
+		</div>
+					</div>
+	}
+	
+	@* end list menu giữa *@
+</div>
+	<div id="gap-1702289686" class="gap-element clearfix" style="display:block; height:auto;">
+		
+<style>
+#gap-1702289686 {
+  padding-top: 30px;
+}
+</style>
+	</div>
+	
+		</div>
+
+		
+<style>
+#section_178857710 {
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+#section_178857710 .section-bg.bg-loaded {
+  background-image: url(/user/assets/wp-content/uploads/2024/03/bg-giai-phap-home.webp);
+}
+</style>
+	</section>
+	@* end section giải pháp thông minh *@
 	
 	@* list sản phẩm theo category *@
 		@foreach(var c in ViewBag.CategoriesParent)
@@ -553,8 +710,8 @@
 											@c.Name 
 											@foreach(Category child in ViewBag.Categories){
 												@if(child.ParentId == c.Id){
-													<a href="/san-pham/@c.Slug/@child.Slug" class="category-child" style="color:black">
-														-@child.Name
+													<a href="/san-pham/@c.Slug/@child.Slug" class="category-child" style="color:black; text-transform:capitalize; font-weight: normal">
+														@child.Name
 													</a>
 												}
 											}
@@ -720,164 +877,6 @@
 		}
 		
 	@* end list sản phẩm theo category *@
-
-	@* section giải pháp thông minh *@
-	<section class="section" id="section_178857710">
-		<div class="bg section-bg fill bg-fill  " >
-
-			
-			
-			
-
-		</div>
-
-		
-
-		<div class="section-content relative">
-			
-<div class="row"  id="row-618780767">
-
-	<div id="col-877298786" class="col medium-7 small-12 large-7"  >
-				<div class="col-inner"  >
-			
-			
-		<div class="contact-raw">
-			@Html.Raw(ViewBag.Config.Contact)
-			<style>
-				.contact-raw * {
-					max-width: 100%;
-					word-break: break-word;
-					overflow-wrap: break-word;
-				}
-			</style>
-		</div>
-	
- @* 	<div id="text-4144097158" class="text">
-		
-
- <style>
- #text-4144097158 {
-   font-size: 1.35rem;
- }
- </style>
- 	</div> *@
-	
-@* <a href="/lien-he" target="_self" class="button primary lowercase"  style="border-radius:99px;">
-  <i class="icon-phone" aria-hidden="true" ></i>  <span>Liên hệ tư vấn</span>
-  </a> *@
-
-		</div>
-					</div>
-
-	
-
-	<div id="col-1879552989" class="col medium-4 small-12 large-4"  >
-				<div class="col-inner"  >
-			
-			
-	<div id="ux-lottie-3585534417" class="ux-lottie hide-for-small" >
-				<lottie-player class="ux-lottie__player" data-params="{&quot;src&quot;:&quot;https:\/\/lottie.host\/8d5fc756-6371-4b47-9805-03086f6a2b47\/FRgq7psdpj.json&quot;,&quot;loop&quot;:true,&quot;autoplay&quot;:true,&quot;controls&quot;:false,&quot;speed&quot;:&quot;1&quot;,&quot;direction&quot;:1,&quot;trigger&quot;:&quot;&quot;,&quot;mouseout&quot;:&quot;&quot;,&quot;start&quot;:0,&quot;end&quot;:100,&quot;visibilityStart&quot;:0,&quot;visibilityEnd&quot;:100,&quot;id&quot;:&quot;ux-lottie-3585534417&quot;}" ></lottie-player>
-				
-<style>
-#ux-lottie-3585534417 {
-  width: 100%;
-  height: 350px;
-}
-#ux-lottie-3585534417 .ux-lottie__player {
-  margin: 0px 0px 0px 200px;
-}
-</style>
-	</div>
-	
-		</div>
-					</div>
-
-	
-</div>
-<div class="row row-collapse"  id="row-1600828024">
-
-	@* list menu giữa *@
-	@foreach(PageL1 pl1 in ViewBag.Pagesl1){
-		<div id="col-440280957" class="col column-accor-home-giaiphap medium-2 small-6 large-2"  >
-				<div class="col-inner box-shadow-1-hover" style="background-color:rgb(240, 240, 240);" >
-			
-			
-
-		<div class="icon-box featured-box icon-box-center text-center"  >
-					<div class="icon-box-img" style="width: 100px">
-				<img src="@pl1.Page.Content" style="width:100px;height:100px;object-fit:cover"/>
-			</div>
-				<div class="icon-box-text last-reset">
-									
-		</div>
-	</div>
-	
-	@* list giải pháp *@
-<div class="accordion accor-home-giaiphap">
-	<div id="accordion-3567141214" class="accordion-item title-accor-home-giaiphap" style="text-align:center">
-		<div class="accordion-title plain">
-			<button class="toggle">
-				<i class="icon-angle-down"></i>
-			</button>
-
-			<a href="@pl1.Page.Link" class="acc-title-link">
-				@pl1.Page.Name
-			</a>
-		</div>
-		<div id="accordion-3567141214-content" class="accordion-inner" aria-labelledby="accordion-3567141214-label" >
-			
-	<div class="ux-menu stack stack-col justify-start ux-menu--divider-solid">
-	@foreach(Page pl2 in ViewBag.PagesL2){
-		@if (pl2.Level.Substring(0, 5) == pl1.Page.Level)
-		{
-			<div class="ux-menu-link flex menu-item">
-				<a class="ux-menu-link__link flex" href="@pl2.Link" >
-					<i class="ux-menu-link__icon text-center icon-angle-right" ></i>		
-					<span class="ux-menu-link__text">
-						@pl2.Name		
-					</span>
-				</a>
-			</div>
-		}
-	}	
-	
-	</div>
-	
-		</div>
-	</div>
-	
-</div>
-
-	@* end list giải pháp *@
-		</div>
-					</div>
-	}
-	
-	@* end list menu giữa *@
-</div>
-	<div id="gap-1702289686" class="gap-element clearfix" style="display:block; height:auto;">
-		
-<style>
-#gap-1702289686 {
-  padding-top: 30px;
-}
-</style>
-	</div>
-	
-		</div>
-
-		
-<style>
-#section_178857710 {
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-#section_178857710 .section-bg.bg-loaded {
-  background-image: url(/user/assets/wp-content/uploads/2024/03/bg-giai-phap-home.webp);
-}
-</style>
-	</section>
-	@* end section giải pháp thông minh *@
 
 	@* section tin tức *@
 	<section class="section" id="section_1542691822">
