@@ -126,7 +126,7 @@
 /**
  * Icons
  */
-@font-face {
+@@font-face {
   font-family: material;
   src: url("../icons/material.eot?91804974");
   src: url("../icons/material.eot?91804974#iefix") format("embedded-opentype"), url("../icons/material.woff2?91804974") format("woff2"), url("../icons/material.woff?91804974") format("woff"), url("../icons/material.ttf?91804974") format("truetype"), url("../icons/material.svg?91804974#material") format("svg");
@@ -134,7 +134,7 @@
   font-style: normal;
 }
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  @font-face {
+  @@font-face {
     font-family: material;
     src: url("../icons/material.svg?91804974#material") format("svg");
   }
