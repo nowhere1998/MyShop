@@ -42,9 +42,9 @@
 
         @* @await Component.InvokeAsync("Nav") *@
 
-        @RenderBody()
         @RenderSection("Styles", required: false)
-
+        @RenderBody()
+        <link rel="stylesheet" href="/user/assets/style.css">
         @await Component.InvokeAsync("Footer")
 
     </div>
