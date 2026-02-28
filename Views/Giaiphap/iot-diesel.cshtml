@@ -1,4 +1,10 @@
-﻿<style>
+﻿@{
+    ViewData["Title"] = "Giải pháp";
+    Layout = "~/Views/Shared/_Layout_Giaiphap.cshtml";
+}
+@await Component.InvokeAsync("Nav")
+@* @await Component.InvokeAsync("Nav") *@
+<style>
       @@import url("zc-headerfooter-v2.css");
       @@import url("zc-footer-v1.css");
       @@import url("zc-footer.css");

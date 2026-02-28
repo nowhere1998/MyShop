@@ -1,9 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace MyShop.Controllers
 {
 	public class GiaiphapController : Controller
 	{
+		private readonly ICompositeViewEngine _viewEngine;
+		public GiaiphapController(ICompositeViewEngine viewEngine)
+		{
+			_viewEngine = viewEngine;
+		}
+
 		[Route("giai-phap")]
 		[Route("giai-phap/{slug}")]
 		public IActionResult Index(string slug = "")
@@ -11,14 +18,12 @@ namespace MyShop.Controllers
 			if (string.IsNullOrEmpty(slug))
 				return View("Index");
 
-			var viewPath = $"~/Views/Giaiphap/{slug}.cshtml";
+			var result = _viewEngine.FindView(ControllerContext, slug, false);
 
-			if (!System.IO.File.Exists(
-				Path.Combine(Directory.GetCurrentDirectory(), "Views", "Giaiphap", $"{slug}.cshtml")
-			))
+			if (!result.Success)
 			{
-                return View("Index");
-            }
+				return View("Index");
+			}
 
 			return View(slug);
 		}
