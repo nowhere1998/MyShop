@@ -61,11 +61,11 @@ app.UseCookiePolicy();
 
 app.UseRouting();
 app.UseAuthentication();
-app.UseMiddleware<BlockAuthPagesMiddleware>();
 
 app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 app.UseAuthorization();
+app.UseMiddleware<BlockAuthPagesMiddleware>();
 
 app.UseEndpoints(endpoints =>
 {
