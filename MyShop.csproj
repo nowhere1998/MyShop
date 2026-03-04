@@ -26,6 +26,7 @@
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\files\" />
     <Folder Include="wwwroot\images\" />
+    <Folder Include="wwwroot\user\assets\giai-phap\images\" />
   </ItemGroup>
 
 </Project>
