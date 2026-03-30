@@ -46,6 +46,7 @@
                     <th>Tên danh mục</th>
                     <th>Slug</th>
                     <th>Danh mục cha</th>
+                    <th>Trạng thái</th>
                     <th class="text-center">Hành động</th>
                 </tr>
             </thead>
@@ -66,7 +67,16 @@
                                 <span class="text-muted">--</span>
                             }
                         </td>
-
+                        <td>
+                            @if (item.Status == 1)
+                            {
+                                <span class="badge bg-success">Hiển thị</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Ẩn</span>
+                            }
+                        </td>
                         <td class="text-center">
 
                             <a class="btn btn-sm btn-outline-primary me-1"
