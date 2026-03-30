@@ -45,7 +45,13 @@
                 <!-- Ẩn 2 trường thời gian -->
                 <input type="hidden" asp-for="CreatedAt" />
                 <input type="hidden" asp-for="UpdatedAt" />
-
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Hiển thị</label>
+                    <select asp-for="Status" class="form-select">
+                        <option value="1">Hiển thị</option>
+                        <option value="0">Ẩn</option>
+                    </select>
+                </div>
                 <div class="text-end">
                     <a asp-action="Index" class="btn btn-secondary">
                         Trở lại
