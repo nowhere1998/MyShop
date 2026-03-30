@@ -11,10 +11,13 @@ namespace MyShop.Controllers
         {
             _context = context;
         }
-        [Route("lien-he")]
+		[Route("/lien-he")]
+        [Route("/noi-dung/lien-he")]
 		[HttpGet]
         public IActionResult Index()
         {
+			var lienhe = _context.Pages.OrderBy(x => x.Ord).FirstOrDefault(x => x.Tag == "lien-he" && x.Active == 1);
+			ViewBag.Lienhe = lienhe;
             return View();
         }
 
