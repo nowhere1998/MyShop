@@ -14,11 +14,11 @@ namespace MyShop.Controllers.Components
 		{
 			var parentCategories = _context.Categories
 				.OrderByDescending(c => c.Id)
-				.Where(c => c.ParentId == null)
+				.Where(c => c.ParentId == null && c.Status == 1)
 				.ToList();
 			var categories = _context.Categories
 				.OrderByDescending(c => c.Id)
-				.Where(c => c.ParentId != null)
+				.Where(c => c.ParentId != null && c.Status == 1)
 				.ToList();
 
 			var pagesL1 = _context.Pages

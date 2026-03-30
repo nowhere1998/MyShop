@@ -20,13 +20,13 @@ namespace MyShop.Controllers
         {
 			var categoriesParent = _context.Categories
 			   .OrderByDescending(c => c.Id)
-			   .Where(c => c.ParentId == null)
+			   .Where(c => c.ParentId == null && c.Status == 1)
 			   .ToList();
 			var categories = _context.Categories
                 .Include(c => c.Parent)
                 .Include(c => c.Products)
                 .OrderByDescending(c => c.Id)
-                .Where(c => c.ParentId != null && c.Products != null)
+                .Where(c => c.ParentId != null && c.Products != null && c.Status == 1)
                 .Where(c => c.Products.Any(p => p.Status == "active"))
                 .Skip(0)
                 .Take(10)

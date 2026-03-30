@@ -32,12 +32,12 @@ namespace MyShop.Controllers
 			string? categoryName = "";
 			if(string.IsNullOrEmpty(parentSlug))
 			{
-				var category = _context.Categories.FirstOrDefault(x => x.Slug == parentSlug);
+				var category = _context.Categories.FirstOrDefault(x => x.Slug == parentSlug && x.Status == 1);
 				categoryParentName = category?.Name;
 			}
 			if (string.IsNullOrEmpty(slug))
 			{
-				var category = _context.Categories.FirstOrDefault(x => x.Slug == slug);
+				var category = _context.Categories.FirstOrDefault(x => x.Slug == slug && x.Status == 1);
 				categoryName = category?.Name;
 			}
 
@@ -46,7 +46,7 @@ namespace MyShop.Controllers
 			// Nếu có slug danh mục
 			if (!string.IsNullOrEmpty(catSlug))
 			{
-				var category = _context.Categories.FirstOrDefault(x => x.Slug == catSlug);
+				var category = _context.Categories.FirstOrDefault(x => x.Slug == catSlug && x.Status == 1);
 				if (category != null)
 				{
 					// Nếu là danh mục CHA
@@ -161,11 +161,11 @@ namespace MyShop.Controllers
 
             // Lấy danh mục cha + con
             var categoryParent = _context.Categories
-				.Where(x => x.ParentId == null)
+				.Where(x => x.ParentId == null && x.Status == 1)
 				.ToList();
 			var categories = _context.Categories
 				.Include(x => x.Products)
-				.Where(x => x.ParentId != null)
+				.Where(x => x.ParentId != null && x.Status == 1)
 				.Where(x => x.Products.Any())
 				.ToList();
 
@@ -210,11 +210,12 @@ namespace MyShop.Controllers
 		{
 			var categories = _context.Categories
 				.Include(c => c.Parent)
+				.Where(x => x.Status == 1)
 				.ToList();
 			var product = _context.Products
 				.Include(x => x.Category)
 				.FirstOrDefault(x => x.Slug == slug);
-			var category = _context.Categories.FirstOrDefault(x => x.Id == product.CategoryId);
+			var category = _context.Categories.FirstOrDefault(x => x.Id == product.CategoryId && x.Status == 1);
 			var relatedProducts = _context.Products.Where(x => x.CategoryId == category.Id).ToList();
 			var productSpecs = _context.ProductSpecs
 				.Where(x => x.ProductId == product.Id)
