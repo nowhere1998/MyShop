@@ -110,5 +110,83 @@ namespace MyShop.Controllers
 		{
 			return View("checkout");
 		}
-	}
+
+        [HttpPost]
+        [Route("/checkout")]
+        public IActionResult Checkout(Order order)
+        {
+            var cartJson = HttpContext.Session.GetString("cart");
+
+            if (string.IsNullOrEmpty(cartJson))
+                return RedirectToAction("Cart");
+
+            var carts = JsonConvert.DeserializeObject<List<Cart>>(cartJson);
+
+            if (carts == null || carts.Count == 0)
+                return RedirectToAction("Cart");
+
+            // ===== TÍNH TIỀN =====
+
+            decimal subtotal = 0;
+
+            foreach (var item in carts)
+            {
+                subtotal += (item.Price ?? 0) * item.Quantity;
+            }
+
+            // ===== TẠO ORDER =====
+
+            order.OrderCode =
+                "ORD" + DateTime.Now.Ticks;
+
+            order.CreatedAt =
+                DateTime.Now;
+
+            order.SubtotalAmount =
+                subtotal;
+
+            order.TotalAmount =
+                subtotal;
+
+            order.OrderStatus =
+                "Pending";
+
+            order.PaymentStatus =
+                "Unpaid";
+
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            // ===== ORDER DETAIL =====
+
+            foreach (var item in carts)
+            {
+                var detail = new OrderDetail
+                {
+                    OrderId = order.Id,
+                    ProductId = item.Id,
+                    Quantity = item.Quantity,
+                    Total = item.Price * item.Quantity,
+                    CreatedAt = DateTime.Now
+                };
+
+                _context.OrderDetails.Add(detail);
+            }
+
+            _context.SaveChanges();
+
+            // ===== XÓA CART =====
+
+            HttpContext.Session.Remove("cart");
+
+            // ===== THÔNG BÁO =====
+
+            TempData["SuccessMessage"] =
+                "Đặt hàng thành công! Chúng tôi sẽ liên hệ với bạn sớm.";
+
+            // ===== QUAY VỀ TRANG CHỦ =====
+
+            return RedirectToAction("Index", "Home");
+        }
+    }
 }

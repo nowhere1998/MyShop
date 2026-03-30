@@ -206,27 +206,46 @@ namespace MyShop.Controllers
 
 
 		[Route("chi-tiet/{slug}")]
-		public IActionResult Details(string slug) 
+		public IActionResult Details(string slug)
 		{
+			// Categories
 			var categories = _context.Categories
 				.Include(c => c.Parent)
 				.Where(x => x.Status == 1)
 				.ToList();
+
+			// Product
 			var product = _context.Products
 				.Include(x => x.Category)
 				.FirstOrDefault(x => x.Slug == slug);
-			var category = _context.Categories.FirstOrDefault(x => x.Id == product.CategoryId && x.Status == 1);
-			var relatedProducts = _context.Products.Where(x => x.CategoryId == category.Id).ToList();
+
+			// Nếu không có product → trả về 404
+			if (product == null)
+			{
+				return NotFound();
+			}
+
+			// Related Products (không cần query category)
+			var relatedProducts = _context.Products
+				.Where(x => x.CategoryId == product.CategoryId
+						 && x.Id != product.Id)
+				.ToList();
+
+			// Specs
 			var productSpecs = _context.ProductSpecs
 				.Where(x => x.ProductId == product.Id)
 				.ToList();
+
+			// Images
 			var productImages = _context.ProductImages
 				.Where(x => x.ProductId == product.Id)
 				.ToList();
+
 			ViewBag.Categories = categories;
 			ViewBag.ProductSpecs = productSpecs;
 			ViewBag.ProductImages = productImages;
 			ViewBag.RelatedProducts = relatedProducts;
+
 			return View("chi-tiet-san-pham", product);
 		}
 	}
