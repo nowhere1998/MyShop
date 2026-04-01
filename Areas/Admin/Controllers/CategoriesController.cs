@@ -113,20 +113,20 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("Name", "Tên đã tồn tại, vui lòng đổi tên khác.");
             }
-                // --- Xử lý vị trí trùng ---
-                int newOrd = category.Ord ?? 1;
+                //// --- Xử lý vị trí trùng ---
+                //int newOrd = category.Ord ?? 1;
 
-                // Tăng vị trí cho tất cả bản ghi có Position >= newPos
-                var items = await _context.Categories
-                    .Where(a => a.Ord >= newOrd)
-                    .ToListAsync();
+                //// Tăng vị trí cho tất cả bản ghi có Position >= newPos
+                //var items = await _context.Categories
+                //    .Where(a => a.Ord >= newOrd)
+                //    .ToListAsync();
 
-                foreach (var item in items)
-                {
-                    item.Ord += 1;
-                }
-                // --- Lưu bản ghi ---
-                category.Ord = newOrd;
+                //foreach (var item in items)
+                //{
+                //    item.Ord += 1;
+                //}
+                //// --- Lưu bản ghi ---
+                //category.Ord = newOrd;
             if (ModelState.IsValid)
             {
                 _context.Add(category);
@@ -174,29 +174,29 @@ namespace MyShop.Areas.Admin.Controllers
             {
                 try
                 {
-                    // XỬ LÝ ORD KHÔNG BỊ TRÙNG
-                    // ================================
-                    int newOrd = category.Ord ?? 1;
+                    //// XỬ LÝ ORD KHÔNG BỊ TRÙNG
+                    //// ================================
+                    //int newOrd = category.Ord ?? 1;
 
-                    // Lấy bản ghi cũ (trước khi sửa) để biết Ord cũ
-                    var old = await _context.Categories.AsNoTracking()
-                                    .FirstOrDefaultAsync(a => a.Id == id);
+                    //// Lấy bản ghi cũ (trước khi sửa) để biết Ord cũ
+                    //var old = await _context.Categories.AsNoTracking()
+                    //                .FirstOrDefaultAsync(a => a.Id == id);
 
-                    // Nếu Ord thay đổi thì mới xử lý tránh đẩy lung tung
-                    if (old != null && old.Ord != newOrd)
-                    {
-                        // Tăng thứ tự cho tất cả bản ghi có Ord >= newOrd
-                        var items = await _context.Categories
-                            .Where(a => a.Id != id && a.Ord >= newOrd)
-                            .ToListAsync();
+                    //// Nếu Ord thay đổi thì mới xử lý tránh đẩy lung tung
+                    //if (old != null && old.Ord != newOrd)
+                    //{
+                    //    // Tăng thứ tự cho tất cả bản ghi có Ord >= newOrd
+                    //    var items = await _context.Categories
+                    //        .Where(a => a.Id != id && a.Ord >= newOrd)
+                    //        .ToListAsync();
 
-                        foreach (var item in items)
-                        {
-                            item.Ord += 1;
-                        }
+                    //    foreach (var item in items)
+                    //    {
+                    //        item.Ord += 1;
+                    //    }
 
-                        category.Ord = newOrd;
-                    }
+                    //    category.Ord = newOrd;
+                    //}
                     _context.Update(category);
                     await _context.SaveChangesAsync();
                 }
