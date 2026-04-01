@@ -38,7 +38,11 @@
                     <input asp-for="Slug" readonly class="form-control" />
                     <span asp-validation-for="Slug" class="text-danger"></span>
                 </div>
-
+                <div class="mb-3">
+                    <label asp-for="Ord" class="form-label">Thứ tự</label>
+                    <input asp-for="Ord" class="form-control" />
+                    <span asp-validation-for="Ord" class="text-danger"></span>
+                </div>
                 <!-- Không nhập CreatedAt + UpdatedAt -->
                 <input type="hidden" asp-for="CreatedAt" />
                 <input type="hidden" asp-for="UpdatedAt" />
