@@ -825,15 +825,19 @@
 											else if (p.Price > 0)
 											{
 												<!-- Giá thường -->
-												<span class="price" style="display:block;">
+												<span class="price" style="display:block; color:white;">
 													@FormatPrice(p.Price) ₫
 												</span>
 											}
-											<a href="/lien-he">
-												<span class="contact-price" style="display:block; margin-top:3px; color:white; font-weight:bold">
-													Liên hệ
-												</span>
-											</a>
+											else
+											{
+												<a href="/lien-he">
+													<span class="contact-price" style="display:block; margin-top:3px; color:white; font-weight:bold">
+														Liên hệ
+													</span>
+												</a>
+											}
+											
 											
 </div>		</div>
 	</div>
