@@ -46,6 +46,7 @@
                     <th>Tên danh mục</th>
                     <th>Slug</th>
                     <th>Danh mục cha</th>
+                    <th>Thứ tự</th>
                     <th>Trạng thái</th>
                     <th class="text-center">Hành động</th>
                 </tr>
@@ -67,6 +68,7 @@
                                 <span class="text-muted">--</span>
                             }
                         </td>
+                        <td>@item?.Ord</td>
                         <td>
                             @if (item.Status == 1)
                             {

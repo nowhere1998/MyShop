@@ -24,6 +24,8 @@ namespace MyShop.Models
         [Display(Name = "Ngày cập nhật")]
         public DateTime? UpdatedAt { get; set; }
         public int? Status { get; set; }
+        [Display(Name = "Thứ tự")]
+        public int? Ord { get; set; }
         public virtual ICollection<Category> InverseParent { get; set; } = new List<Category>();
 
         public virtual Category? Parent { get; set; }
