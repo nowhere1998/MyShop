@@ -178,9 +178,32 @@
 
 <div class="product-price-container is-large"><div class="price-wrapper">
 	<p class="price product-page-price ">
-		<a href="/lien-he">
-			<span class="amount">Liên hệ</span>
-		</a>
+		@if (Model.SalePrice > 0 && Model.Price > 0)
+						{
+							<!-- Giá gốc -->
+							<span class="price old-price" style="display:block; text-decoration: line-through; color:#999;">
+								@FormatPrice(Model.Price) ₫
+							</span>
+
+							<!-- Giá sale -->
+							<span class="price sale-price" style="display:block; color:#d00;">
+								@FormatPrice(Model.SalePrice) ₫
+							</span>
+						}
+						else if(Model.Price > 0)
+						{
+							<!-- Giá thường -->
+							<span class="price" style="display:block;">
+								@FormatPrice(Model.Price) ₫
+							</span>
+						}
+						else
+						{
+							<a href="/lien-he">
+								<span class="amount">Liên hệ</span>
+							</a>
+						}
+		
 	</p>
 </div>
 </div>
@@ -408,7 +431,7 @@
     <!-- PRODUCT ITEM -->
 	@if(ViewBag.RelatedProducts != null && ViewBag.RelatedProducts.Count > 0){
 		@foreach(var p in ViewBag.RelatedProducts){
-			<div class="product-small col has-hover product type-product post-16500 status-publish instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-he-thong-quan-ly-chia-khoa-thong-minh has-post-thumbnail shipping-taxable purchasable product-type-simple">
+			<div class="product-small col product type-product post-16500 status-publish instock product_cat-thiet-bi-truong-hoc-thong-minh product_cat-he-thong-quan-ly-chia-khoa-thong-minh has-post-thumbnail shipping-taxable purchasable product-type-simple">
         <div class="col-inner">
 
             <div class="badge-container absolute left top z-1"></div>
@@ -418,10 +441,6 @@
                     <div class="image-zoom">
                         <a href="/chi-tiet/@p.Slug"
                            aria-label="@p.Name">
-
-                            <div class="label-custom bcn">
-                                <span>Terminal</span>
-                            </div>
 
                             <img width="300"
                                  height="300"	
@@ -487,11 +506,15 @@
 								@FormatPrice(p.Price) ₫
 							</span>
 						}
-						<a href="/lien-he">
+						else
+						{
+							<a href="/lien-he">
 							<span class="contact-price" style="display:block; margin-top:3px; color:red; font-weight:bold">
 								Liên hệ
 							</span>	
 						</a>
+						}
+						
 						
                     </div>
                 </div>
