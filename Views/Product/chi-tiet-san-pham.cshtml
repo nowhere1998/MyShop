@@ -442,20 +442,33 @@
                         <a href="/chi-tiet/@p.Slug"
                            aria-label="@p.Name">
 
-                            <img width="300"
-                                 height="300"	
-                                 src="@p.Image"
-                                 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
-                                 alt="@p.Name"
-                                 />
+                            @if (!string.IsNullOrEmpty(p.Image) 
+								&& (p.Image.Contains("youtube.com") 
+									|| p.Image.Contains("youtu.be")))
+							{
+								<iframe width="300"
+										height="150"
+										src="@p.Image.Replace("watch?v=", "embed/")"
+										frameborder="0"
+										allowfullscreen>
+								</iframe>
+							}
+							else
+							{
+								<img width="300"
+									 height="300"
+									 src="@p.Image"
+									 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+									 alt="@p.Name" />
 
-                            <noscript>
-                                <img width="300"
-                                     height="300"
-                                     src="@p.Image"
-                                     class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
-                                     alt="@p.Name" />
-                            </noscript>
+								<noscript>
+									<img width="300"
+										 height="300"
+										 src="@p.Image"
+										 class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail"
+										 alt="@p.Name" />
+								</noscript>
+							}
                         </a>
                     </div>
 
