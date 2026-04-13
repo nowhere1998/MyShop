@@ -28,8 +28,6 @@ namespace MyShop.Controllers
                 .OrderBy(c => c.Ord)
                 .Where(c => c.ParentId != null && c.Products != null && c.Status == 1)
                 .Where(c => c.Products.Any(p => p.Status == "active"))
-                .Skip(0)
-                .Take(10)
                 .ToList() ?? new List<Category>();
 			var products = _context.Products
 	            .Where(p => p.Status == "active")
