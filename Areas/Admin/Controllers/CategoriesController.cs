@@ -35,13 +35,9 @@ namespace MyShop.Areas.Admin.Controllers
                     x.Name!.ToLower().Contains(name.ToLower().Trim()));
             }
 
-            var totalCount = await query.CountAsync();
-
             var list = await query
                 .OrderBy(x => x.ParentId)
                 .ThenBy(x => x.Id)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
 
             // 🔥 Sắp xếp CHA → CON
@@ -60,14 +56,20 @@ namespace MyShop.Areas.Admin.Controllers
                 result.AddRange(children);
             }
 
+            var totalCount = result.Count();
+
+            var pagedResult = result
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
             ViewData["SearchName"] = name;
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
             ViewBag.TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
-            return View(result);
+            return View(pagedResult);
         }
-
 
         // GET: Admin/Categories/Details/5
         public async Task<IActionResult> Details(int? id)
